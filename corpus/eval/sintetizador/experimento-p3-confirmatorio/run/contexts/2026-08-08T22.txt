@@ -1,0 +1,8 @@
+Period: last 1h (ending 2026-08-08T23:00Z).
+IOC activity in period: 605 indicators total (693 newly created, 0 pre-existing ones re-updated). The 25 highest-confidence of them are sampled below: (23 StixFile, 2 Domain-Name), top confidence: 0.50.
+Highest-confidence indicator values, verbatim: 71fa6a00314701fef5c6f32c17e1438063d05616198ac9a12004aeab957e11ae (StixFile), vniir-avia.space (Domain-Name), vniir-info.space (Domain-Name), f57e010541fb4ccbf23aefc4a827f753a6ff3f8792d9c04c3eea83f6963c6bae (StixFile), 47854deb456cb08c651b7f9ae2f9d87c72d0719de6af233340632efb3c1980f4 (StixFile), 12648cd9d425f78db2dbc6e03c14f11e6ac6aadf8b3975c23cce9519e2b58d33 (StixFile), 0dc0fa727f900ed5033f46f8ba6cf2d97d20ab95fd334cabc0f216da6e0622b0 (StixFile), f2bed071676feb831ed460489643fd57f6c6c1e0d024a1ea447820276fb13828 (StixFile), ebd533de7ca16daa70093b0b1084fb6136b6ba091d6ee0e4199762581e1b2e5a (StixFile), cd9397797216fd4c08df324937509124e57258328c8e4c6d795c6a2cd25b69b0 (StixFile).
+Tracked threat actors (knowledge base, most recently updated first): Exilware, BREEZE COMET, Mini Shai-Hulud, Sandworm Team, Aurora, Dark Caracal, Tortoiseshell, DukeEugene, Vanilla Tempest, UAT-10147.
+Tracked malware families (knowledge base): PollCat, NodeRabbit, Concipit1248, Cerberus, AgenteV2, CNABHunter, BraZetsu, Trinitite, BOATBEAM, KICKPLATE.
+Campaigns tracked in knowledge base: Quad7 Activity, CostaRicto, FLORAHOX Activity, C0027, C0026 (+5 more).
+ATT&CK techniques tracked (knowledge base): T1682 (Query Public AI Services), T1021.002 (SMB/Windows Admin Shares), T1025 (Data from Removable Media).
+Affected sectors: none identified.

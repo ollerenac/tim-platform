@@ -1,0 +1,185 @@
+{
+  "accepted": false,
+  "aggregate": {
+    "accepted": false,
+    "integration_mean_s": 128.77,
+    "integration_passed": 2,
+    "repetitions": 3,
+    "startup_mean_s": 90.5,
+    "startup_passed": 2
+  },
+  "evidence": {
+    "environment": "ENVIRONMENT.json",
+    "manifest": "MANIFEST.json",
+    "protocol": "PROTOCOL.md"
+  },
+  "limitations": [
+    "reactivación con contenedores y volúmenes existentes",
+    "un host, un objetivo, un modelo y un documento",
+    "la entrada trazada recorre extractor y OpenCTI",
+    "no evalúa calidad semántica, disponibilidad ni capacidad máxima"
+  ],
+  "runs": [
+    {
+      "accepted": false,
+      "errors": [
+        "bootstrap-exit=1"
+      ],
+      "integration": {
+        "accepted": false,
+        "processing_time_s": 0.0
+      },
+      "repetition": 1,
+      "shutdown": {
+        "accepted": true,
+        "exit_code": 0
+      },
+      "startup": {
+        "accepted": false,
+        "bootstrap_exit_code": 1,
+        "duration_s": 226.251
+      }
+    },
+    {
+      "accepted": true,
+      "errors": [],
+      "integration": {
+        "accepted": true,
+        "indicator_count": 34,
+        "job_id": "8423f0a1-854c-4c2f-8eea-63d082f63103",
+        "processing_time_s": 134.66,
+        "relationship_count": 136,
+        "report_id": "f064dc36-8ff0-4e2a-9f20-27a6e59a7ff6"
+      },
+      "repetition": 2,
+      "shutdown": {
+        "accepted": true,
+        "exit_code": 0
+      },
+      "startup": {
+        "accepted": true,
+        "bootstrap_exit_code": 0,
+        "duration_s": 93.194,
+        "expected": 39,
+        "healthy": 38,
+        "issues": [],
+        "running": 39,
+        "services": [
+          "elasticsearch",
+          "minio",
+          "rabbitmq",
+          "redis",
+          "opencti",
+          "connector-alienvault",
+          "connector-ipinfo",
+          "connector-abuseipdb",
+          "connector-export-file-stix",
+          "connector-import-document",
+          "connector-import-file-stix",
+          "connector-malwarebazaar",
+          "connector-shodan",
+          "kibana",
+          "connector-cve",
+          "connector-export-file-txt",
+          "feed-orchestrator",
+          "ollama",
+          "connector-mitre",
+          "connector-opencti",
+          "briefing-generator",
+          "connector-cisa-kev",
+          "connector-greynoise-feed",
+          "connector-hygiene",
+          "connector-misp-feed",
+          "worker",
+          "connector-urlhaus",
+          "connector-virustotal",
+          "chromadb",
+          "semantic-engine",
+          "soc-dashboard",
+          "connector-export-file-csv",
+          "connector-export-report-pdf",
+          "connector-first-epss",
+          "connector-google-dns",
+          "intel-extractor",
+          "connector-disarm-framework",
+          "connector-import-external-reference",
+          "connector-misp-feed-certfr"
+        ],
+        "without_healthcheck": [
+          "connector-opencti"
+        ]
+      }
+    },
+    {
+      "accepted": true,
+      "errors": [],
+      "integration": {
+        "accepted": true,
+        "indicator_count": 34,
+        "job_id": "9851a674-20f6-45cc-9b1b-17e515253323",
+        "processing_time_s": 122.88,
+        "relationship_count": 136,
+        "report_id": "dd5197aa-f4be-4de0-a07a-ede4e0bded6f"
+      },
+      "repetition": 3,
+      "shutdown": {
+        "accepted": true,
+        "exit_code": 0
+      },
+      "startup": {
+        "accepted": true,
+        "bootstrap_exit_code": 0,
+        "duration_s": 87.803,
+        "expected": 39,
+        "healthy": 38,
+        "issues": [],
+        "running": 39,
+        "services": [
+          "elasticsearch",
+          "kibana",
+          "redis",
+          "rabbitmq",
+          "minio",
+          "opencti",
+          "connector-google-dns",
+          "connector-hygiene",
+          "connector-urlhaus",
+          "worker",
+          "connector-cisa-kev",
+          "connector-virustotal",
+          "ollama",
+          "intel-extractor",
+          "connector-alienvault",
+          "connector-first-epss",
+          "connector-ipinfo",
+          "connector-misp-feed-certfr",
+          "briefing-generator",
+          "connector-cve",
+          "connector-greynoise-feed",
+          "connector-misp-feed",
+          "chromadb",
+          "semantic-engine",
+          "connector-export-file-stix",
+          "connector-export-report-pdf",
+          "connector-import-external-reference",
+          "connector-mitre",
+          "feed-orchestrator",
+          "soc-dashboard",
+          "connector-disarm-framework",
+          "connector-export-file-csv",
+          "connector-import-document",
+          "connector-malwarebazaar",
+          "connector-shodan",
+          "connector-abuseipdb",
+          "connector-export-file-txt",
+          "connector-import-file-stix",
+          "connector-opencti"
+        ],
+        "without_healthcheck": [
+          "connector-opencti"
+        ]
+      }
+    }
+  ],
+  "schema": "pe1-platform-results/v1"
+}

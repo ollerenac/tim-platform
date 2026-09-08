@@ -1,0 +1,17 @@
+SECURITY BULLETIN 2026-041
+Severity: HIGH
+Subject: Exploitation of CVE-2026-22105 in Castellan document management servers
+
+A deserialization vulnerability (CVE-2026-22105, CVSS 8.6) in Castellan DMS is being
+exploited to deploy webshells on internet-facing instances. Exploitation requires no
+authentication when the mobile sync endpoint is enabled, which is the default.
+
+Post-exploitation activity includes deployment of a tunneling utility retrieved from
+crimson-anchor.example and interactive access from 198.51.100.140. Actors have been
+observed harvesting document repositories within hours of compromise.
+
+RECOMMENDATIONS
+Update to Castellan DMS 9.2.1 or later. Disable the mobile sync endpoint where unused.
+Search web server logs for POST requests to the sync endpoint from the address above and
+inspect for webshells in the attachments directory. Constituents with confirmed intrusions
+should preserve forensic images before remediation.

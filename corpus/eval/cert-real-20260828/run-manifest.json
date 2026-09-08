@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "experiment": "cnsd-colcert-haiku-20260828",
+  "execution_window_utc": {
+    "smoke_started": "2026-08-28T11:05:56.208938Z",
+    "first_document_started": "2026-08-28T11:06:15.052839Z",
+    "last_document_started": "2026-08-28T11:13:32.941874Z"
+  },
+  "provider": "bedrock",
+  "model": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
+  "aws_region": "us-east-1",
+  "opencti_writes": 0,
+  "selective_reruns": 0,
+  "sha256": {
+    "smoke.json": "98dfad93503b8d92d7a1b0383b811dc5735afe964fa2d083cd417c2084d3fb63",
+    "cnsd-2026-08-26-f09be7223c.run-1.json": "81967b6df05d166fa97c91c5957e698320c26fe6cdc0aacfad2fc9fd6ecf3ef3",
+    "cnsd-2026-08-26-f09be7223c.run-2.json": "9dd9d7b465202a843f1a6340067bdaf592dd86d0d5443494ea3635dd5c3f13f3",
+    "cnsd-2026-08-26-f09be7223c.run-3.json": "277555bd096368e527fe6b289474e47bee22086df79f51de1c91539ea862e273",
+    "cnsd-2026-08-27-e9f7f97545.run-1.json": "53c07f963eb6481fdf47786ce19079905968542a2242d65af007501ac13c8347",
+    "cnsd-2026-08-27-e9f7f97545.run-2.json": "6b5f30b3c44b17801073a842e4fe63e96d8e83df72322ae35804ae824d4afd2c",
+    "cnsd-2026-08-27-e9f7f97545.run-3.json": "5aec84e328ccefb07f486e1dd9f9041b57908ef455dc5937a1cba2245395516b",
+    "colcert-2026-08-25-25c7bbd453.run-1.json": "1b0cadcd0a881e1efadf624bf7368f6ba56012a258673148f8e6c37373199cc0",
+    "colcert-2026-08-25-25c7bbd453.run-2.json": "4dc09537b059ac25bac1907fe7901af9d782e1d16468dea7b85f1b07ca69b498",
+    "colcert-2026-08-25-25c7bbd453.run-3.json": "6ec0cbddbc9fdf91c9756fb64094893183bd1b1cd52a97a6b93c5e4db5b4e96c",
+    "colcert-2026-08-26-92539d2a32.run-1.json": "1614546ccec39de2bc84bd19d1cf502f546936ba3111c8531ead282f18c055a5",
+    "colcert-2026-08-26-92539d2a32.run-2.json": "00a8f574cb2eee9a34c017708559f3d7f17a222713a2220fbdd40d77f660677c",
+    "colcert-2026-08-26-92539d2a32.run-3.json": "2766b57e6e70f92f831c5149c810f9cbd71be240ba8392146626b55744716c84"
+  }
+}

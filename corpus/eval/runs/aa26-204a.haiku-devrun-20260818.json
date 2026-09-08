@@ -1,0 +1,33 @@
+{
+ "entities": [
+  {
+   "id": "e3",
+   "type": "vulnerability",
+   "value": "CVE-2025-66376",
+   "quote": "The vulnerability, Common Vulnerabilities and Exposures (CVE) CVE-2025-66376, was patched in November 2025.",
+   "page": 2
+  },
+  {
+   "id": "e4",
+   "type": "technology",
+   "value": "Zimbra Collaboration Suite",
+   "quote": "A group of Russian state-supported cyber actors has been targeting and compromising various Western government and commercial organizations using the Zimbra Collaboration Suite (ZCS) software since at least July 2025.",
+   "page": 1
+  },
+  {
+   "id": "e6",
+   "type": "malware",
+   "value": "Flowerbed",
+   "quote": "Flowerbed is a Python project that uses Docker for containerization.",
+   "page": 7
+  },
+  {
+   "id": "e50",
+   "type": "attack-pattern",
+   "value": "Obfuscated Files or Information [T1027]",
+   "quote": "The outer payload decodes and decrypts the inner payload using an XOR function and a hardcoded key and then executes the script contained within the inner payload containing the collection and exfiltration logic.",
+   "page": 9
+  }
+ ],
+ "relationships": []
+}

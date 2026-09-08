@@ -1,0 +1,8 @@
+Period: last 1h (ending 2026-08-24T16:00Z).
+IOC activity in period: 275 indicators total (275 newly created, 0 pre-existing ones re-updated). The 25 highest-confidence of them are sampled below: (9 Domain-Name, 3 Url, 1 IPv4-Addr, 12 Hostname), top confidence: 0.50.
+Highest-confidence indicator values, verbatim: audittrust.shop (Domain-Name), amlbot-clear.com (Domain-Name), search-aml.net (Domain-Name), bitget-aml.com (Domain-Name), phishing-domain.xyz (Domain-Name), http://panelbalonxfs.xyz/admin/api/api/token (Url), http://panelbalonxfs.xyz/admin/api/api/rest (Url), http://panelbalonxfs.xyz/admin/api/api/gql (Url), panelbalonxfs.xyz (Domain-Name), callbalonx.info (Domain-Name).
+Tracked threat actors (knowledge base, most recently updated first): Exilware, BREEZE COMET, Mini Shai-Hulud, Sandworm Team, Aurora, Dark Caracal, Tortoiseshell, DukeEugene, Vanilla Tempest, UAT-10147.
+Tracked malware families (knowledge base): PollCat, NodeRabbit, Concipit1248, Cerberus, AgenteV2, CNABHunter, BraZetsu, Trinitite, BOATBEAM, KICKPLATE.
+Campaigns tracked in knowledge base: Quad7 Activity, CostaRicto, FLORAHOX Activity, C0027, C0026 (+5 more).
+ATT&CK techniques tracked (knowledge base): T1682 (Query Public AI Services), T1021.002 (SMB/Windows Admin Shares), T1025 (Data from Removable Media).
+Affected sectors: none identified.

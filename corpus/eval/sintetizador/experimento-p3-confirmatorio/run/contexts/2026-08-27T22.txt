@@ -1,0 +1,8 @@
+Period: last 1h (ending 2026-08-27T23:00Z).
+IOC activity in period: 70 indicators total (66 newly created, 4 pre-existing ones re-updated). The 25 highest-confidence of them are sampled below: (3 StixFile, 16 Hostname, 6 Domain-Name), top confidence: 0.50.
+Highest-confidence indicator values, verbatim: 8c87134c1b45e990e9568f0a3899b0076f94be16d3c40fa824ac1e6c6ee892db (StixFile), eb0aab1e892d7e09e2c7bcf1d21fd83c1743ed9196b3efac6c78482fb0d99207 (StixFile), a4af136d159a8eb96b54924fa80355ca52874913301300f55af7d67ae97edcfe (StixFile), jump.qt-proxy.org (Hostname), flnode-xxxx.yotocloud.com (Hostname), flnode-ulus.yotocloud.com (Hostname), flnode-dl.yotocloud.com (Hostname), flanycast-xxxx.yotocloud.com (Hostname), flanycast-us.yotocloud.com (Hostname), flanycast-us-bak.yotocloud.com (Hostname).
+Tracked threat actors (knowledge base, most recently updated first): Exilware, BREEZE COMET, Mini Shai-Hulud, Sandworm Team, Aurora, Dark Caracal, Tortoiseshell, DukeEugene, Vanilla Tempest, UAT-10147.
+Tracked malware families (knowledge base): PollCat, NodeRabbit, Concipit1248, Cerberus, AgenteV2, CNABHunter, BraZetsu, Trinitite, BOATBEAM, KICKPLATE.
+Campaigns tracked in knowledge base: Quad7 Activity, CostaRicto, FLORAHOX Activity, C0027, C0026 (+5 more).
+ATT&CK techniques tracked (knowledge base): T1682 (Query Public AI Services), T1021.002 (SMB/Windows Admin Shares), T1025 (Data from Removable Media).
+Affected sectors: none identified.

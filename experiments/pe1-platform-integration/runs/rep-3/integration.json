@@ -1,0 +1,40 @@
+{
+  "schema": "pe1-local-extractor-evidence/v2",
+  "captured_at": "2026-08-30T07:12:53Z",
+  "target": "local-gpu",
+  "provider": {
+    "name": "ollama",
+    "model": "llama3.2:3b"
+  },
+  "source": {
+    "path": "<REPO_ROOT>/corpus/aa26-204a/CSA_RUSSIA_PHISHING_TARGET_ZIMBRA.pdf",
+    "sha256": "97805a057e1217acdf8a1c21f3852994c550b2b9fe094af270bd1bb6e24e8c76"
+  },
+  "job": {
+    "job_id": "9851a674-20f6-45cc-9b1b-17e515253323",
+    "status": "complete",
+    "report_id": "dd5197aa-f4be-4de0-a07a-ede4e0bded6f",
+    "iocs_extracted": 34,
+    "techniques_found": 4,
+    "processing_time_s": 122.88
+  },
+  "opencti": {
+    "report_found": true,
+    "report_id": "dd5197aa-f4be-4de0-a07a-ede4e0bded6f",
+    "standard_id": "report--bcef0cc7-c794-53a5-9dde-7582dd68e1e5",
+    "document_reference": "pdf-upload-9851a674",
+    "object_count": 38,
+    "indicator_count": 34,
+    "relationship_count": 136
+  },
+  "tooling": {
+    "capture_submission": {
+      "path": "scripts/capture-pe1-local-evidence.py",
+      "commit": "526e2ccff4b1b0419dcd9baa068129c502b80320"
+    },
+    "final_report_read": {
+      "path": "scripts/capture-pe1-local-evidence.py",
+      "commit": "526e2ccff4b1b0419dcd9baa068129c502b80320"
+    }
+  }
+}

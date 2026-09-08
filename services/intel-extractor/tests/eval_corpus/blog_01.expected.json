@@ -1,0 +1,14 @@
+{
+  "format": "blog",
+  "iocs": [
+    {
+      "type": "domain",
+      "value": "stone-metrics.example"
+    },
+    {
+      "type": "hash_sha256",
+      "value": "4c7bf192284983cdb53f47f5f059861bd601e68a900004c7c2d5b1edcf9462ac"
+    }
+  ],
+  "notes": "vendor blog prose, 2 IOCs buried in narrative"
+}

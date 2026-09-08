@@ -1,0 +1,30 @@
+{
+  "format": "report",
+  "iocs": [
+    {
+      "type": "hash_md5",
+      "value": "df5308c8768f3aff336c2356871ef24d"
+    },
+    {
+      "type": "hash_sha256",
+      "value": "c085655ce22a9ac3a4c183705c9253027581b15082c389ee51c20116ddd4476f"
+    },
+    {
+      "type": "domain",
+      "value": "ledger-relay.example"
+    },
+    {
+      "type": "url",
+      "value": "https://ledger-relay.example/ingest"
+    },
+    {
+      "type": "ip",
+      "value": "203.0.113.140"
+    },
+    {
+      "type": "ip",
+      "value": "203.0.113.141"
+    }
+  ],
+  "notes": "quarterly report, 6 IOCs in flowing prose"
+}

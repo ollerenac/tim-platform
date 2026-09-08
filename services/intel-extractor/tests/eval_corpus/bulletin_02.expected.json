@@ -1,0 +1,14 @@
+{
+  "format": "bulletin",
+  "iocs": [
+    {
+      "type": "domain",
+      "value": "crimson-anchor.example"
+    },
+    {
+      "type": "ip",
+      "value": "198.51.100.140"
+    }
+  ],
+  "notes": "CVE bulletin with 2 IOCs"
+}

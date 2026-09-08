@@ -1,0 +1,8 @@
+Period: last 1h (ending 2026-09-01T15:00Z).
+IOC activity in period: 23 indicators total (22 newly created, 1 pre-existing ones re-updated). The 23 highest-confidence of them are sampled below: (2 StixFile, 4 Url, 17 Domain-Name), top confidence: 0.50.
+Highest-confidence indicator values, verbatim: 307ce2448211a5f5d122643f2a739aff33ede72c1858518c8de098f3148bbd00 (StixFile), https://sahi-finance.com (Url), https://healthcomfsdpower.com (Url), https://visitfinancedentists.com (Url), mens-health-online.com (Domain-Name), healthyweightplan.com (Domain-Name), digimediaskill.com (Domain-Name), glmediaagency.com (Domain-Name), aceofspadesmanagement.com (Domain-Name), healthvitalitycare.com (Domain-Name).
+Tracked threat actors (knowledge base, most recently updated first): Exilware, BREEZE COMET, Mini Shai-Hulud, Sandworm Team, Aurora, Dark Caracal, Tortoiseshell, DukeEugene, Vanilla Tempest, UAT-10147.
+Tracked malware families (knowledge base): PollCat, NodeRabbit, Concipit1248, Cerberus, AgenteV2, CNABHunter, BraZetsu, Trinitite, BOATBEAM, KICKPLATE.
+Campaigns tracked in knowledge base: Quad7 Activity, CostaRicto, FLORAHOX Activity, C0027, C0026 (+5 more).
+ATT&CK techniques tracked (knowledge base): T1682 (Query Public AI Services), T1021.002 (SMB/Windows Admin Shares), T1025 (Data from Removable Media).
+Affected sectors: none identified.

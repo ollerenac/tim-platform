@@ -1,0 +1,42 @@
+{
+  "format": "advisory",
+  "iocs": [
+    {
+      "type": "ip",
+      "value": "192.0.2.101"
+    },
+    {
+      "type": "ip",
+      "value": "192.0.2.102"
+    },
+    {
+      "type": "ip",
+      "value": "198.51.100.200"
+    },
+    {
+      "type": "domain",
+      "value": "webmail-session.example"
+    },
+    {
+      "type": "domain",
+      "value": "token-refresh.example"
+    },
+    {
+      "type": "url",
+      "value": "https://webmail-session.example/owa/auth"
+    },
+    {
+      "type": "url",
+      "value": "http://token-refresh.example/refresh"
+    },
+    {
+      "type": "hash_md5",
+      "value": "f124c88593e2f7ede10da985c4ccc4da"
+    },
+    {
+      "type": "hash_sha256",
+      "value": "5232e07fad9772180dfa77bf55cc196d48fdbc6459cd9fb999f251d861e48ab7"
+    }
+  ],
+  "notes": "advisory with bracket-defanged network IOC list; gold canonical"
+}

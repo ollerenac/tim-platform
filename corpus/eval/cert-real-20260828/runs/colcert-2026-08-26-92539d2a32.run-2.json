@@ -1,0 +1,310 @@
+{
+  "aws_region": "us-east-1",
+  "created_at_utc": "2026-08-28T11:11:11.323389Z",
+  "document": "colcert-2026-08-26-92539d2a32",
+  "elapsed_seconds": 41.90793,
+  "input_sha256": "b17298185915b6046f58a683fb7a70a8fc7b85944a185a4681e453dfc7694ca2",
+  "kind": "document_extraction",
+  "model": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
+  "model_output": {
+    "accepted_iocs": [
+      {
+        "type": "hash_sha1",
+        "value": "7fa480b8a7dbcc1ce826d1cd6b82d5ee75552484"
+      },
+      {
+        "type": "hash_md5",
+        "value": "82f771c3ec4fe979c3ae00372e8c3ac8"
+      },
+      {
+        "type": "hash_sha1",
+        "value": "7bc79e8bbff363b41fd73f9bea102ddc4a404cbe"
+      },
+      {
+        "type": "hash_md5",
+        "value": "cfbd8d062e9baa98737a0260996f48c6"
+      },
+      {
+        "type": "hash_sha1",
+        "value": "e6ae8be61928e1279190b0df28ac8ad94f3ac29d"
+      },
+      {
+        "type": "hash_md5",
+        "value": "e882ee4a643b00871c98bcfe4b4d7cd1"
+      },
+      {
+        "type": "hash_sha1",
+        "value": "077b104db18e1c1fdd0800e6e75a1e26398d97e7"
+      },
+      {
+        "type": "hash_md5",
+        "value": "f1aed8cf2adafa86927fc58d5f24073e"
+      }
+    ],
+    "campaign_summary": "The Grandoreiro banking trojan has resurged with targeting shifts toward Mexico, Spain, and Latin America after police disruption in 2024. The campaign uses malspam with ZIP-attached fake invoices, exploits DLL side-loading via Duplicate Files Finder, and deploys sophisticated anti-sandbox/anti-VM checks to evade detection. Active artifacts have been confirmed in Colombia, making this a high-risk threat to financial institutions across the region.",
+    "chunk_diagnostics": [
+      {
+        "attempts": 1,
+        "chunk_index": 0,
+        "error": null,
+        "retry_count": 0,
+        "status": "complete"
+      }
+    ],
+    "exploited_cves": [],
+    "malware_families": [],
+    "rejected_ioc_candidates": [
+      {
+        "reason": "duplicate",
+        "stage": "dedup",
+        "type": "hash_sha1",
+        "value": "7fa480b8a7dbcc1ce826d1cd6b82d5ee75552484"
+      },
+      {
+        "reason": "duplicate",
+        "stage": "dedup",
+        "type": "hash_sha1",
+        "value": "7bc79e8bbff363b41fd73f9bea102ddc4a404cbe"
+      },
+      {
+        "reason": "duplicate",
+        "stage": "dedup",
+        "type": "hash_sha1",
+        "value": "e6ae8be61928e1279190b0df28ac8ad94f3ac29d"
+      },
+      {
+        "reason": "duplicate",
+        "stage": "dedup",
+        "type": "hash_sha1",
+        "value": "077b104db18e1c1fdd0800e6e75a1e26398d97e7"
+      },
+      {
+        "reason": "duplicate",
+        "stage": "dedup",
+        "type": "hash_md5",
+        "value": "82f771c3ec4fe979c3ae00372e8c3ac8"
+      }
+    ],
+    "targeted_countries": [],
+    "targeted_sectors": [],
+    "technique_keywords": [
+      "application layer protocol: web protocols [t1071.001]",
+      "deobfuscate/decode information [t1140]",
+      "hide artifacts: hidden window [t1564.003]",
+      "masquerading: match legitimate resource name or location [t1036.005]",
+      "process discovery [t1057]",
+      "system location discovery [t1614]",
+      "virtualization/sandbox evasion: system checks [t1497]"
+    ],
+    "threat_actors": [],
+    "unique_iocs": [
+      {
+        "type": "hash_sha1",
+        "value": "7fa480b8a7dbcc1ce826d1cd6b82d5ee75552484"
+      },
+      {
+        "type": "hash_md5",
+        "value": "82f771c3ec4fe979c3ae00372e8c3ac8"
+      },
+      {
+        "type": "hash_sha1",
+        "value": "7bc79e8bbff363b41fd73f9bea102ddc4a404cbe"
+      },
+      {
+        "type": "hash_md5",
+        "value": "cfbd8d062e9baa98737a0260996f48c6"
+      },
+      {
+        "type": "hash_sha1",
+        "value": "e6ae8be61928e1279190b0df28ac8ad94f3ac29d"
+      },
+      {
+        "type": "hash_md5",
+        "value": "e882ee4a643b00871c98bcfe4b4d7cd1"
+      },
+      {
+        "type": "hash_sha1",
+        "value": "077b104db18e1c1fdd0800e6e75a1e26398d97e7"
+      },
+      {
+        "type": "hash_md5",
+        "value": "f1aed8cf2adafa86927fc58d5f24073e"
+      }
+    ],
+    "v2_entities": [
+      {
+        "id": "e5",
+        "ioc_type": "hash_sha1",
+        "page": 4,
+        "quote": "SHA1: 7fa480b8a7dbcc1ce826d1cd6b82d5ee75552484",
+        "type": "indicator",
+        "value": "7fa480b8a7dbcc1ce826d1cd6b82d5ee75552484"
+      },
+      {
+        "id": "e6",
+        "ioc_type": "hash_md5",
+        "page": 4,
+        "quote": "MD5: 82f771c3ec4fe979c3ae00372e8c3ac8",
+        "type": "indicator",
+        "value": "82f771c3ec4fe979c3ae00372e8c3ac8"
+      },
+      {
+        "id": "e9",
+        "ioc_type": "hash_sha1",
+        "page": 4,
+        "quote": "SHA1: 7bc79e8bbff363b41fd73f9bea102ddc4a404cbe",
+        "type": "indicator",
+        "value": "7bc79e8bbff363b41fd73f9bea102ddc4a404cbe"
+      },
+      {
+        "id": "e10",
+        "ioc_type": "hash_md5",
+        "page": 4,
+        "quote": "MD5: cfbd8d062e9baa98737a0260996f48c6",
+        "type": "indicator",
+        "value": "cfbd8d062e9baa98737a0260996f48c6"
+      },
+      {
+        "id": "e11",
+        "page": 4,
+        "quote": "dupfdll.dll",
+        "type": "indicator",
+        "value": "dupfdll.dll"
+      },
+      {
+        "id": "e13",
+        "ioc_type": "hash_sha1",
+        "page": 4,
+        "quote": "SHA1: e6ae8be61928e1279190b0df28ac8ad94f3ac29d",
+        "type": "indicator",
+        "value": "e6ae8be61928e1279190b0df28ac8ad94f3ac29d"
+      },
+      {
+        "id": "e14",
+        "ioc_type": "hash_md5",
+        "page": 4,
+        "quote": "MD5: e882ee4a643b00871c98bcfe4b4d7cd1",
+        "type": "indicator",
+        "value": "e882ee4a643b00871c98bcfe4b4d7cd1"
+      },
+      {
+        "id": "e15",
+        "page": 4,
+        "quote": "mingwm10.dll",
+        "type": "indicator",
+        "value": "mingwm10.dll"
+      },
+      {
+        "id": "e17",
+        "ioc_type": "hash_sha1",
+        "page": 4,
+        "quote": "SHA1: 077b104db18e1c1fdd0800e6e75a1e26398d97e7",
+        "type": "indicator",
+        "value": "077b104db18e1c1fdd0800e6e75a1e26398d97e7"
+      },
+      {
+        "id": "e18",
+        "ioc_type": "hash_md5",
+        "page": 4,
+        "quote": "MD5: f1aed8cf2adafa86927fc58d5f24073e",
+        "type": "indicator",
+        "value": "f1aed8cf2adafa86927fc58d5f24073e"
+      },
+      {
+        "id": "e22",
+        "page": 5,
+        "quote": "Puerto utilizado para la comunicación C2 (descarga de payload de segunda etapa). Nota de la fuente: este puerto suele emplearse legítimamente por PgBouncer (administrador de conexiones para bases de datos PostgreSQL), lo que puede dificultar su identificación en el tráfico de red.",
+        "type": "indicator",
+        "value": "6432"
+      },
+      {
+        "id": "e23",
+        "page": 2,
+        "quote": "Verificación de tiempo de actividad del sistema (>180 segundos), detección de hipervisores, accesos directos y claves de BIOS.",
+        "type": "attack-pattern",
+        "value": "Virtualization/Sandbox Evasion: System Checks [T1497]"
+      },
+      {
+        "id": "e24",
+        "page": 2,
+        "quote": "Ocultamiento inmediato de la ventana de interfaz gráfica (GUI) del ejecutable DFF tras la carga lateral.",
+        "type": "attack-pattern",
+        "value": "Hide Artifacts: Hidden Window [T1564.003]"
+      },
+      {
+        "id": "e25",
+        "page": 2,
+        "quote": "Rutina personalizada en memoria para desofuscar cadenas de texto mediante Base64 combinado con operaciones XOR.",
+        "type": "attack-pattern",
+        "value": "Deobfuscate/Decode Information [T1140]"
+      },
+      {
+        "id": "e26",
+        "page": 2,
+        "quote": "Renombrado del binario benigno de Duplicate Files Finder a una cadena aleatoria para enmascaramiento.",
+        "type": "attack-pattern",
+        "value": "Masquerading: Match Legitimate Resource Name or Location [T1036.005]"
+      },
+      {
+        "id": "e28",
+        "page": 2,
+        "quote": "Escaneo activo de 49 nombres de procesos correspondientes a depuradores, EDR y herramientas de análisis de red.",
+        "type": "attack-pattern",
+        "value": "Process Discovery [T1057]"
+      },
+      {
+        "id": "e29",
+        "page": 2,
+        "quote": "Consulta a ip-api.com y descarte de ejecución por geolocalización (observado: República Checa, Rusia, Países Bajos).",
+        "type": "attack-pattern",
+        "value": "System Location Discovery [T1614]"
+      },
+      {
+        "id": "e30",
+        "page": 3,
+        "quote": "Solicitud HTTP GET cifrada sobre el puerto no estándar TCP 6432 para descargar el payload de segunda etapa.",
+        "type": "attack-pattern",
+        "value": "Application Layer Protocol: Web Protocols [T1071.001]"
+      },
+      {
+        "id": "e40",
+        "page": 2,
+        "quote": "Consulta a ip-api.com y descarte de ejecución por geolocalización (observado: República Checa, Rusia, Países Bajos).",
+        "type": "country",
+        "value": "Czech Republic"
+      },
+      {
+        "id": "e41",
+        "page": 2,
+        "quote": "Consulta a ip-api.com y descarte de ejecución por geolocalización (observado: República Checa, Rusia, Países Bajos).",
+        "type": "country",
+        "value": "Russia"
+      },
+      {
+        "id": "e42",
+        "page": 2,
+        "quote": "Consulta a ip-api.com y descarte de ejecución por geolocalización (observado: República Checa, Rusia, Países Bajos).",
+        "type": "country",
+        "value": "Netherlands"
+      },
+      {
+        "id": "e46",
+        "page": 5,
+        "quote": "Puerto utilizado para la comunicación C2 (descarga de payload de segunda etapa). Nota de la fuente: este puerto suele emplearse legítimamente por PgBouncer (administrador de conexiones para bases de datos PostgreSQL), lo que puede dificultar su identificación en el tráfico de red.",
+        "type": "technology",
+        "value": "PgBouncer"
+      }
+    ],
+    "v2_relationships": [],
+    "victim_technologies": [
+      "PgBouncer"
+    ]
+  },
+  "opencti_writes": 0,
+  "provider": "bedrock",
+  "reference_sha256": "dea9cc67a264710c20bc9b46e7065d6dfe0b076616802d11e01a95b7cd2fe97a",
+  "repetition": 2,
+  "schema_version": 1,
+  "source_type": "bulletin",
+  "status": "success"
+}

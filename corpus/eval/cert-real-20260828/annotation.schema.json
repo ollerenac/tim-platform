@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TIM reviewed CTI extraction reference",
+  "type": "object",
+  "required": ["schema_version", "document", "annotation_status", "entities", "relationships"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "document": {"type": "string", "minLength": 1},
+    "annotation_status": {
+      "enum": ["PENDING_REVIEW", "APPROVED", "CORRECTED", "REJECTED"]
+    },
+    "scope_note": {"type": "string"},
+    "entities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "type", "value", "quote", "page"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "type": {
+            "enum": ["threat-actor", "malware", "vulnerability", "attack-pattern", "indicator", "sector", "country", "technology"]
+          },
+          "value": {"type": "string", "minLength": 1},
+          "source_value": {"type": "string", "minLength": 1},
+          "ioc_type": {
+            "enum": ["ip", "domain", "url", "hash_md5", "hash_sha1", "hash_sha256", "email"]
+          },
+          "aliases": {"type": "array", "items": {"type": "string"}},
+          "quote": {"type": "string", "minLength": 1},
+          "page": {"type": "integer", "minimum": 1}
+        },
+        "additionalProperties": false
+      }
+    },
+    "relationships": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["source", "type", "target", "quote", "page"],
+        "properties": {
+          "source": {"type": "string", "minLength": 1},
+          "type": {"enum": ["uses", "targets", "exploits", "indicates", "attributed-to"]},
+          "target": {"type": "string", "minLength": 1},
+          "quote": {"type": "string", "minLength": 1},
+          "page": {"type": "integer", "minimum": 1}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

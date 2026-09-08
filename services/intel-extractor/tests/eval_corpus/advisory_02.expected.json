@@ -1,0 +1,38 @@
+{
+  "format": "advisory",
+  "iocs": [
+    {
+      "type": "email",
+      "value": "payroll-review@benefits-notice.example"
+    },
+    {
+      "type": "ip",
+      "value": "198.51.100.71"
+    },
+    {
+      "type": "ip",
+      "value": "198.51.100.72"
+    },
+    {
+      "type": "ip",
+      "value": "203.0.113.130"
+    },
+    {
+      "type": "domain",
+      "value": "archive-sync.example"
+    },
+    {
+      "type": "domain",
+      "value": "backup-mirror.example"
+    },
+    {
+      "type": "hash_sha1",
+      "value": "a13a416d2246f4af8a135645bbca2f4a50a6c672"
+    },
+    {
+      "type": "hash_sha256",
+      "value": "691e1ac5a347bcf3fa97ad9a60534cdd8a17c2dc22b2a793a0842daea59982b2"
+    }
+  ],
+  "notes": "ransomware advisory with email sender IOC and CVE noise"
+}

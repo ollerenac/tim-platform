@@ -1,0 +1,23 @@
+CYBERSECURITY ADVISORY AA26-140C
+Widespread Credential Phishing Campaign Delivering BrackenStealer
+
+SUMMARY
+A financially motivated actor is conducting a high-volume credential phishing campaign
+impersonating invoice and billing notifications. The campaign delivers BrackenStealer, an
+information stealer that harvests browser credentials and session cookies (T1555.003).
+
+TECHNICAL DETAILS
+Phishing messages are sent from the address invoice-desk@billing-alerts.example with subject
+lines referencing overdue invoices. Recipients are directed to a credential harvesting page
+at https://secure-login-portal.example/verify which loads additional script content from the
+domain cdn-fonts-static.example. Harvested credentials are posted to 203.0.113.18 over
+HTTPS on a non-standard port.
+
+The BrackenStealer payload observed in this campaign has the following hashes:
+- MD5: b5eaf234714ce8202a82ad60d93ad7fb
+- SHA-256: 17fbda7935be138d65b9f9dcec096b3b76cdbab0174e3443cbb83604a1f358eb
+
+MITIGATIONS
+* Block the sender address and listed infrastructure at the mail and web gateways.
+* Enforce phishing-resistant MFA so harvested passwords alone cannot be replayed.
+* Educate finance teams on invoice-themed lures during quarter close.

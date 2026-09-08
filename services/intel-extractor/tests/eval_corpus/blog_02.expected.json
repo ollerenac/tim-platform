@@ -1,0 +1,10 @@
+{
+  "format": "blog",
+  "iocs": [
+    {
+      "type": "hash_sha256",
+      "value": "84d60dd008e7b5b40191bc0919401ed5ed5756b1f46da3febbafe0712e548c03"
+    }
+  ],
+  "notes": "narrative blog with exactly one hash IOC"
+}

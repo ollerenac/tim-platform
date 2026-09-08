@@ -1,0 +1,46 @@
+{
+  "format": "report",
+  "iocs": [
+    {
+      "type": "ip",
+      "value": "203.0.113.201"
+    },
+    {
+      "type": "ip",
+      "value": "203.0.113.202"
+    },
+    {
+      "type": "ip",
+      "value": "192.0.2.150"
+    },
+    {
+      "type": "ip",
+      "value": "198.51.100.60"
+    },
+    {
+      "type": "domain",
+      "value": "hydro-metrics.example"
+    },
+    {
+      "type": "domain",
+      "value": "turbine-sync.example"
+    },
+    {
+      "type": "url",
+      "value": "http://hydro-metrics.example/beacon"
+    },
+    {
+      "type": "url",
+      "value": "https://turbine-sync.example/task"
+    },
+    {
+      "type": "hash_md5",
+      "value": "7aa0990e9fb567b3c7a6aa23d2a18fb0"
+    },
+    {
+      "type": "hash_sha256",
+      "value": "fd1ebc21d38426c367df36f8b1227788154a07818ba0d7d6a606575ca9cab33b"
+    }
+  ],
+  "notes": "long-form report with structured IOC appendix, 10 IOCs"
+}

@@ -1,0 +1,21 @@
+SECURITY BULLETIN 2026-063
+Severity: HIGH
+Subject: Invoice-themed intrusion campaign — all indicators defanged per distribution policy
+
+Partner CSIRTs report an ongoing intrusion campaign using invoice-themed lures against
+manufacturing and wholesale trade organizations. All indicators in this bulletin are
+defanged per constituent distribution policy; refang before operational use.
+
+Initial contact arrives from the address billing[at]invoice-relay[.]example. The lure links
+to a staged login page at hxxps://portal[.]invoice-relay[.]example/login which harvests
+credentials and immediately relays them for interactive logon attempts.
+
+Following access, a loader is retrieved from hxxp://update[.]kernel-patch[.]example/stage2
+and tasking is fetched from the host cdn[dot]stonewall-metrics[dot]example. Interactive
+operations have been observed from 192.0.2(.)203 and 198.51.100[.]23, typically within four
+hours of credential capture.
+
+RECOMMENDATIONS
+Refang and block the indicators above at mail, DNS, and network boundaries. Reset
+credentials for any account that submitted data to the harvesting page. Review VPN and
+mail logons for the listed addresses. Report confirmed intrusions with observed tasking.

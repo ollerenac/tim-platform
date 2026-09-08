@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "institutional_order": ["ncsc-uk", "cert-eu", "cert-pl-en", "acsc-advisories"],
+  "technical_research_order": ["unit-42", "eset-welivesecurity", "volexity"],
+  "sources_per_class": 2,
+  "documents_per_source": 4,
+  "primary_per_source": 4,
+  "min_words": 500,
+  "max_words": 50000,
+  "languages": ["en", "es"],
+  "allowed_media_types": ["html", "pdf"],
+  "exclusion_reasons": [
+    "previously_processed",
+    "previously_evaluated",
+    "development_material",
+    "duplicate",
+    "translation_duplicate",
+    "unsupported_language",
+    "not_threat_focused",
+    "no_narrative_section",
+    "unreadable",
+    "out_of_length_range",
+    "missing_author_or_date",
+    "inaccessible"
+  ]
+}

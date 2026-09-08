@@ -1,0 +1,30 @@
+The Negotiation Table Has Moved: Ransomware Economics in 2026
+
+By the Argus Point Intelligence Team
+
+For years, the standard advice on ransomware negotiation was simple: stall for time, verify
+the attacker can actually decrypt, and never let the first offer anchor the discussion. That
+advice assumed a marketplace with some minimal honor among thieves. This year broke the
+assumption.
+
+Three separate developments changed the economics. First, the collapse of two major
+affiliate programs flooded the market with experienced operators who no longer share revenue
+upward, which means smaller demands but far more incidents. Second, insurers tightened
+coverage language to the point where many victims can no longer count on reimbursement,
+which attackers have noticed and priced in. Third, and most consequentially, several
+jurisdictions moved from discouraging ransom payments to outright prohibiting them for
+critical infrastructure operators, taking the largest and most reliable payers off the
+table entirely.
+
+The result is a strange new equilibrium. Median demands are down. Median dwell time is also
+down, because operators who cannot count on a payout monetize whatever they can reach in the
+first days rather than staging a careful, weeks-long extortion. Data theft without any
+encryption at all now accounts for a majority of the incidents we work, because it is
+cheaper to execute and the legal exposure it creates for the victim does the negotiating on
+the attacker's behalf.
+
+What should defenders take from this? The window between initial access and impact is
+shrinking, so detection speed matters more than it did even a year ago. And the
+conversation with your board should no longer be about whether to pay, but about how the
+business absorbs the disclosure of whatever an intruder can reach in seventy-two hours.
+Plan for that, and the negotiation table takes care of itself.

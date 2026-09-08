@@ -1,0 +1,30 @@
+{
+  "format": "bulletin",
+  "iocs": [
+    {
+      "type": "email",
+      "value": "billing@invoice-relay.example"
+    },
+    {
+      "type": "url",
+      "value": "https://portal.invoice-relay.example/login"
+    },
+    {
+      "type": "url",
+      "value": "http://update.kernel-patch.example/stage2"
+    },
+    {
+      "type": "domain",
+      "value": "cdn.stonewall-metrics.example"
+    },
+    {
+      "type": "ip",
+      "value": "192.0.2.203"
+    },
+    {
+      "type": "ip",
+      "value": "198.51.100.23"
+    }
+  ],
+  "notes": "defanged hard case: EVERY IOC defanged \u2014 [at], hxxps, [.], hxxp, [dot], (.)"
+}

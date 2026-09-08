@@ -1,0 +1,37 @@
+# Objetivo local-gpu: piloto de experimentación con GPU NVIDIA.
+# Ollama sirve embeddings (nomic-embed-text) Y generación local (llama3.2:3b).
+#
+# Uso (siempre junto a la base):
+#   ./scripts/tim-check.sh local-gpu
+#   $(./scripts/compose-target.sh local-gpu) up -d
+#
+# La reserva NVIDIA vive aquí y solo aquí: la base debe renderizar en hosts
+# sin GPU. Mismo servicio y mismo volumen (ollamadata) que el objetivo aws,
+# para que los modelos descargados sobrevivan al cambio de objetivo.
+
+services:
+  ollama:
+    # 2g OOM-mataba el runner de llama3.2:3b bajo carga (el modelo solo ya son
+    # 2.0 GB); 6g da modelo + contexto 8k + prompt cache para backfills.
+    mem_limit: 6g
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+  intel-extractor:
+    environment:
+      # El objetivo experimental ejecuta la extracción con la GPU local y no
+      # debe heredar Bedrock desde .env.
+      - LLM_PROVIDER=ollama
+    depends_on:
+      ollama:
+        condition: service_healthy
+
+  briefing-generator:
+    environment:
+      # Fijado, no heredado: el objetivo local-gpu genera con el modelo local.
+      - LLM_PROVIDER=ollama

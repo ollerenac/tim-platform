@@ -1,0 +1,1308 @@
+# Provenance allowlist shared by the analyst-facing read surfaces
+# (semantic-engine index + briefing-generator selection). Only entities
+# authored by these identities rank; mass commodity publishers stay in the
+# platform for lookup/enrichment but never crowd the analyst surfaces.
+# Exact createdBy display names, comma-separated.
+x-curated-authors: &curated-authors
+  CURATED_AUTHORS=AlienVault,The MITRE Corporation,CIRCL,CERT-FR,CERT-FR_1510,ESET,Ransom-ISAC,Centro Nacional de Seguridad Digital (CNSD),Grupo de Respuesta a Emergencias Ciberneticas de Colombia (ColCERT)
+
+networks:
+  tim-network:
+    driver: bridge
+
+volumes:
+  esdata:
+    name: ${ESDATA_VOLUME_NAME:-opencti-7-pilot_esdata}
+    external: ${ESDATA_VOLUME_EXTERNAL:-false}
+  redisdata:
+  rabbitmqdata:
+  miniodata:
+  ollamadata:
+  chromadata:
+  briefingsdata:
+  extractordata:
+  # P1.1: fs repository for ES snapshot API — scripts/backup.sh snapshots here,
+  # then tars this volume out like the rest. Named volume (not bind) so ES's
+  # uid-1000 process can write without host chown games.
+  esbackups:
+
+# ─────────────────────────────────────────────
+# CAPA DE PLATAFORMA — OpenCTI + dependencias
+# ─────────────────────────────────────────────
+
+services:
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.15.0
+    profiles: [core]
+    environment:
+      - discovery.type=single-node
+      # AUDIT (accepted risk, single-host scope): ES security is disabled, so any container on
+      # tim-network can read/write the index unauthenticated. ES has no host port. Enabling
+      # xpack.security requires bootstrap creds wired into OpenCTI + kibana + feed-orchestrator.
+      - xpack.security.enabled=false
+      - ES_JAVA_OPTS=-Xms8g -Xmx8g
+      - cluster.routing.allocation.disk.threshold_enabled=false
+      # P1.1: snapshot repo path for scripts/backup.sh (ES rejects fs repos
+      # whose location is not under path.repo).
+      - path.repo=/backups
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+      - esbackups:/backups
+    mem_limit: 12g
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9200/_cluster/health"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 30s
+    networks:
+      - tim-network
+    restart: unless-stopped
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.15.0
+    profiles: [core]
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - xpack.security.enabled=false
+    # no host port — access via soc-dashboard nginx on :5602 with basic auth
+    mem_limit: 1g
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:5601/api/status -o /dev/null || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 120s
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    networks:
+      - tim-network
+    restart: unless-stopped
+
+  redis:
+    image: redis:7.2-alpine
+    profiles: [core]
+    volumes:
+      - redisdata:/data
+    mem_limit: ${REDIS_MEM_LIMIT:-2g}
+    # Disable auto RDB snapshots: bgsave fork OOMs near the current 1 GB dataset under the old 1 GB cap.
+    command:
+      - redis-server
+      - --save
+      - ""
+      - --maxmemory
+      - ${REDIS_MAXMEMORY:-1536mb}
+      - --maxmemory-policy
+      - ${REDIS_MAXMEMORY_POLICY:-allkeys-lru}
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - tim-network
+    restart: unless-stopped
+
+  rabbitmq:
+    image: rabbitmq:3.13-management-alpine
+    profiles: [core]
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD}
+    volumes:
+      - rabbitmqdata:/var/lib/rabbitmq
+    ports:
+      - "127.0.0.1:15672:15672"   # management UI — localhost only
+    mem_limit: 1g
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+    networks:
+      - tim-network
+    restart: unless-stopped
+
+  minio:
+    # AUDIT: pin to your tested release for reproducibility, e.g.
+    #   docker inspect --format '{{index .RepoDigests 0}}' minio/minio:latest
+    # then replace :latest with minio/minio@sha256:<digest>. Left as :latest to avoid
+    # changing the image out from under a running deployment.
+    image: minio/minio:latest
+    profiles: [core]
+    command: server /data --console-address ":9001"
+    environment:
+      - MINIO_ROOT_USER=${MINIO_ACCESS_KEY}
+      - MINIO_ROOT_PASSWORD=${MINIO_SECRET_KEY}
+    volumes:
+      - miniodata:/data
+    ports:
+      - "127.0.0.1:9001:9001"     # consola web — localhost only
+    mem_limit: 1g
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+    networks:
+      - tim-network
+    restart: unless-stopped
+
+  opencti:
+    image: opencti/platform:7.260706.0
+    profiles: [core]
+    environment:
+      - NODE_OPTIONS=--max-old-space-size=3072
+      - APP__PORT=8080
+      - APP__BASE_URL=${OPENCTI_BASE_URL}
+      - APP__ADMIN__EMAIL=${OPENCTI_ADMIN_EMAIL}
+      - APP__ADMIN__PASSWORD=${OPENCTI_ADMIN_PASSWORD}
+      - APP__ADMIN__TOKEN=${OPENCTI_ADMIN_TOKEN}
+      - APP__ENCRYPTION_KEY=${APP__ENCRYPTION_KEY}
+      - APP__APP_LOGS__LOGS_LEVEL=error
+      - APP__SESSION_TIMEOUT=28800000   # 8 horas
+      - ELASTICSEARCH__URL=http://elasticsearch:9200
+      # Nodo unico: una replica nunca puede asignarse (no hay segundo nodo donde
+      # ponerla) y el cluster se queda en yellow para siempre, inutilizando "green"
+      # como señal de salud. Filigran lo fija a 0 en su propio compose.
+      - ELASTICSEARCH__NUMBER_OF_REPLICAS=0
+      - REDIS__HOSTNAME=redis
+      - REDIS__PORT=6379
+      # El defecto de la plataforma (2M eventos) nunca llega a dispararse: el
+      # maxmemory de Redis (2 GB) se llena a los ~1,2M y noeviction bloquea las
+      # escrituras — incluidas las sesiones de la UI ("Too many pending tasks in
+      # queue sess:..."). 200k eventos ≈ 300 MB deja 1,7 GB de margen.
+      - REDIS__TRIMMING=200000
+      - RABBITMQ__HOSTNAME=rabbitmq
+      - RABBITMQ__PORT=5672
+      - RABBITMQ__USERNAME=${RABBITMQ_USER}
+      - RABBITMQ__PASSWORD=${RABBITMQ_PASSWORD}
+      - MINIO__ENDPOINT=minio
+      - MINIO__PORT=9000
+      - MINIO__USE_SSL=false
+      - MINIO__ACCESS_KEY=${MINIO_ACCESS_KEY}
+      - MINIO__SECRET_KEY=${MINIO_SECRET_KEY}
+      - APP__TELEMETRY__METRICS__ENABLED=true
+    ports:
+      - "127.0.0.1:8080:8080"
+    mem_limit: 4g
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:8080/health',r=>{process.exit(r.statusCode<500?0:1)}).on('error',()=>process.exit(1))"]
+      interval: 20s
+      timeout: 10s
+      retries: 15
+      start_period: 60s
+    networks:
+      - tim-network
+    restart: unless-stopped
+
+  worker:
+    image: opencti/worker:7.260706.0
+    profiles: [core]
+    environment:
+      - OPENCTI_URL=http://opencti:8080
+      - OPENCTI_TOKEN=${OPENCTI_CONNECTORS_TOKEN:-${OPENCTI_ADMIN_TOKEN}}
+      - PYTHONUNBUFFERED=1
+      - WORKER_LOG_LEVEL=error
+    mem_limit: 512m
+    depends_on:
+      opencti:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "pgrep", "-f", "python.*worker"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+    networks:
+      - tim-network
+    restart: unless-stopped
+
+  # Conector MITRE ATT&CK — carga el framework completo en OpenCTI al iniciar
+  connector-mitre:
+    image: opencti/connector-mitre:7.260706.0
+    profiles: [connectors]
+    environment:
+      - OPENCTI_URL=http://opencti:8080
+      - OPENCTI_TOKEN=${OPENCTI_CONNECTORS_TOKEN:-${OPENCTI_ADMIN_TOKEN}}
+      - PYTHONUNBUFFERED=1
+      - CONNECTOR_ID=${CONNECTOR_MITRE_ID}
+      - CONNECTOR_NAME=MITRE ATT&CK
+      - CONNECTOR_SCOPE=marking-definition,identity,attack-pattern,course-of-action,intrusion-set,campaign,malware,tool,report
+      - CONNECTOR_UPDATE_EXISTING_DATA=true
+      - CONNECTOR_RUN_AND_TERMINATE=false
+      - MITRE_REMOVE_STATEMENT_MARKING=true
+      - MITRE_INTERVAL=7
+    mem_limit: 512m
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep -f '[p]ython -m src' || exit 1"]  # 7.x runs `python -m src`
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
+    depends_on:
+      opencti:
+        condition: service_healthy
+    networks:
+      - tim-network
+    restart: unless-stopped
+
+  # Conector OpenCTI Datasets — catálogo de referencia: 250 países (245 con
+  # lat/long e ISO real) y el árbol de sectores. Pareja de connector-mitre en el
+  # compose de referencia del vendor; faltaba aquí. Sin él, las fuentes que crean
+  # países por nombre (AlienVault: country="ZZ", sin coordenadas) dejan entidades
+  # inubicables en los widgets de mapa. Location.generate_id(name,"Country") deriva
+  # el ID del nombre, así que catálogo y fuente se funden y gana la geometría.
+  # Sí crea relaciones, pero solo estructurales: 266 located-at (país→región,
+  # región→región, geoesquema ONU) y 80 part-of (jerarquía de sectores). Ninguna
+  # atribución de inteligencia — no dice quién ataca a quién.
+  # CONNECTOR_ID literal (no es secreto y .env no se toca).
+  connector-opencti:
+    image: opencti/connector-opencti:7.260706.0
+    profiles: [connectors]
+    environment:
+      - OPENCTI_URL=http://opencti:8080
+      - OPENCTI_TOKEN=${OPENCTI_CONNECTORS_TOKEN:-${OPENCTI_ADMIN_TOKEN}}
+      - PYTHONUNBUFFERED=1
+      - CONNECTOR_ID=${CONNECTOR_OPENCTI_ID:-ae6c030b-0d42-46d1-8893-56930f5dca70}
+      - CONNECTOR_NAME=OpenCTI Datasets
+      - CONNECTOR_SCOPE=marking-definition,identity,location
+      - CONNECTOR_CONFIDENCE_LEVEL=100
+      - CONNECTOR_UPDATE_EXISTING_DATA=true
+      - CONNECTOR_RUN_AND_TERMINATE=false
+      - CONNECTOR_LOG_LEVEL=error
+      - CONFIG_SECTORS_FILE_URL=https://raw.githubusercontent.com/OpenCTI-Platform/datasets/master/data/sectors.json
+      - CONFIG_GEOGRAPHY_FILE_URL=https://raw.githubusercontent.com/OpenCTI-Platform/datasets/master/data/geography.json
+      - CONFIG_REMOVE_CREATOR=false
+      - CONFIG_INTERVAL=7
+    mem_limit: 512m
+    depends_on:
+      opencti:
+        condition: service_healthy
+    networks:
+      - tim-network
+    restart: unless-stopped
+
+  connector-ipinfo:
+    image: opencti/connector-ipinfo:7.260706.0
+    profiles: [connectors]
+    environment:
+      - OPENCTI_URL=http://opencti:8080
+      - OPENCTI_TOKEN=${OPENCTI_CONNECTORS_TOKEN:-${OPENCTI_ADMIN_TOKEN}}
+      - PYTHONUNBUFFERED=1
+      - CONNECTOR_ID=${CONNECTOR_IPINFO_ID}
+      - CONNECTOR_NAME=IpInfo
+      - CONNECTOR_SCOPE=IPv4-Addr,IPv6-Addr
+      # false: 50k consultas/mes gratis contra decenas de miles de IPs de feeds
+      # a granel — la misma aritmetica de cuota que virustotal (500/dia), solo
+      # que mas lenta en morir. El true era herencia del piloto con poco volumen.
+      # Disparador para reevaluar: telemetria propia (flujo pequeño y valioso).
+      - CONNECTOR_AUTO=false
+      - CONNECTOR_CONFIDENCE_LEVEL=75
+      - CONNECTOR_LOG_LEVEL=error
+      - IPINFO_TOKEN=${IPINFO_TOKEN}
+      - IPINFO_MAX_TLP=TLP:AMBER
+    mem_limit: 256m
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep -f '[p]ython -m src' || exit 1"]  # 7.x runs `python -m src`
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
+    depends_on:
+      opencti:
+        condition: service_healthy
+    networks:
+      - tim-network
+    restart: unless-stopped
+
+  connector-cve:
+    build: ./services/connector-cve
+    profiles: [connectors]
+    environment:
+      - OPENCTI_URL=http://opencti:8080
+      - OPENCTI_TOKEN=${OPENCTI_CONNECTORS_TOKEN:-${OPENCTI_ADMIN_TOKEN}}
+      - PYTHONUNBUFFERED=1
+      - CONNECTOR_ID=${CONNECTOR_CVE_ID}
+      - CONNECTOR_NAME=Common Vulnerabilities and Exposures
+      - CONNECTOR_SCOPE=vulnerability
+      - CONNECTOR_RUN_AND_TERMINATE=false
+      - CONNECTOR_LOG_LEVEL=error
+      - CVE_BASE_URL=https://services.nvd.nist.gov/rest/json/cves
+      - CVE_API_KEY=${CVE_NVD_API_KEY}
+      - CVE_INTERVAL=2
+      - CVE_MAX_DATE_RANGE=2
+      - CVE_MAINTAIN_DATA=true
+      - CVE_PULL_HISTORY=true
+      # 2019 es el suelo del propio conector, no una ventana arbitraria: CVSS v3.1 salió
+      # en junio de 2019 y las CVE anteriores casi nunca traen cvssMetricV31. Bajar de
+      # aquí mete decenas de miles de vulnerabilidades sin puntuación de severidad —
+      # entidades flacas, sin el campo por el que se priorizan. NVD tiene 372.835 CVEs
+      # en total (medido 2026-08-03); esto trae las que llegan con datos completos.
+      - CVE_HISTORY_START_YEAR=2019
+      # import_software (CPE → objetos Software + relaciones 'has') queda en su default
+      # False a propósito: cada CVE resuelve a decenas de CPEs. Sin él este conector
+      # produce solo Vulnerability + la Identity de NIST NVD — cero observables, cero
+      # indicadores, cero relaciones. Verificado en el código del convertidor.
+    mem_limit: 512m
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep -f '[p]ython -m src' || exit 1"]  # 7.x runs `python -m src`
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
+    depends_on:
+      opencti:
+        condition: service_healthy
+    networks:
+      - tim-network
+    restart: unless-stopped
+
+  connector-cisa-kev:
+    image: opencti/connector-cisa-known-exploited-vulnerabilities:7.260706.0
+    profiles: [connectors]
+    environment:
+      - OPENCTI_URL=http://opencti:8080
+      - OPENCTI_TOKEN=${OPENCTI_CONNECTORS_TOKEN:-${OPENCTI_ADMIN_TOKEN}}
+      - PYTHONUNBUFFERED=1
+      - CONNECTOR_ID=${CONNECTOR_CISA_KEV_ID}
+      - CONNECTOR_NAME=CISA Known Exploited Vulnerabilities
+      - CONNECTOR_SCOPE=vulnerability
+      - CONNECTOR_LOG_LEVEL=error
+      - CONNECTOR_RUN_AND_TERMINATE=false
+      - CISA_CATALOG_URL=https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json
+      - CISA_CREATE_INFRASTRUCTURES=false
+      - CISA_TLP=TLP:CLEAR
+      - CISA_INTERVAL=7
+    mem_limit: 256m
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep -f '[p]ython.*main.py' || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
+    depends_on:
+      opencti:
+        condition: service_healthy
+    networks:
+      - tim-network
+    restart: unless-stopped
+
+  connector-misp-feed:
+    image: opencti/connector-misp-feed:7.260706.0
+    profiles: [connectors]
+    environment:
+      - OPENCTI_URL=http://opencti:8080
+      - OPENCTI_TOKEN=${OPENCTI_CONNECTORS_TOKEN:-${OPENCTI_ADMIN_TOKEN}}
+      - PYTHONUNBUFFERED=1
+      - CONNECTOR_ID=${CONNECTOR_MISP_FEED_ID}
+      - CONNECTOR_NAME=CIRCL OSINT Feed
+      - CONNECTOR_SCOPE=misp-feed
+      - CONNECTOR_LOG_LEVEL=error
+      - MISP_FEED_INTERVAL=1440
+      - MISP_FEED_SOURCE_TYPE=url
+      - MISP_FEED_URL=https://www.circl.lu/doc/misp/feed-osint/
+      - MISP_FEED_SSL_VERIFY=true
+      # Curado tras el accidente del 5-ago (L05 §8): 575k mensajes con la config
+      # anterior (ventana 2025-01-01 + todos los CREATE_* abiertos). CIRCL es un
+      # feed denso: cada atributo se multiplicaba por observable + indicador +
+      # objeto-observable + relaciones. Ventana a 3 meses y solo indicadores:
+      # ~90k mensajes estimados en vez de 600k+. Los observables pueden crearse
+      # despues via enriquecedores, solo para lo que importe.
+      - MISP_FEED_IMPORT_FROM_DATE=2026-05-01
+      - MISP_FEED_CREATE_REPORTS=true
+      - MISP_FEED_CREATE_INDICATORS=true
+      - MISP_FEED_CREATE_OBSERVABLES=false
+      - MISP_FEED_CREATE_OBJECT_OBSERVABLES=false
+      - MISP_FEED_CREATE_TAGS_AS_LABELS=true
+    mem_limit: 512m
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep -f '[p]ython3 main.py' || exit 1"]  # 7.x entrypoint runs `python3 main.py`
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
+    depends_on:
+      opencti:
+        condition: service_healthy
+    networks:
+      - tim-network
+    restart: unless-stopped
+
+  # CERT-FR public MISP feed — same connector image as CIRCL, different instance.
+  connector-misp-feed-certfr:
+    image: opencti/connector-misp-feed:7.260706.0
+    profiles: [connectors]
+    environment:
+      - OPENCTI_URL=http://opencti:8080
+      - OPENCTI_TOKEN=${OPENCTI_CONNECTORS_TOKEN:-${OPENCTI_ADMIN_TOKEN}}
+      - PYTHONUNBUFFERED=1
+      - CONNECTOR_ID=${CONNECTOR_MISP_FEED_CERTFR_ID:-97bc9a57-0a28-413d-b5ab-d298aeae7081}
+      - CONNECTOR_NAME=MISP Feed CERT-FR
+      - CONNECTOR_SCOPE=misp-feed
+      - CONNECTOR_LOG_LEVEL=error
+      - MISP_FEED_INTERVAL=1440
+      - MISP_FEED_SOURCE_TYPE=url
+      - MISP_FEED_URL=https://misp.cert.ssi.gouv.fr/feed-misp/
+      - MISP_FEED_SSL_VERIFY=true
+      # Mismo curado que CIRCL (L05 §8) para mantener el modelo de datos
+      # consistente entre fuentes MISP. CERT-FR es un feed pequeno; el motivo
+      # aqui no es el volumen sino la simetria.
+      - MISP_FEED_IMPORT_FROM_DATE=2026-05-01
+      - MISP_FEED_CREATE_REPORTS=true
+      - MISP_FEED_CREATE_INDICATORS=true
+      - MISP_FEED_CREATE_OBSERVABLES=false
+      - MISP_FEED_CREATE_OBJECT_OBSERVABLES=false
+      - MISP_FEED_CREATE_TAGS_AS_LABELS=true
+    mem_limit: 512m
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep -f '[p]ython3 main.py' || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
+    depends_on:
+      opencti:
+        condition: service_healthy
+    networks:
+      - tim-network
+    restart: unless-stopped
+
+  # DISARM framework dataset (disinformation TTPs) — one-shot import + periodic refresh.
+  connector-disarm-framework:
+    image: opencti/connector-disarm-framework:7.260706.0
+    profiles: [connectors]
+    environment:
+      - OPENCTI_URL=http://opencti:8080
+      - OPENCTI_TOKEN=${OPENCTI_CONNECTORS_TOKEN:-${OPENCTI_ADMIN_TOKEN}}
+      - PYTHONUNBUFFERED=1
+      - CONNECTOR_ID=${CONNECTOR_DISARM_ID:-da1bbfbb-ad68-4b05-8c06-6eb510f50584}
+      - CONNECTOR_NAME=DISARM Framework
+      - CONNECTOR_SCOPE=marking-definition,identity,attack-pattern,course-of-action,intrusion-set,campaign,malware,tool,report,narrative,event,channel
+      - CONNECTOR_RUN_AND_TERMINATE=false
+      - CONNECTOR_LOG_LEVEL=error
+      - DISARM_FRAMEWORK_URL=https://raw.githubusercontent.com/DISARMFoundation/DISARMframeworks/main/generated_files/DISARM_STIX/DISARM.json
+    mem_limit: 512m
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep -f '[p]ython3 main.py' || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
+    depends_on:
+      opencti:
+        condition: service_healthy
+    networks:
+      - tim-network
+    restart: unless-stopped
+
+  # Enrichment tier — flags benign/known-good observables via MISP warninglists (local lists, no external API).
+  connector-hygiene:
+    image: opencti/connector-hygiene:7.260706.0
+    profiles: [connectors]
+    environment:
+      - OPENCTI_URL=http://opencti:8080
+      - OPENCTI_TOKEN=${OPENCTI_CONNECTORS_TOKEN:-${OPENCTI_ADMIN_TOKEN}}
+      - PYTHONUNBUFFERED=1
+      - CONNECTOR_ID=${CONNECTOR_HYGIENE_ID:-320bee0b-63d6-4049-bb32-e8f7fca921bf}
+      - CONNECTOR_NAME=Hygiene
+      - CONNECTOR_SCOPE=IPv4-Addr,IPv6-Addr,Domain-Name,StixFile,Artifact
+      - CONNECTOR_AUTO=true
+      - CONNECTOR_LOG_LEVEL=error
+      - HYGIENE_MAX_WORKERS=10
+      - HYGIENE_LABEL=hygiene
+    mem_limit: 512m
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep -f '[p]ython -m src' || exit 1"]  # this image's entrypoint is `python -m src`
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
+    depends_on:
+      opencti:
+        condition: service_healthy
+    networks:
+      - tim-network
+    restart: unless-stopped
+
+  # Enrichment — EPSS exploit-probability score on vulnerabilities (FIRST.org public API, no key).
+  # CONNECTOR_AUTO=false: 88k vulns on auto would hammer the API; enrich on demand from the UI.
+  connector-first-epss:
+    image: opencti/connector-first-epss:7.260706.0
+    profiles: [connectors]
+    environment:
+      - OPENCTI_URL=http://opencti:8080
+      - OPENCTI_TOKEN=${OPENCTI_CONNECTORS_TOKEN:-${OPENCTI_ADMIN_TOKEN}}
+      - PYTHONUNBUFFERED=1
+      - CONNECTOR_ID=${CONNECTOR_FIRST_EPSS_ID:-12f3d992-2317-4cc6-b2d9-7e4319d6e6b7}
+      - CONNECTOR_NAME=First EPSS
+      - CONNECTOR_SCOPE=vulnerability
+      - CONNECTOR_AUTO=false
+      - CONNECTOR_LOG_LEVEL=error
+      - FIRST_EPSS_API_BASE_URL=https://api.first.org/data/v1/epss
+      - FIRST_EPSS_MAX_TLP=TLP:AMBER
+    mem_limit: 512m
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep -f '[p]ython3 main.py' || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
+    depends_on:
+      opencti:
+        condition: service_healthy
+    networks:
+      - tim-network
+    restart: unless-stopped
+
+  # Enrichment — DNS records (A/NS/CNAME/MX/TXT) for Domain-Name observables via Google Public DNS, no key.
+  # CONNECTOR_AUTO=false: on-demand only for now; flip to true to enrich every new domain automatically.
+  connector-google-dns:
+    image: opencti/connector-google-dns:7.260706.0
+    profiles: [connectors]
+    environment:
+      - OPENCTI_URL=http://opencti:8080
+      - OPENCTI_TOKEN=${OPENCTI_CONNECTORS_TOKEN:-${OPENCTI_ADMIN_TOKEN}}
+      - PYTHONUNBUFFERED=1
+      - CONNECTOR_ID=${CONNECTOR_GOOGLE_DNS_ID:-460e264d-fb96-4aa3-8f0e-6e269bd0d38f}
+      - CONNECTOR_NAME=Google DNS
+      - CONNECTOR_SCOPE=Domain-Name
+      - CONNECTOR_AUTO=false
+      - CONNECTOR_LOG_LEVEL=error
+    mem_limit: 512m
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep -f '[p]ython -m src' || exit 1"]  # this image's entrypoint is `python -m src`
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
+    depends_on:
+      opencti:
+        condition: service_healthy
+    networks:
+      - tim-network
+    restart: unless-stopped
+
+  # abuse.ch URLhaus — recent malicious URLs from the public CSV dump (no auth key as of 2026-07;
+  # if abuse.ch ever gates it behind an Auth-Key, this connector will start failing with 403s).
+  connector-urlhaus:
+    image: opencti/connector-urlhaus:7.260706.0
+    profiles: [connectors]
+    environment:
+      - OPENCTI_URL=http://opencti:8080
+      - OPENCTI_TOKEN=${OPENCTI_CONNECTORS_TOKEN:-${OPENCTI_ADMIN_TOKEN}}
+      - PYTHONUNBUFFERED=1
+      - CONNECTOR_ID=${CONNECTOR_URLHAUS_ID:-536034a1-20a2-47bf-946f-247b3f99176b}
+      - CONNECTOR_NAME=Abuse.ch URLhaus
+      - CONNECTOR_SCOPE=urlhaus
+      - CONNECTOR_LOG_LEVEL=error
+      - URLHAUS_INTERVAL=3
+      - URLHAUS_CSV_URL=https://urlhaus.abuse.ch/downloads/csv_recent/
+      - URLHAUS_DEFAULT_X_OPENCTI_SCORE=80
+      - URLHAUS_IMPORT_OFFLINE=true
+      - URLHAUS_THREATS_FROM_LABELS=true
+    mem_limit: 512m
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep -f '[p]ython' || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
+    depends_on:
+      opencti:
+        condition: service_healthy
+    networks:
+      - tim-network
+    restart: unless-stopped
+
+  # abuse.ch MalwareBazaar — recent malware samples (hashes) by file-type tags. Needs abuse.ch Auth-Key.
+  connector-malwarebazaar:
+    image: opencti/connector-malwarebazaar-recent-additions:7.260706.0
+    profiles: [connectors]
+    environment:
+      - OPENCTI_URL=http://opencti:8080
+      - OPENCTI_TOKEN=${OPENCTI_CONNECTORS_TOKEN:-${OPENCTI_ADMIN_TOKEN}}
+      - PYTHONUNBUFFERED=1
+      - CONNECTOR_ID=${CONNECTOR_MALWAREBAZAAR_ID:-16ceb4a5-85d4-496f-a8fd-3a2b53ed4d63}
+      - CONNECTOR_NAME=MalwareBazaar Recent Additions
+      - CONNECTOR_LOG_LEVEL=error
+      - MALWAREBAZAAR_RECENT_ADDITIONS_API_URL=https://mb-api.abuse.ch/api/v1/
+      - MALWAREBAZAAR_RECENT_ADDITIONS_API_KEY=${ABUSECH_API_KEY}
+      - MALWAREBAZAAR_RECENT_ADDITIONS_COOLDOWN_SECONDS=300
+      - MALWAREBAZAAR_RECENT_ADDITIONS_INCLUDE_TAGS=exe,dll,docm,docx,doc,xls,xlsx,xlsm,js
+      - MALWAREBAZAAR_RECENT_ADDITIONS_LABELS=malware-bazaar
+      - MALWAREBAZAAR_RECENT_ADDITIONS_LABELS_COLOR=#54483b
+    mem_limit: 512m
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep -f '[p]ython' || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
+    depends_on:
+      opencti:
+        condition: service_healthy
+    networks:
+      - tim-network
+    restart: unless-stopped
+
+  # Enrichment — IP reputation from AbuseIPDB. Free tier = 1k checks/day, so
+  # CONNECTOR_AUTO=false: feeds bring thousands of IPs daily and would burn the quota.
+  connector-abuseipdb:
+    image: opencti/connector-abuseipdb:7.260706.0
+    profiles: [connectors]
+    environment:
+      - OPENCTI_URL=http://opencti:8080
+      - OPENCTI_TOKEN=${OPENCTI_CONNECTORS_TOKEN:-${OPENCTI_ADMIN_TOKEN}}
+      - PYTHONUNBUFFERED=1
+      - CONNECTOR_ID=${CONNECTOR_ABUSEIPDB_ID:-7b1fb90f-9eec-4eed-8c04-de6491b4a5e4}
+      - CONNECTOR_NAME=AbuseIPDB
+      - CONNECTOR_SCOPE=IPv4-Addr
+      - CONNECTOR_AUTO=false
+      - CONNECTOR_LOG_LEVEL=error
+      - ABUSEIPDB_API_KEY=${ABUSEIPDB_API_KEY}
+    mem_limit: 512m
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep -f '[p]ython' || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
+    depends_on:
+      opencti:
+        condition: service_healthy
+    networks:
+      - tim-network
+    restart: unless-stopped
+
+  # Enrichment — VirusTotal lookups on hashes/IPs/domains/URLs. Free tier = 4 req/min,
+  # 500/day → CONNECTOR_AUTO=false, on-demand only.
+  # UPLOAD_UNSEEN flags OFF: never send local artifacts/URLs to VT (data-sovereignty rule).
+  connector-virustotal:
+    image: opencti/connector-virustotal:7.260706.0
+    profiles: [connectors]
+    environment:
+      - OPENCTI_URL=http://opencti:8080
+      - OPENCTI_TOKEN=${OPENCTI_CONNECTORS_TOKEN:-${OPENCTI_ADMIN_TOKEN}}
+      - PYTHONUNBUFFERED=1
+      - CONNECTOR_ID=${CONNECTOR_VIRUSTOTAL_ID:-64d35e3a-0faf-4690-8e76-efc9026f8695}
+      - CONNECTOR_NAME=VirusTotal
+      - CONNECTOR_SCOPE=StixFile,Artifact,IPv4-Addr,Domain-Name,Url,Hostname
+      - CONNECTOR_AUTO=false
+      - CONNECTOR_LOG_LEVEL=error
+      - VIRUSTOTAL_TOKEN=${VIRUSTOTAL_TOKEN}
+      - VIRUSTOTAL_MAX_TLP=TLP:AMBER
+      - VIRUSTOTAL_REPLACE_WITH_LOWER_SCORE=true
+      - VIRUSTOTAL_FILE_CREATE_NOTE_FULL_REPORT=true
+      - VIRUSTOTAL_FILE_UPLOAD_UNSEEN_ARTIFACTS=false
+      - VIRUSTOTAL_FILE_INDICATOR_CREATE_POSITIVES=10
+      - VIRUSTOTAL_FILE_INDICATOR_VALID_MINUTES=2880
+      - VIRUSTOTAL_FILE_IMPORT_YARA=true
+      - VIRUSTOTAL_IP_INDICATOR_CREATE_POSITIVES=10
+      - VIRUSTOTAL_DOMAIN_INDICATOR_CREATE_POSITIVES=10
+      - VIRUSTOTAL_URL_UPLOAD_UNSEEN=false
+    mem_limit: 512m
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep -f '[p]ython' || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
+    depends_on:
+      opencti:
+        condition: service_healthy
+    networks:
+      - tim-network
+    restart: unless-stopped
+
+  # Enrichment — Shodan host intel on IPs. Free tier limited → CONNECTOR_AUTO=false, on-demand.
+  connector-shodan:
+    image: opencti/connector-shodan:7.260706.0
+    profiles: [connectors]
+    environment:
+      - OPENCTI_URL=http://opencti:8080
+      - OPENCTI_TOKEN=${OPENCTI_CONNECTORS_TOKEN:-${OPENCTI_ADMIN_TOKEN}}
+      - PYTHONUNBUFFERED=1
+      - CONNECTOR_ID=${CONNECTOR_SHODAN_ID:-1de794a0-040f-4386-bf93-97bd533abc1e}
+      - CONNECTOR_NAME=Shodan
+      - CONNECTOR_SCOPE=ipv4-addr,indicator
+      - CONNECTOR_AUTO=false
+      - CONNECTOR_LOG_LEVEL=error
+      - SHODAN_TOKEN=${SHODAN_TOKEN}
+      - SHODAN_MAX_TLP=TLP:AMBER
+      - SHODAN_DEFAULT_SCORE=50
+      - SHODAN_IMPORT_SEARCH_RESULTS=true
+      - SHODAN_CREATE_NOTE=true
+    mem_limit: 512m
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep -f '[p]ython' || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
+    depends_on:
+      opencti:
+        condition: service_healthy
+    networks:
+      - tim-network
+    restart: unless-stopped
+
+  # --- Tanda 4: UI export/import file connectors (no external APIs, no keys) ---
+
+  connector-export-file-csv:
+    image: opencti/connector-export-file-csv:7.260706.0
+    profiles: [connectors]
+    environment:
+      - OPENCTI_URL=http://opencti:8080
+      - OPENCTI_TOKEN=${OPENCTI_CONNECTORS_TOKEN:-${OPENCTI_ADMIN_TOKEN}}
+      - PYTHONUNBUFFERED=1
+      - CONNECTOR_ID=${CONNECTOR_EXPORT_FILE_CSV_ID:-6b0b4259-0110-44c6-b415-143b543a9729}
+      - CONNECTOR_TYPE=INTERNAL_EXPORT_FILE
+      - CONNECTOR_NAME=ExportFileCsv
+      - CONNECTOR_SCOPE=text/csv
+      - CONNECTOR_LOG_LEVEL=error
+    mem_limit: 256m
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep -f '[p]ython' || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
+    depends_on:
+      opencti:
+        condition: service_healthy
+    networks:
+      - tim-network
+    restart: unless-stopped
+
+  connector-export-file-stix:
+    image: opencti/connector-export-file-stix:7.260706.0
+    profiles: [connectors]
+    environment:
+      - OPENCTI_URL=http://opencti:8080
+      - OPENCTI_TOKEN=${OPENCTI_CONNECTORS_TOKEN:-${OPENCTI_ADMIN_TOKEN}}
+      - PYTHONUNBUFFERED=1
+      - CONNECTOR_ID=${CONNECTOR_EXPORT_FILE_STIX_ID:-27f982af-3d49-4a96-a558-63bf96c2f03a}
+      - CONNECTOR_TYPE=INTERNAL_EXPORT_FILE
+      - CONNECTOR_NAME=ExportFileStix2
+      - CONNECTOR_SCOPE=application/json
+      - CONNECTOR_LOG_LEVEL=error
+    mem_limit: 256m
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep -f '[p]ython' || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
+    depends_on:
+      opencti:
+        condition: service_healthy
+    networks:
+      - tim-network
+    restart: unless-stopped
+
+  connector-export-file-txt:
+    image: opencti/connector-export-file-txt:7.260706.0
+    profiles: [connectors]
+    environment:
+      - OPENCTI_URL=http://opencti:8080
+      - OPENCTI_TOKEN=${OPENCTI_CONNECTORS_TOKEN:-${OPENCTI_ADMIN_TOKEN}}
+      - PYTHONUNBUFFERED=1
+      - CONNECTOR_ID=${CONNECTOR_EXPORT_FILE_TXT_ID:-1ff95a4a-5211-41cc-b6c3-9c2f2027fed4}
+      - CONNECTOR_TYPE=INTERNAL_EXPORT_FILE
+      - CONNECTOR_NAME=ExportFileTxt
+      - CONNECTOR_SCOPE=text/plain
+      - CONNECTOR_LOG_LEVEL=error
+    mem_limit: 256m
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep -f '[p]ython' || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
+    depends_on:
+      opencti:
+        condition: service_healthy
+    networks:
+      - tim-network
+    restart: unless-stopped
+
+  connector-export-report-pdf:
+    image: opencti/connector-export-report-pdf:7.260706.0
+    profiles: [connectors]
+    environment:
+      - OPENCTI_URL=http://opencti:8080
+      - OPENCTI_TOKEN=${OPENCTI_CONNECTORS_TOKEN:-${OPENCTI_ADMIN_TOKEN}}
+      - PYTHONUNBUFFERED=1
+      - CONNECTOR_ID=${CONNECTOR_EXPORT_REPORT_PDF_ID:-bbc2b540-9a80-44cc-9544-a0190a98fa82}
+      - CONNECTOR_NAME=ExportReportPdf
+      - CONNECTOR_SCOPE=application/pdf
+      - CONNECTOR_LOG_LEVEL=error
+      # both colors REQUIRED: connector.py _set_colors() crashes on None at startup
+      - EXPORT_REPORT_PDF_PRIMARY_COLOR=#ff8c00
+      - EXPORT_REPORT_PDF_SECONDARY_COLOR=#000000
+      - EXPORT_REPORT_PDF_COMPANY_ADDRESS_LINE_1=TIM — Threat Intelligence Management
+      - EXPORT_REPORT_PDF_INDICATORS_ONLY=false
+      - EXPORT_REPORT_PDF_DEFANG_URLS=true
+    mem_limit: 256m
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep -f '[p]ython' || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
+    depends_on:
+      opencti:
+        condition: service_healthy
+    networks:
+      - tim-network
+    restart: unless-stopped
+
+  connector-import-file-stix:
+    image: opencti/connector-import-file-stix:7.260706.0
+    profiles: [connectors]
+    environment:
+      - OPENCTI_URL=http://opencti:8080
+      - OPENCTI_TOKEN=${OPENCTI_CONNECTORS_TOKEN:-${OPENCTI_ADMIN_TOKEN}}
+      - PYTHONUNBUFFERED=1
+      - CONNECTOR_ID=${CONNECTOR_IMPORT_FILE_STIX_ID:-a3d9cf9b-95f7-4f29-8137-80232a2a17c8}
+      - CONNECTOR_TYPE=INTERNAL_IMPORT_FILE
+      - CONNECTOR_NAME=ImportFileStix
+      - CONNECTOR_VALIDATE_BEFORE_IMPORT=true
+      - CONNECTOR_SCOPE=application/json,text/xml
+      - CONNECTOR_AUTO=true
+      - CONNECTOR_LOG_LEVEL=error
+    mem_limit: 256m
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep -f '[p]ython' || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
+    depends_on:
+      opencti:
+        condition: service_healthy
+    networks:
+      - tim-network
+    restart: unless-stopped
+
+  # CONNECTOR_AUTO=false (reference uses true): the local intel-extractor pipeline already
+  # auto-processes documents — auto here would double-extract IOCs from every uploaded file.
+  connector-import-document:
+    image: opencti/connector-import-document:7.260706.0
+    profiles: [connectors]
+    environment:
+      - OPENCTI_URL=http://opencti:8080
+      - OPENCTI_TOKEN=${OPENCTI_CONNECTORS_TOKEN:-${OPENCTI_ADMIN_TOKEN}}
+      - PYTHONUNBUFFERED=1
+      - CONNECTOR_ID=${CONNECTOR_IMPORT_DOCUMENT_ID:-5244ad1d-c299-4ae1-af2c-44e46aeb347e}
+      - CONNECTOR_TYPE=INTERNAL_IMPORT_FILE
+      - CONNECTOR_NAME=ImportDocument
+      - CONNECTOR_VALIDATE_BEFORE_IMPORT=true
+      - CONNECTOR_SCOPE=application/pdf,text/plain,text/html
+      - CONNECTOR_AUTO=false
+      - CONNECTOR_ONLY_CONTEXTUAL=false
+      - CONNECTOR_LOG_LEVEL=error
+      - IMPORT_DOCUMENT_CREATE_INDICATOR=false
+    mem_limit: 256m
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep -f '[p]ython' || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
+    depends_on:
+      opencti:
+        condition: service_healthy
+    networks:
+      - tim-network
+    restart: unless-stopped
+
+  # Snapshots external-reference URLs as PDF/MD attachments. auto=false: only on demand.
+  connector-import-external-reference:
+    image: opencti/connector-import-external-reference:7.260706.0
+    profiles: [connectors]
+    environment:
+      - OPENCTI_URL=http://opencti:8080
+      - OPENCTI_TOKEN=${OPENCTI_CONNECTORS_TOKEN:-${OPENCTI_ADMIN_TOKEN}}
+      - PYTHONUNBUFFERED=1
+      - CONNECTOR_ID=${CONNECTOR_IMPORT_EXTERNAL_REFERENCE_ID:-9a75d35a-a7dd-4dea-b1c6-70e61ca316c8}
+      - CONNECTOR_NAME=ImportExternalReference
+      - CONNECTOR_SCOPE=External-Reference
+      - CONNECTOR_AUTO=false
+      - CONNECTOR_CONFIDENCE_LEVEL=15
+      - CONNECTOR_LOG_LEVEL=error
+      - IMPORT_EXTERNAL_REFERENCE_IMPORT_AS_PDF=true
+      - IMPORT_EXTERNAL_REFERENCE_IMPORT_AS_MD=true
+      - IMPORT_EXTERNAL_REFERENCE_IMPORT_PDF_AS_MD=true
+    mem_limit: 256m
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep -f '[p]ython' || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
+    depends_on:
+      opencti:
+        condition: service_healthy
+    networks:
+      - tim-network
+    restart: unless-stopped
+
+  # PULL-only connector (imports FROM GreyNoise) — no data-sovereignty exception needed.
+  connector-greynoise-feed:
+    build: ./services/connector-greynoise-feed
+    profiles: [connectors]
+    environment:
+      - OPENCTI_URL=http://opencti:8080
+      - OPENCTI_TOKEN=${OPENCTI_CONNECTORS_TOKEN:-${OPENCTI_ADMIN_TOKEN}}
+      - PYTHONUNBUFFERED=1
+      - CONNECTOR_ID=${CONNECTOR_GREYNOISE_FEED_ID}
+      - CONNECTOR_NAME=GreyNoise Feed
+      - CONNECTOR_SCOPE=greynoisefeed
+      - CONNECTOR_LOG_LEVEL=error
+      - CONNECTOR_DURATION_PERIOD=PT24H
+      - GREYNOISE_FEED_API_KEY=${GREYNOISE_API_KEY}
+      - GREYNOISE_FEED_TYPE=malicious
+      # Indicator limit left unset — connector default 10000 is the chosen value.
+    # 512m OOM-killed the python process at startup (feed fetch ramps >465MiB) — observed 2026-07-10
+    mem_limit: 1g
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep -f '[p]ython3 main.py' || exit 1"]  # 7.x entrypoint runs `python3 main.py` (verified in-container)
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
+    depends_on:
+      opencti:
+        condition: service_healthy
+    networks:
+      - tim-network
+    restart: unless-stopped
+
+  # PULL-only connector (imports OTX pulses) — no data-sovereignty exception needed.
+  # Pulses carry actor+malware+CVE+ATT&CK as explicit STIX relationships with RECENT
+  # dates — the fresh-semantics source the 3-month dashboard widgets consume.
+  connector-alienvault:
+    image: opencti/connector-alienvault:7.260706.0
+    profiles: [connectors]
+    environment:
+      - OPENCTI_URL=http://opencti:8080
+      # Dedicated service account (max confidence 80, no admin Bypass): OTX community
+      # data loses ties against MITRE (100), stopping the hourly clobber of
+      # attack-pattern names with bare IDs like "T1095". CONNECTOR_CONFIDENCE_LEVEL
+      # proved a no-op under an admin token — confidence comes from the token's user.
+      - OPENCTI_TOKEN=${OPENCTI_ALIENVAULT_TOKEN}
+      - PYTHONUNBUFFERED=1
+      - CONNECTOR_ID=${CONNECTOR_ALIENVAULT_ID}
+      - CONNECTOR_NAME=AlienVault
+      - CONNECTOR_SCOPE=alienvault
+      - CONNECTOR_LOG_LEVEL=error
+      - CONNECTOR_DURATION_PERIOD=PT1H
+      - ALIENVAULT_BASE_URL=https://otx.alienvault.com
+      - ALIENVAULT_API_KEY=${ALIENVAULT_API_KEY}
+      - ALIENVAULT_TLP=White
+      - ALIENVAULT_CREATE_OBSERVABLES=true
+      - ALIENVAULT_CREATE_INDICATORS=true
+      # Bounded backfill window; the 2020 default would be hundreds of thousands
+      # of pulses drowning the worker for days. Moved 2026-04-17 -> 2026-03-01
+      # (2026-07-27) to recapture official pulses lost to crash-induced cursor
+      # gaps (May + mid-June holes, e.g. the Handala/Void Manticore pulses).
+      - ALIENVAULT_PULSE_START_TIMESTAMP=2026-03-01T00:00:00
+      - ALIENVAULT_REPORT_TYPE=threat-report
+      - ALIENVAULT_REPORT_STATUS=New
+      # Anti-invention policy: only relationships the pulse explicitly declares —
+      # never guessed from tags (matches the extractor's literal-grounding rule).
+      - ALIENVAULT_GUESS_MALWARE=false
+      - ALIENVAULT_GUESS_CVE=false
+      - ALIENVAULT_EXCLUDED_PULSE_INDICATOR_TYPES=FileHash-MD5,FileHash-SHA1
+      - ALIENVAULT_ENABLE_RELATIONSHIPS=true
+      - ALIENVAULT_ENABLE_ATTACK_PATTERNS_INDICATES=true
+      # false (official default): keep IOCs older than the latest pulse — a 2025
+      # hash cited in a fresh pulse is still valid; true would drop them mid-backfill.
+      - ALIENVAULT_FILTER_INDICATORS=false
+      - ALIENVAULT_DEFAULT_X_OPENCTI_SCORE=50
+    # 1g OOM-killed the connector 48x in a row during the 2026-03-01 window
+    # backfill (5 months of official pulses fetched in one run); 4g lets the
+    # full-catalog fetch complete so the cursor can finally advance.
+    mem_limit: 4g
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep -f '[p]ython __main__.py' || exit 1"]  # entrypoint.sh runs `python __main__.py`
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
+    depends_on:
+      opencti:
+        condition: service_healthy
+    networks:
+      - tim-network
+    restart: unless-stopped
+
+# ─────────────────────────────────────────────
+# CAPA AI — Ollama + ChromaDB
+# ─────────────────────────────────────────────
+
+  ollama:
+    # AUDIT: pin to a tested digest for reproducibility (see minio note above). Left as
+    # :latest to avoid changing the image under a running deployment.
+    image: ollama/ollama:latest
+    profiles: [inference]
+    volumes:
+      - ollamadata:/root/.ollama
+    # 2g OOM-killed the llama3.2:3b runner under load (model alone is 2.0 GB);
+    # 6g gives model + 8k ctx + prompt cache headroom for sustained backfills.
+    mem_limit: 6g
+    # La reserva NVIDIA vive en docker-compose.local-gpu.yml: la base debe
+    # renderizar en hosts sin GPU (objetivo aws, donde ollama sirve solo
+    # embeddings en CPU). Mismo servicio y mismo volumen en ambos objetivos.
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+    networks:
+      - tim-network
+    restart: unless-stopped
+
+  chromadb:
+    # AUDIT: pin to a tested digest for reproducibility (see minio note above). The cosine
+    # `configuration=` API needs chromadb >= 0.5.x — verify before pinning. Left as :latest
+    # to avoid changing the image under a running deployment.
+    image: chromadb/chroma:latest
+    profiles: [semantic]
+    volumes:
+      # P1.1 audit find: current chroma images persist to /data — the old
+      # /chroma/chroma mount left the whole index in the container layer
+      # (lost on every recreate) and produced empty backups.
+      - chromadata:/data
+    # 1g crashed the server when deleting the 468k-vector legacy collection
+    # (HNSW load/compaction exceeds the cgroup); 3g covers index maintenance.
+    mem_limit: 3g
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c 'echo > /dev/tcp/localhost/8000'"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - tim-network
+    restart: unless-stopped
+
+# ─────────────────────────────────────────────
+# CAPA DE INGESTA — Feed Orchestrator (custom)
+# ─────────────────────────────────────────────
+
+  feed-orchestrator:
+    build: ./services/feed-orchestrator
+    profiles: [feeds]
+    ports:
+      # Host port 8005 (container still listens on 8001): 8001 is taken on this
+      # host by claude-science. Internal network access stays feed-orchestrator:8001.
+      - "127.0.0.1:8005:8001"
+    environment:
+      - OPENCTI_URL=http://opencti:8080
+      - OPENCTI_TOKEN=${OPENCTI_CONNECTORS_TOKEN:-${OPENCTI_ADMIN_TOKEN}}
+      - PYTHONUNBUFFERED=1
+      - REDIS_URL=redis://redis:6379
+      - ES_URL=http://elasticsearch:9200
+      - MALWAREBAZAAR_AUTH_KEY=${MALWAREBAZAAR_AUTH_KEY}
+      - THREATFOX_AUTH_KEY=${THREATFOX_AUTH_KEY}
+      - ABUSECH_AUTH_KEY=${ABUSECH_AUTH_KEY:-}
+      - ABUSEIPDB_API_KEY=${ABUSEIPDB_API_KEY:-}
+    mem_limit: 1g
+    depends_on:
+      opencti:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      # ponytail: python stdlib probe — curl not available in python:3.12-slim
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8001/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - tim-network
+    restart: unless-stopped
+
+# ─────────────────────────────────────────────
+# CAPA AI — Servicios custom Python
+# ─────────────────────────────────────────────
+
+  intel-extractor:
+    build: ./services/intel-extractor
+    profiles: [extractor]
+    ports:
+      - "127.0.0.1:8004:8004"
+    environment:
+      - OPENCTI_URL=http://opencti:8080
+      - OPENCTI_TOKEN=${OPENCTI_CONNECTORS_TOKEN:-${OPENCTI_ADMIN_TOKEN}}
+      - PYTHONUNBUFFERED=1
+      - OLLAMA_URL=http://ollama:11434
+      - OLLAMA_MODEL=llama3.2:3b
+      # decision-llm 2026-08-10 (rev. bedrock): claude via Amazon Bedrock, prompt
+      # v2.1. Auth = EC2 instance IAM role — no API key anywhere. The direct
+      # Anthropic API path stays available with LLM_PROVIDER=anthropic + key in
+      # the server-side .env (never in this file).
+      - LLM_PROVIDER=${LLM_PROVIDER:-bedrock}
+      - AWS_REGION=${AWS_REGION:-us-east-1}
+      - BEDROCK_MODEL=${BEDROCK_MODEL:-us.anthropic.claude-haiku-4-5-20251001-v1:0}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+      - ANTHROPIC_MODEL=${ANTHROPIC_MODEL:-claude-opus-5}
+      # Incident 2026-08-10: collector auto-extraction burned API credit on a
+      # fresh volume. Opt-in only — default is manual /extract API alone.
+      - COLLECTOR_ENABLED=${COLLECTOR_ENABLED:-false}
+      - DB_PATH=/data/stats.db
+    volumes:
+      - extractordata:/data
+    mem_limit: 1g
+    depends_on:
+      opencti:
+        condition: service_healthy
+    networks:
+      - tim-network
+    restart: unless-stopped
+    healthcheck:
+      # ponytail: python stdlib probe — curl not available in python:3.12-slim
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8004/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  semantic-engine:
+    build: ./services/semantic-engine
+    profiles: [semantic]
+    ports:
+      - "127.0.0.1:8002:8002"
+    environment:
+      - OPENCTI_URL=http://opencti:8080
+      - OPENCTI_TOKEN=${OPENCTI_CONNECTORS_TOKEN:-${OPENCTI_ADMIN_TOKEN}}
+      - PYTHONUNBUFFERED=1
+      - OLLAMA_URL=http://ollama:11434
+      - OLLAMA_EMBED_MODEL=nomic-embed-text
+      - OLLAMA_KEEP_ALIVE=5m
+      - CHROMADB_URL=http://chromadb:8000
+      - OPENCTI_PAGE_SIZE=100
+      - EMBED_BATCH_SIZE=32
+      - POLL_INTERVAL_SECONDS=300
+      - SIMILARITY_THRESHOLD=0.3
+      - OPENCTI_BASE_URL=http://localhost:8080
+      - *curated-authors
+    mem_limit: 1g
+    healthcheck:
+      # ponytail: python stdlib probe — curl not available in python:3.12-slim
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8002/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    depends_on:
+      opencti:
+        condition: service_healthy
+      ollama:
+        condition: service_healthy
+      chromadb:
+        condition: service_healthy
+    networks:
+      - tim-network
+    restart: unless-stopped
+
+  briefing-generator:
+    build: ./services/briefing-generator
+    profiles: [briefings]
+    ports:
+      - "127.0.0.1:8003:8003"
+    environment:
+      - OPENCTI_URL=http://opencti:8080
+      - OPENCTI_TOKEN=${OPENCTI_CONNECTORS_TOKEN:-${OPENCTI_ADMIN_TOKEN}}
+      - PYTHONUNBUFFERED=1
+      # Sintetizador 2026-08-19: proveedor conmutable igual que intel-extractor.
+      # ollama = pilot local con GPU; bedrock = claude haiku por rol IAM (VPS sin GPU).
+      - LLM_PROVIDER=${BRIEFING_LLM_PROVIDER:-ollama}
+      - AWS_REGION=${AWS_REGION:-us-east-1}
+      - BEDROCK_MODEL=${BEDROCK_MODEL:-us.anthropic.claude-haiku-4-5-20251001-v1:0}
+      - OLLAMA_URL=http://ollama:11434
+      - OLLAMA_MODEL=llama3.2:3b
+      - DB_PATH=/data/briefings.db
+      - *curated-authors
+    volumes:
+      - briefingsdata:/data
+    mem_limit: 1g
+    depends_on:
+      opencti:
+        condition: service_healthy
+        # Sintetizador 2026-08-19: con `--profile briefings` solo, opencti (profile
+        # core) queda indefinido — required:false deja arrancar; opencti ya corre
+        # en el proyecto y el healthcheck del servicio cubre el arranque en frío.
+        required: false
+      ollama:
+        condition: service_healthy
+        # Sintetizador 2026-08-19: opcional — en el VPS (sin GPU) ollama no corre;
+        # arrancar con `--profile briefings` (sin el profile inference de ollama) y
+        # LLM_PROVIDER=bedrock. Con profile activo la condición sigue aplicando.
+        required: false
+    healthcheck:
+      # ponytail: python stdlib probe — curl not available in python:3.12-slim
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8003/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    networks:
+      - tim-network
+    restart: unless-stopped
+
+# ─────────────────────────────────────────────
+# CAPA DE PRESENTACIÓN — SOC Dashboard
+# ─────────────────────────────────────────────
+
+  soc-dashboard:
+    build: ./services/dashboard
+    profiles: [dashboard]
+    ports:
+      - "127.0.0.1:80:80"
+      - "127.0.0.1:443:443"
+      - "127.0.0.1:5602:5602"
+    volumes:
+      - ./certs:/etc/nginx/certs:ro
+      - ./services/dashboard/.kibana.htpasswd:/etc/nginx/.kibana.htpasswd:ro
+    mem_limit: 512m
+    depends_on:
+      feed-orchestrator:
+        condition: service_healthy
+      semantic-engine:
+        condition: service_healthy
+      briefing-generator:
+        condition: service_healthy
+      kibana:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "nginx -t && pgrep -f '[n]ginx: master' && wget -q -O /dev/null http://127.0.0.1/healthz || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    networks:
+      - tim-network
+    restart: unless-stopped

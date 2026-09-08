@@ -1,0 +1,42 @@
+{
+  "format": "report",
+  "iocs": [
+    {
+      "type": "ip",
+      "value": "203.0.113.61"
+    },
+    {
+      "type": "ip",
+      "value": "203.0.113.62"
+    },
+    {
+      "type": "ip",
+      "value": "192.0.2.190"
+    },
+    {
+      "type": "domain",
+      "value": "quiet-harbor.example"
+    },
+    {
+      "type": "domain",
+      "value": "anchor-light.example"
+    },
+    {
+      "type": "url",
+      "value": "https://quiet-harbor.example/stage"
+    },
+    {
+      "type": "url",
+      "value": "http://anchor-light.example/t"
+    },
+    {
+      "type": "email",
+      "value": "pilot@anchor-light.example"
+    },
+    {
+      "type": "hash_sha256",
+      "value": "cf2ef8f7c222cc90f5914a4a7ed13797a5e7db2fe829d5389e8d977a9e6263ef"
+    }
+  ],
+  "notes": "report with defanged appendix (mixed forms), 9 IOCs, gold canonical"
+}

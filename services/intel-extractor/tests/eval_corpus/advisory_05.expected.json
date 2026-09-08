@@ -1,0 +1,54 @@
+{
+  "format": "advisory",
+  "iocs": [
+    {
+      "type": "ip",
+      "value": "192.0.2.10"
+    },
+    {
+      "type": "ip",
+      "value": "192.0.2.11"
+    },
+    {
+      "type": "ip",
+      "value": "192.0.2.12"
+    },
+    {
+      "type": "ip",
+      "value": "198.51.100.30"
+    },
+    {
+      "type": "ip",
+      "value": "198.51.100.31"
+    },
+    {
+      "type": "ip",
+      "value": "203.0.113.50"
+    },
+    {
+      "type": "domain",
+      "value": "relay-node-a.example"
+    },
+    {
+      "type": "domain",
+      "value": "relay-node-b.example"
+    },
+    {
+      "type": "url",
+      "value": "http://relay-node-a.example/bot.bin"
+    },
+    {
+      "type": "url",
+      "value": "http://relay-node-b.example/upd"
+    },
+    {
+      "type": "hash_sha256",
+      "value": "090d32e08da17b991ef003c26bb6ce40ef680941f415e7900aabb9c62aa4d5ec"
+    },
+    {
+      "type": "hash_sha256",
+      "value": "f0b057640bffdabf75c7dd01f53cff6810b2bcab622a0f07e589f69f91278c42"
+    }
+  ],
+  "notes": "highest-density advisory: 12 IOCs in appendix lists"
+}

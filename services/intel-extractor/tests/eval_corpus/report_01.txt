@@ -1,0 +1,49 @@
+THREAT INTELLIGENCE REPORT TR-2026-014
+Campaign Analysis: VELVET MANTIS Operations Against North American Water Utilities
+Classification: TLP:CLEAR
+
+1. EXECUTIVE SUMMARY
+Between February and May 2026, the intrusion set tracked as VELVET MANTIS conducted a
+sustained campaign against water and wastewater utilities in North America. The campaign
+combined opportunistic exploitation of internet-exposed human-machine interfaces with a
+purpose-built implant, StoneLoader, and demonstrated a working knowledge of industrial
+control processes. We assess with moderate confidence that the objective was pre-positioning
+rather than immediate disruption.
+
+2. CAMPAIGN TIMELINE
+February: initial access activity against HMI panels using vendor default credentials.
+March: deployment of StoneLoader at six utilities; telemetry set points modified at two.
+April: infrastructure rotation following public reporting; tempo reduced but not halted.
+May: renewed activity with an updated implant variant and new staging infrastructure.
+
+3. TECHNICAL FINDINGS
+Initial access relied on valid accounts (T1078) against exposed panels. Persistence used
+scheduled tasks (T1053.005). The implant retrieved tasking over HTTPS with a beacon interval
+derived from the compromised host clock, complicating time-based correlation. Lateral
+movement inside OT networks was limited and deliberate, suggesting an emphasis on stealth.
+
+4. INDICATOR APPENDIX
+
+Network indicators (active February-May 2026):
+IP addresses:
+  203.0.113.201
+  203.0.113.202
+  192.0.2.150
+  198.51.100.60
+
+Domains:
+  hydro-metrics.example
+  turbine-sync.example
+
+URLs:
+  http://hydro-metrics.example/beacon
+  https://turbine-sync.example/task
+
+File indicators:
+  MD5:    7aa0990e9fb567b3c7a6aa23d2a18fb0
+  SHA-256: fd1ebc21d38426c367df36f8b1227788154a07818ba0d7d6a606575ca9cab33b
+
+5. OUTLOOK
+We expect VELVET MANTIS to continue targeting the water sector through 2026. Utilities
+should prioritize removing HMI panels from direct internet exposure, as this single control
+defeats the observed initial access technique entirely.

@@ -1,0 +1,17 @@
+SECURITY BULLETIN 2026-034
+Severity: CRITICAL
+Subject: Actively exploited vulnerabilities in Meridian SecureGate VPN appliances
+
+Two vulnerabilities in Meridian SecureGate appliances are being chained in active attacks:
+
+CVE-2026-20441 — unauthenticated path traversal in the web management interface (CVSS 9.1).
+CVE-2026-20442 — post-authentication command injection in the diagnostics module (CVSS 7.8).
+
+Chained exploitation yields root on the appliance. Mass scanning began within 48 hours of
+public disclosure. Exploitation attempts observed by partner CSIRTs originate predominantly
+from 192.0.2.77.
+
+RECOMMENDATIONS
+Apply firmware 11.4.2 immediately. If patching is not possible, disable the web management
+interface on external interfaces. Review appliance logs for unexpected configuration
+exports since 2026-05-19. Constituents are asked to report confirmed compromises.

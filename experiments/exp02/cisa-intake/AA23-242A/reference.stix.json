@@ -1,0 +1,962 @@
+{
+    "type": "bundle",
+    "id": "bundle--14ff58f1-0664-43ee-92c2-c865dcee6f24",
+    "objects": [
+        {
+            "id": "location--5a3bed2e-0666-4402-a144-aa8d5871309b",
+            "spec_version": "2.1",
+            "type": "location",
+            "country": "US",
+            "administrative_area": "US-DC",
+            "created": "2023-08-26T15:42:50.000Z",
+            "modified": "2023-08-26T15:42:50.000Z",
+            "created_by_ref": "identity--b3bca3c2-1f3d-4b54-b44f-dac42c3a8f01",
+            "object_marking_refs": [
+                "marking-definition--479081c8-3a60-4eb8-b410-96a30f395def",
+                "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+            ]
+        },
+        {
+            "type": "marking-definition",
+            "spec_version": "2.1",
+            "id": "marking-definition--479081c8-3a60-4eb8-b410-96a30f395def",
+            "created": "2023-03-02T16:48:57.959Z",
+            "extensions": {
+                "extension-definition--3a65884d-005a-4290-8335-cb2d778a83ce": {
+                    "extension_type": "property-extension",
+                    "identifier": "isa:guide.19001.ACS3-9e0cd50e-6efc-45b3-8a3d-b6376541c9c5",
+                    "create_date_time": "2023-03-02T16:48:57.959Z",
+                    "responsible_entity_custodian": "USA.DHS.NCCIC",
+                    "responsible_entity_originator": "USA.DHS.NCCIC",
+                    "policy_reference": "urn:isa:policy:acs:ns:v3.0?privdefault=deny&sharedefault=permit",
+                    "control_set": {
+                        "classification": "U",
+                        "formal_determination": [
+                            "INFORMATION-DIRECTLY-RELATED-TO-CYBERSECURITY-THREAT",
+                            "PUBREL"
+                        ]
+                    },
+                    "authority_reference": [
+                        "urn:isa:authority:ais"
+                    ],
+                    "access_privilege": [
+                        {
+                            "privilege_action": "CISAUSES",
+                            "rule_effect": "permit",
+                            "privilege_scope": {
+                                "entity": [
+                                    "ALL"
+                                ],
+                                "permitted_nationalities": [
+                                    "ALL"
+                                ],
+                                "permitted_organizations": [
+                                    "ALL"
+                                ],
+                                "shareability": [
+                                    "ALL"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "id": "attack-pattern--d0fb872b-96f5-4d11-877a-b153094dbf3a",
+            "type": "attack-pattern",
+            "created": "2023-08-26T15:42:50.000Z",
+            "modified": "2023-08-26T15:42:50.000Z",
+            "spec_version": "2.1",
+            "created_by_ref": "identity--b3bca3c2-1f3d-4b54-b44f-dac42c3a8f01",
+            "name": "Initial Access - Phishing: Spearphishing Attachment [T1566.001]",
+            "object_marking_refs": [
+                "marking-definition--479081c8-3a60-4eb8-b410-96a30f395def",
+                "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+            ]
+        },
+        {
+            "id": "attack-pattern--8e73de92-7e77-48ed-9193-7461b8ced8d4",
+            "type": "attack-pattern",
+            "created": "2023-08-26T15:42:50.000Z",
+            "modified": "2023-08-26T15:42:50.000Z",
+            "spec_version": "2.1",
+            "created_by_ref": "identity--b3bca3c2-1f3d-4b54-b44f-dac42c3a8f01",
+            "name": "Credential Access - Credentials from Password Stores: Password Managers [T1555.005]",
+            "object_marking_refs": [
+                "marking-definition--479081c8-3a60-4eb8-b410-96a30f395def",
+                "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+            ]
+        },
+        {
+            "id": "attack-pattern--591b44be-bfaf-4e8f-8820-594e386d429c",
+            "type": "attack-pattern",
+            "created": "2023-08-26T15:42:50.000Z",
+            "modified": "2023-08-26T15:42:50.000Z",
+            "spec_version": "2.1",
+            "created_by_ref": "identity--b3bca3c2-1f3d-4b54-b44f-dac42c3a8f01",
+            "name": "Impact - Data Encrypted for Impact [T1486]",
+            "object_marking_refs": [
+                "marking-definition--479081c8-3a60-4eb8-b410-96a30f395def",
+                "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+            ]
+        },
+        {
+            "id": "indicator--d34fc11c-813e-4106-892b-1a3f0dc5a234",
+            "type": "indicator",
+            "spec_version": "2.1",
+            "pattern_type": "stix",
+            "created": "2023-08-26T15:42:50.000Z",
+            "modified": "2023-08-26T15:42:50.000Z",
+            "object_marking_refs": [
+                "marking-definition--479081c8-3a60-4eb8-b410-96a30f395def",
+                "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+            ],
+            "name": "IPv4 Indicator",
+            "indicator_types": [
+                "malicious-activity"
+            ],
+            "valid_from": "2023-08-25T00:00:00Z",
+            "pattern": "[ipv4-addr:value = '193.29.187.41']",
+            "created_by_ref": "identity--b3bca3c2-1f3d-4b54-b44f-dac42c3a8f01"
+        },
+        {
+            "id": "indicator--d18b73da-e427-49b3-b492-e93617ddb5b8",
+            "type": "indicator",
+            "spec_version": "2.1",
+            "pattern_type": "stix",
+            "created": "2023-08-26T15:42:50.000Z",
+            "modified": "2023-08-26T15:42:50.000Z",
+            "object_marking_refs": [
+                "marking-definition--479081c8-3a60-4eb8-b410-96a30f395def",
+                "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+            ],
+            "name": "IPv4 Indicator",
+            "indicator_types": [
+                "malicious-activity"
+            ],
+            "valid_from": "2023-08-25T00:00:00Z",
+            "pattern": "[ipv4-addr:value = '188.127.243.193']",
+            "created_by_ref": "identity--b3bca3c2-1f3d-4b54-b44f-dac42c3a8f01"
+        },
+        {
+            "id": "indicator--0d38bcb3-8cad-4a44-b3b4-897b331e125d",
+            "type": "indicator",
+            "spec_version": "2.1",
+            "pattern_type": "stix",
+            "created": "2023-08-26T15:42:50.000Z",
+            "modified": "2023-08-26T15:42:50.000Z",
+            "object_marking_refs": [
+                "marking-definition--479081c8-3a60-4eb8-b410-96a30f395def",
+                "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+            ],
+            "name": "IPv4 Indicator",
+            "indicator_types": [
+                "malicious-activity"
+            ],
+            "valid_from": "2023-08-25T00:00:00Z",
+            "pattern": "[ipv4-addr:value = '188.127.243.147']",
+            "created_by_ref": "identity--b3bca3c2-1f3d-4b54-b44f-dac42c3a8f01"
+        },
+        {
+            "id": "indicator--6a71a016-23bb-4c28-83e0-cd01757f7d0d",
+            "type": "indicator",
+            "spec_version": "2.1",
+            "pattern_type": "stix",
+            "created": "2023-08-26T15:42:50.000Z",
+            "modified": "2023-08-26T15:42:50.000Z",
+            "object_marking_refs": [
+                "marking-definition--479081c8-3a60-4eb8-b410-96a30f395def",
+                "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+            ],
+            "name": "IPv4 Indicator",
+            "indicator_types": [
+                "malicious-activity"
+            ],
+            "valid_from": "2023-08-25T00:00:00Z",
+            "pattern": "[ipv4-addr:value = '188.127.243.145']",
+            "created_by_ref": "identity--b3bca3c2-1f3d-4b54-b44f-dac42c3a8f01"
+        },
+        {
+            "id": "indicator--a02b9b0e-c6ed-4e19-b3bf-1263ea0144b8",
+            "type": "indicator",
+            "spec_version": "2.1",
+            "pattern_type": "stix",
+            "created": "2023-08-26T15:42:50.000Z",
+            "modified": "2023-08-26T15:42:50.000Z",
+            "object_marking_refs": [
+                "marking-definition--479081c8-3a60-4eb8-b410-96a30f395def",
+                "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+            ],
+            "name": "IPv4 Indicator",
+            "indicator_types": [
+                "malicious-activity"
+            ],
+            "valid_from": "2023-08-25T00:00:00Z",
+            "pattern": "[ipv4-addr:value = '185.81.114.188']",
+            "created_by_ref": "identity--b3bca3c2-1f3d-4b54-b44f-dac42c3a8f01"
+        },
+        {
+            "id": "indicator--fd087b4a-e3f6-44fb-883a-3a5778500b0f",
+            "type": "indicator",
+            "spec_version": "2.1",
+            "pattern_type": "stix",
+            "created": "2023-08-26T15:42:50.000Z",
+            "modified": "2023-08-26T15:42:50.000Z",
+            "object_marking_refs": [
+                "marking-definition--479081c8-3a60-4eb8-b410-96a30f395def",
+                "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+            ],
+            "name": "IPv4 Indicator",
+            "indicator_types": [
+                "malicious-activity"
+            ],
+            "valid_from": "2023-08-25T00:00:00Z",
+            "pattern": "[ipv4-addr:value = '95.211.250.117']",
+            "created_by_ref": "identity--b3bca3c2-1f3d-4b54-b44f-dac42c3a8f01"
+        },
+        {
+            "id": "indicator--458983c4-93d9-461f-9912-550414daea00",
+            "type": "indicator",
+            "spec_version": "2.1",
+            "pattern_type": "stix",
+            "created": "2023-08-26T15:42:50.000Z",
+            "modified": "2023-08-26T15:42:50.000Z",
+            "object_marking_refs": [
+                "marking-definition--479081c8-3a60-4eb8-b410-96a30f395def",
+                "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+            ],
+            "name": "IPv4 Indicator",
+            "indicator_types": [
+                "malicious-activity"
+            ],
+            "valid_from": "2023-08-25T00:00:00Z",
+            "pattern": "[ipv4-addr:value = '95.211.250.98']",
+            "created_by_ref": "identity--b3bca3c2-1f3d-4b54-b44f-dac42c3a8f01"
+        },
+        {
+            "id": "indicator--9b26b142-7891-44e0-9a4a-fa65dad36177",
+            "type": "indicator",
+            "spec_version": "2.1",
+            "pattern_type": "stix",
+            "created": "2023-08-26T15:42:50.000Z",
+            "modified": "2023-08-26T15:42:50.000Z",
+            "object_marking_refs": [
+                "marking-definition--479081c8-3a60-4eb8-b410-96a30f395def",
+                "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+            ],
+            "name": "IPv4 Indicator",
+            "indicator_types": [
+                "malicious-activity"
+            ],
+            "valid_from": "2023-08-25T00:00:00Z",
+            "pattern": "[ipv4-addr:value = '95.211.250.97']",
+            "created_by_ref": "identity--b3bca3c2-1f3d-4b54-b44f-dac42c3a8f01"
+        },
+        {
+            "id": "indicator--d027fb43-35b8-4f4f-a4c1-b6f345bda447",
+            "type": "indicator",
+            "spec_version": "2.1",
+            "pattern_type": "stix",
+            "created": "2023-08-26T15:42:50.000Z",
+            "modified": "2023-08-26T15:42:50.000Z",
+            "object_marking_refs": [
+                "marking-definition--479081c8-3a60-4eb8-b410-96a30f395def",
+                "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+            ],
+            "name": "IPv4 Indicator",
+            "indicator_types": [
+                "malicious-activity"
+            ],
+            "valid_from": "2023-08-25T00:00:00Z",
+            "pattern": "[ipv4-addr:value = '95.211.198.177']",
+            "created_by_ref": "identity--b3bca3c2-1f3d-4b54-b44f-dac42c3a8f01"
+        },
+        {
+            "id": "indicator--37666d4e-50c5-4854-b751-0857d854e37a",
+            "type": "indicator",
+            "spec_version": "2.1",
+            "pattern_type": "stix",
+            "created": "2023-08-26T15:42:50.000Z",
+            "modified": "2023-08-26T15:42:50.000Z",
+            "object_marking_refs": [
+                "marking-definition--479081c8-3a60-4eb8-b410-96a30f395def",
+                "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+            ],
+            "name": "IPv4 Indicator",
+            "indicator_types": [
+                "malicious-activity"
+            ],
+            "valid_from": "2023-08-25T00:00:00Z",
+            "pattern": "[ipv4-addr:value = '95.211.172.109']",
+            "created_by_ref": "identity--b3bca3c2-1f3d-4b54-b44f-dac42c3a8f01"
+        },
+        {
+            "id": "indicator--6be7526a-f460-44e2-a7fc-cb0b024eaebe",
+            "type": "indicator",
+            "spec_version": "2.1",
+            "pattern_type": "stix",
+            "created": "2023-08-26T15:42:50.000Z",
+            "modified": "2023-08-26T15:42:50.000Z",
+            "object_marking_refs": [
+                "marking-definition--479081c8-3a60-4eb8-b410-96a30f395def",
+                "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+            ],
+            "name": "IPv4 Indicator",
+            "indicator_types": [
+                "malicious-activity"
+            ],
+            "valid_from": "2023-08-25T00:00:00Z",
+            "pattern": "[ipv4-addr:value = '95.211.172.108']",
+            "created_by_ref": "identity--b3bca3c2-1f3d-4b54-b44f-dac42c3a8f01"
+        },
+        {
+            "id": "indicator--943af22c-5f4b-4cb4-b19d-2fc77ddf3012",
+            "type": "indicator",
+            "spec_version": "2.1",
+            "pattern_type": "stix",
+            "created": "2023-08-26T15:42:50.000Z",
+            "modified": "2023-08-26T15:42:50.000Z",
+            "object_marking_refs": [
+                "marking-definition--479081c8-3a60-4eb8-b410-96a30f395def",
+                "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+            ],
+            "name": "IPv4 Indicator",
+            "indicator_types": [
+                "malicious-activity"
+            ],
+            "valid_from": "2023-08-25T00:00:00Z",
+            "pattern": "[ipv4-addr:value = '95.211.172.86']",
+            "created_by_ref": "identity--b3bca3c2-1f3d-4b54-b44f-dac42c3a8f01"
+        },
+        {
+            "id": "indicator--cca71c1e-87a1-41ac-8c5a-ddc6a036077a",
+            "type": "indicator",
+            "spec_version": "2.1",
+            "pattern_type": "stix",
+            "created": "2023-08-26T15:42:50.000Z",
+            "modified": "2023-08-26T15:42:50.000Z",
+            "object_marking_refs": [
+                "marking-definition--479081c8-3a60-4eb8-b410-96a30f395def",
+                "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+            ],
+            "name": "IPv4 Indicator",
+            "indicator_types": [
+                "malicious-activity"
+            ],
+            "valid_from": "2023-08-25T00:00:00Z",
+            "pattern": "[ipv4-addr:value = '95.211.172.7']",
+            "created_by_ref": "identity--b3bca3c2-1f3d-4b54-b44f-dac42c3a8f01"
+        },
+        {
+            "id": "indicator--99f8013c-59eb-45c1-8463-256a8853582d",
+            "type": "indicator",
+            "spec_version": "2.1",
+            "pattern_type": "stix",
+            "created": "2023-08-26T15:42:50.000Z",
+            "modified": "2023-08-26T15:42:50.000Z",
+            "object_marking_refs": [
+                "marking-definition--479081c8-3a60-4eb8-b410-96a30f395def",
+                "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+            ],
+            "name": "IPv4 Indicator",
+            "indicator_types": [
+                "malicious-activity"
+            ],
+            "valid_from": "2023-08-25T00:00:00Z",
+            "pattern": "[ipv4-addr:value = '95.211.172.6']",
+            "created_by_ref": "identity--b3bca3c2-1f3d-4b54-b44f-dac42c3a8f01"
+        },
+        {
+            "id": "indicator--2d5bdd1c-ec58-457e-acd4-3173cf4f69c5",
+            "type": "indicator",
+            "spec_version": "2.1",
+            "pattern_type": "stix",
+            "created": "2023-08-26T15:42:50.000Z",
+            "modified": "2023-08-26T15:42:50.000Z",
+            "object_marking_refs": [
+                "marking-definition--479081c8-3a60-4eb8-b410-96a30f395def",
+                "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+            ],
+            "name": "IPv4 Indicator",
+            "indicator_types": [
+                "malicious-activity"
+            ],
+            "valid_from": "2023-08-25T00:00:00Z",
+            "pattern": "[ipv4-addr:value = '95.211.95.14']",
+            "created_by_ref": "identity--b3bca3c2-1f3d-4b54-b44f-dac42c3a8f01"
+        },
+        {
+            "id": "indicator--7685c1bb-74a0-4603-ae5b-a76bc6ee5a1a",
+            "type": "indicator",
+            "spec_version": "2.1",
+            "pattern_type": "stix",
+            "created": "2023-08-26T15:42:50.000Z",
+            "modified": "2023-08-26T15:42:50.000Z",
+            "object_marking_refs": [
+                "marking-definition--479081c8-3a60-4eb8-b410-96a30f395def",
+                "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+            ],
+            "name": "IPv4 Indicator",
+            "indicator_types": [
+                "malicious-activity"
+            ],
+            "valid_from": "2023-08-25T00:00:00Z",
+            "pattern": "[ipv4-addr:value = '94.198.53.17']",
+            "created_by_ref": "identity--b3bca3c2-1f3d-4b54-b44f-dac42c3a8f01"
+        },
+        {
+            "id": "indicator--277dd6d7-5c68-4412-9872-842cddcad265",
+            "type": "indicator",
+            "spec_version": "2.1",
+            "pattern_type": "stix",
+            "created": "2023-08-26T15:42:50.000Z",
+            "modified": "2023-08-26T15:42:50.000Z",
+            "object_marking_refs": [
+                "marking-definition--479081c8-3a60-4eb8-b410-96a30f395def",
+                "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+            ],
+            "name": "IPv4 Indicator",
+            "indicator_types": [
+                "malicious-activity"
+            ],
+            "valid_from": "2023-08-25T00:00:00Z",
+            "pattern": "[ipv4-addr:value = '45.84.224.23']",
+            "created_by_ref": "identity--b3bca3c2-1f3d-4b54-b44f-dac42c3a8f01"
+        },
+        {
+            "id": "indicator--62821176-1ee0-4212-baa5-f1cf3049e66b",
+            "type": "indicator",
+            "spec_version": "2.1",
+            "pattern_type": "stix",
+            "created": "2023-08-26T15:42:50.000Z",
+            "modified": "2023-08-26T15:42:50.000Z",
+            "object_marking_refs": [
+                "marking-definition--479081c8-3a60-4eb8-b410-96a30f395def",
+                "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+            ],
+            "name": "IPv4 Indicator",
+            "indicator_types": [
+                "malicious-activity"
+            ],
+            "valid_from": "2023-08-25T00:00:00Z",
+            "pattern": "[ipv4-addr:value = '23.236.181.102']",
+            "created_by_ref": "identity--b3bca3c2-1f3d-4b54-b44f-dac42c3a8f01"
+        },
+        {
+            "id": "indicator--92e61a21-fe31-4d04-9008-11f937eaa959",
+            "type": "indicator",
+            "spec_version": "2.1",
+            "pattern_type": "stix",
+            "created": "2023-08-26T15:42:50.000Z",
+            "modified": "2023-08-26T15:42:50.000Z",
+            "object_marking_refs": [
+                "marking-definition--479081c8-3a60-4eb8-b410-96a30f395def",
+                "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+            ],
+            "name": "IPv4 Indicator",
+            "indicator_types": [
+                "malicious-activity"
+            ],
+            "valid_from": "2023-08-25T00:00:00Z",
+            "pattern": "[ipv4-addr:value = '188.127.243.148']",
+            "created_by_ref": "identity--b3bca3c2-1f3d-4b54-b44f-dac42c3a8f01"
+        },
+        {
+            "id": "indicator--bb807a6f-5c69-4d6c-a31e-083addb2fccd",
+            "type": "indicator",
+            "spec_version": "2.1",
+            "pattern_type": "stix",
+            "created": "2023-08-26T15:42:50.000Z",
+            "modified": "2023-08-26T15:42:50.000Z",
+            "object_marking_refs": [
+                "marking-definition--479081c8-3a60-4eb8-b410-96a30f395def",
+                "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+            ],
+            "name": "IPv4 Indicator",
+            "indicator_types": [
+                "malicious-activity"
+            ],
+            "valid_from": "2023-08-25T00:00:00Z",
+            "pattern": "[ipv4-addr:value = '51.195.49.228']",
+            "created_by_ref": "identity--b3bca3c2-1f3d-4b54-b44f-dac42c3a8f01"
+        },
+        {
+            "id": "indicator--a4df4510-9779-4e9d-8f8b-366beee64767",
+            "type": "indicator",
+            "spec_version": "2.1",
+            "pattern_type": "stix",
+            "created": "2023-08-26T15:42:50.000Z",
+            "modified": "2023-08-26T15:42:50.000Z",
+            "object_marking_refs": [
+                "marking-definition--479081c8-3a60-4eb8-b410-96a30f395def",
+                "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+            ],
+            "name": "IPv4 Indicator",
+            "indicator_types": [
+                "malicious-activity"
+            ],
+            "valid_from": "2023-08-25T00:00:00Z",
+            "pattern": "[ipv4-addr:value = '51.161.202.232']",
+            "created_by_ref": "identity--b3bca3c2-1f3d-4b54-b44f-dac42c3a8f01"
+        },
+        {
+            "id": "indicator--598518ac-ea4a-4799-9624-9a8da3c18704",
+            "type": "indicator",
+            "spec_version": "2.1",
+            "pattern_type": "stix",
+            "created": "2023-08-26T15:42:50.000Z",
+            "modified": "2023-08-26T15:42:50.000Z",
+            "object_marking_refs": [
+                "marking-definition--479081c8-3a60-4eb8-b410-96a30f395def",
+                "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+            ],
+            "name": "IPv4 Indicator",
+            "indicator_types": [
+                "malicious-activity"
+            ],
+            "valid_from": "2023-08-25T00:00:00Z",
+            "pattern": "[ipv4-addr:value = '190.2.143.38']",
+            "created_by_ref": "identity--b3bca3c2-1f3d-4b54-b44f-dac42c3a8f01"
+        },
+        {
+            "id": "indicator--7a9fdf40-d6d4-47c8-984f-762f68c0d412",
+            "type": "indicator",
+            "spec_version": "2.1",
+            "pattern_type": "stix",
+            "created": "2023-08-26T15:42:50.000Z",
+            "modified": "2023-08-26T15:42:50.000Z",
+            "object_marking_refs": [
+                "marking-definition--479081c8-3a60-4eb8-b410-96a30f395def",
+                "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+            ],
+            "name": "IPv4 Indicator",
+            "indicator_types": [
+                "malicious-activity"
+            ],
+            "valid_from": "2023-08-25T00:00:00Z",
+            "pattern": "[ipv4-addr:value = '188.127.242.178']",
+            "created_by_ref": "identity--b3bca3c2-1f3d-4b54-b44f-dac42c3a8f01"
+        },
+        {
+            "id": "indicator--a34f7aa9-492c-4baf-a1bc-36dbe37f3c79",
+            "type": "indicator",
+            "spec_version": "2.1",
+            "pattern_type": "stix",
+            "created": "2023-08-26T15:42:50.000Z",
+            "modified": "2023-08-26T15:42:50.000Z",
+            "object_marking_refs": [
+                "marking-definition--479081c8-3a60-4eb8-b410-96a30f395def",
+                "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+            ],
+            "name": "IPv4 Indicator",
+            "indicator_types": [
+                "malicious-activity"
+            ],
+            "valid_from": "2023-08-25T00:00:00Z",
+            "pattern": "[ipv4-addr:value = '188.127.242.119']",
+            "created_by_ref": "identity--b3bca3c2-1f3d-4b54-b44f-dac42c3a8f01"
+        },
+        {
+            "id": "indicator--7437302d-faaf-4a1f-8d3d-02e84bbfe348",
+            "type": "indicator",
+            "spec_version": "2.1",
+            "pattern_type": "stix",
+            "created": "2023-08-26T15:42:50.000Z",
+            "modified": "2023-08-26T15:42:50.000Z",
+            "object_marking_refs": [
+                "marking-definition--479081c8-3a60-4eb8-b410-96a30f395def",
+                "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+            ],
+            "name": "IPv4 Indicator",
+            "indicator_types": [
+                "malicious-activity"
+            ],
+            "valid_from": "2023-08-25T00:00:00Z",
+            "pattern": "[ipv4-addr:value = '94.198.51.202']",
+            "created_by_ref": "identity--b3bca3c2-1f3d-4b54-b44f-dac42c3a8f01"
+        },
+        {
+            "id": "indicator--fd530088-e4fd-415e-a535-ec3b569e5160",
+            "type": "indicator",
+            "spec_version": "2.1",
+            "pattern_type": "stix",
+            "created": "2023-08-26T15:42:50.000Z",
+            "modified": "2023-08-26T15:42:50.000Z",
+            "object_marking_refs": [
+                "marking-definition--479081c8-3a60-4eb8-b410-96a30f395def",
+                "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+            ],
+            "name": "IPv4 Indicator",
+            "indicator_types": [
+                "malicious-activity"
+            ],
+            "valid_from": "2023-08-25T00:00:00Z",
+            "pattern": "[ipv4-addr:value = '188.127.243.133']",
+            "created_by_ref": "identity--b3bca3c2-1f3d-4b54-b44f-dac42c3a8f01"
+        },
+        {
+            "id": "indicator--9c096fd9-18a2-4c16-b0e4-f951973f3309",
+            "type": "indicator",
+            "spec_version": "2.1",
+            "pattern_type": "stix",
+            "created": "2023-08-26T15:42:50.000Z",
+            "modified": "2023-08-26T15:42:50.000Z",
+            "object_marking_refs": [
+                "marking-definition--479081c8-3a60-4eb8-b410-96a30f395def",
+                "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+            ],
+            "name": "IPv4 Indicator",
+            "indicator_types": [
+                "malicious-activity"
+            ],
+            "valid_from": "2023-08-25T00:00:00Z",
+            "pattern": "[ipv4-addr:value = '188.127.243.130']",
+            "created_by_ref": "identity--b3bca3c2-1f3d-4b54-b44f-dac42c3a8f01"
+        },
+        {
+            "id": "indicator--e287ca32-d081-473a-8fd3-de600496709a",
+            "type": "indicator",
+            "spec_version": "2.1",
+            "pattern_type": "stix",
+            "created": "2023-08-26T15:42:50.000Z",
+            "modified": "2023-08-26T15:42:50.000Z",
+            "object_marking_refs": [
+                "marking-definition--479081c8-3a60-4eb8-b410-96a30f395def",
+                "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+            ],
+            "name": "IPv4 Indicator",
+            "indicator_types": [
+                "malicious-activity"
+            ],
+            "valid_from": "2023-08-25T00:00:00Z",
+            "pattern": "[ipv4-addr:value = '94.198.50.210']",
+            "created_by_ref": "identity--b3bca3c2-1f3d-4b54-b44f-dac42c3a8f01"
+        },
+        {
+            "id": "indicator--d29509ed-2de1-47f8-9976-415cf6794b4f",
+            "type": "indicator",
+            "spec_version": "2.1",
+            "pattern_type": "stix",
+            "created": "2023-08-26T15:42:50.000Z",
+            "modified": "2023-08-26T15:42:50.000Z",
+            "object_marking_refs": [
+                "marking-definition--479081c8-3a60-4eb8-b410-96a30f395def",
+                "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+            ],
+            "name": "IPv4 Indicator",
+            "indicator_types": [
+                "malicious-activity"
+            ],
+            "valid_from": "2023-08-25T00:00:00Z",
+            "pattern": "[ipv4-addr:value = '94.198.50.147']",
+            "created_by_ref": "identity--b3bca3c2-1f3d-4b54-b44f-dac42c3a8f01"
+        },
+        {
+            "id": "indicator--e4404a0f-410c-45ee-bb53-0132a5396320",
+            "type": "indicator",
+            "spec_version": "2.1",
+            "pattern_type": "stix",
+            "created": "2023-08-26T15:42:50.000Z",
+            "modified": "2023-08-26T15:42:50.000Z",
+            "object_marking_refs": [
+                "marking-definition--479081c8-3a60-4eb8-b410-96a30f395def",
+                "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+            ],
+            "name": "IPv4 Indicator",
+            "indicator_types": [
+                "malicious-activity"
+            ],
+            "valid_from": "2023-08-25T00:00:00Z",
+            "pattern": "[ipv4-addr:value = '193.201.9.93']",
+            "created_by_ref": "identity--b3bca3c2-1f3d-4b54-b44f-dac42c3a8f01"
+        },
+        {
+            "id": "indicator--e7c42d54-031f-4585-ba13-bb7d14bcf40b",
+            "type": "indicator",
+            "spec_version": "2.1",
+            "pattern_type": "stix",
+            "created": "2023-08-26T15:42:50.000Z",
+            "modified": "2023-08-26T15:42:50.000Z",
+            "object_marking_refs": [
+                "marking-definition--479081c8-3a60-4eb8-b410-96a30f395def",
+                "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+            ],
+            "name": "IPv4 Indicator",
+            "indicator_types": [
+                "malicious-activity"
+            ],
+            "valid_from": "2023-08-25T00:00:00Z",
+            "pattern": "[ipv4-addr:value = '89.163.212.111']",
+            "created_by_ref": "identity--b3bca3c2-1f3d-4b54-b44f-dac42c3a8f01"
+        },
+        {
+            "id": "indicator--35131293-7336-4ca6-bc05-c24aebfb4f5a",
+            "type": "indicator",
+            "spec_version": "2.1",
+            "pattern_type": "stix",
+            "created": "2023-08-26T15:42:50.000Z",
+            "modified": "2023-08-26T15:42:50.000Z",
+            "object_marking_refs": [
+                "marking-definition--479081c8-3a60-4eb8-b410-96a30f395def",
+                "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+            ],
+            "name": "IPv4 Indicator",
+            "indicator_types": [
+                "malicious-activity"
+            ],
+            "valid_from": "2023-08-25T00:00:00Z",
+            "pattern": "[ipv4-addr:value = '87.117.247.41']",
+            "created_by_ref": "identity--b3bca3c2-1f3d-4b54-b44f-dac42c3a8f01"
+        },
+        {
+            "id": "indicator--03d9de9d-3ddb-4593-950b-85588df411c1",
+            "type": "indicator",
+            "spec_version": "2.1",
+            "pattern_type": "stix",
+            "created": "2023-08-26T15:42:50.000Z",
+            "modified": "2023-08-26T15:42:50.000Z",
+            "object_marking_refs": [
+                "marking-definition--479081c8-3a60-4eb8-b410-96a30f395def",
+                "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+            ],
+            "name": "IPv4 Indicator",
+            "indicator_types": [
+                "malicious-activity"
+            ],
+            "valid_from": "2023-08-25T00:00:00Z",
+            "pattern": "[ipv4-addr:value = '62.141.42.36']",
+            "created_by_ref": "identity--b3bca3c2-1f3d-4b54-b44f-dac42c3a8f01"
+        },
+        {
+            "id": "indicator--ff7ab1cb-4ad5-4700-9d61-59f53a7b40ca",
+            "type": "indicator",
+            "spec_version": "2.1",
+            "pattern_type": "stix",
+            "created": "2023-08-26T15:42:50.000Z",
+            "modified": "2023-08-26T15:42:50.000Z",
+            "object_marking_refs": [
+                "marking-definition--479081c8-3a60-4eb8-b410-96a30f395def",
+                "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+            ],
+            "name": "IPv4 Indicator",
+            "indicator_types": [
+                "malicious-activity"
+            ],
+            "valid_from": "2023-08-25T00:00:00Z",
+            "pattern": "[ipv4-addr:value = '185.4.67.6']",
+            "created_by_ref": "identity--b3bca3c2-1f3d-4b54-b44f-dac42c3a8f01"
+        },
+        {
+            "id": "indicator--737f8ac0-c86a-4efc-95dc-1ad18f7e8093",
+            "type": "indicator",
+            "spec_version": "2.1",
+            "pattern_type": "stix",
+            "created": "2023-08-26T15:42:50.000Z",
+            "modified": "2023-08-26T15:42:50.000Z",
+            "object_marking_refs": [
+                "marking-definition--479081c8-3a60-4eb8-b410-96a30f395def",
+                "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+            ],
+            "name": "IPv4 Indicator",
+            "indicator_types": [
+                "malicious-activity"
+            ],
+            "valid_from": "2023-08-25T00:00:00Z",
+            "pattern": "[ipv4-addr:value = '51.38.62.182']",
+            "created_by_ref": "identity--b3bca3c2-1f3d-4b54-b44f-dac42c3a8f01"
+        },
+        {
+            "id": "indicator--432709a9-1c87-4719-a47e-607f5542fe38",
+            "type": "indicator",
+            "spec_version": "2.1",
+            "pattern_type": "stix",
+            "created": "2023-08-26T15:42:50.000Z",
+            "modified": "2023-08-26T15:42:50.000Z",
+            "object_marking_refs": [
+                "marking-definition--479081c8-3a60-4eb8-b410-96a30f395def",
+                "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+            ],
+            "name": "IPv4 Indicator",
+            "indicator_types": [
+                "malicious-activity"
+            ],
+            "valid_from": "2023-08-25T00:00:00Z",
+            "pattern": "[ipv4-addr:value = '51.38.62.181']",
+            "created_by_ref": "identity--b3bca3c2-1f3d-4b54-b44f-dac42c3a8f01"
+        },
+        {
+            "id": "indicator--e51bd074-2b22-48d0-8edc-f0595e6ce214",
+            "type": "indicator",
+            "spec_version": "2.1",
+            "pattern_type": "stix",
+            "created": "2023-08-26T15:42:50.000Z",
+            "modified": "2023-08-26T15:42:50.000Z",
+            "object_marking_refs": [
+                "marking-definition--479081c8-3a60-4eb8-b410-96a30f395def",
+                "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+            ],
+            "name": "IPv4 Indicator",
+            "indicator_types": [
+                "malicious-activity"
+            ],
+            "valid_from": "2023-08-25T00:00:00Z",
+            "pattern": "[ipv4-addr:value = '85.14.243.111']",
+            "created_by_ref": "identity--b3bca3c2-1f3d-4b54-b44f-dac42c3a8f01"
+        },
+        {
+            "id": "indicator--aff1780b-8db3-426f-8b55-1a82d001b94f",
+            "type": "indicator",
+            "spec_version": "2.1",
+            "pattern_type": "stix",
+            "created": "2023-08-26T15:42:50.000Z",
+            "modified": "2023-08-26T15:42:50.000Z",
+            "object_marking_refs": [
+                "marking-definition--479081c8-3a60-4eb8-b410-96a30f395def",
+                "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+            ],
+            "name": "IPv4 Indicator",
+            "indicator_types": [
+                "malicious-activity"
+            ],
+            "valid_from": "2023-08-25T00:00:00Z",
+            "pattern": "[ipv4-addr:value = '46.151.30.109']",
+            "created_by_ref": "identity--b3bca3c2-1f3d-4b54-b44f-dac42c3a8f01"
+        },
+        {
+            "id": "indicator--7a642006-f75e-46c4-9125-f9690fd366a2",
+            "type": "indicator",
+            "spec_version": "2.1",
+            "pattern_type": "stix",
+            "created": "2023-08-26T15:42:50.000Z",
+            "modified": "2023-08-26T15:42:50.000Z",
+            "object_marking_refs": [
+                "marking-definition--479081c8-3a60-4eb8-b410-96a30f395def",
+                "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+            ],
+            "name": "IPv4 Indicator",
+            "indicator_types": [
+                "malicious-activity"
+            ],
+            "valid_from": "2019-05-01T00:00:00Z",
+            "pattern": "[ipv4-addr:value = '94.103.85.86']",
+            "created_by_ref": "identity--b3bca3c2-1f3d-4b54-b44f-dac42c3a8f01"
+        },
+        {
+            "id": "indicator--c037fe3b-e7f4-451a-8998-65147f40970e",
+            "type": "indicator",
+            "spec_version": "2.1",
+            "pattern_type": "stix",
+            "created": "2023-08-26T15:42:50.000Z",
+            "modified": "2023-08-26T15:42:50.000Z",
+            "object_marking_refs": [
+                "marking-definition--479081c8-3a60-4eb8-b410-96a30f395def",
+                "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+            ],
+            "name": "IPv4 Indicator",
+            "indicator_types": [
+                "malicious-activity"
+            ],
+            "valid_from": "2020-06-24T00:00:00Z",
+            "pattern": "[ipv4-addr:value = '188.241.58.140']",
+            "created_by_ref": "identity--b3bca3c2-1f3d-4b54-b44f-dac42c3a8f01"
+        },
+        {
+            "id": "indicator--408ee167-74c5-4478-8905-a496b3fd1570",
+            "type": "indicator",
+            "spec_version": "2.1",
+            "pattern_type": "stix",
+            "created": "2023-08-26T15:42:50.000Z",
+            "modified": "2023-08-26T15:42:50.000Z",
+            "object_marking_refs": [
+                "marking-definition--479081c8-3a60-4eb8-b410-96a30f395def",
+                "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+            ],
+            "name": "IPv4 Indicator",
+            "indicator_types": [
+                "malicious-activity"
+            ],
+            "valid_from": "2023-08-25T00:00:00Z",
+            "pattern": "[ipv4-addr:value = '193.29.187.57']",
+            "created_by_ref": "identity--b3bca3c2-1f3d-4b54-b44f-dac42c3a8f01"
+        },
+        {
+            "type": "relationship",
+            "spec_version": "2.1",
+            "id": "relationship--512be859-ed6e-4cac-80dd-0e6642fc5ef1",
+            "created_by_ref": "identity--b3bca3c2-1f3d-4b54-b44f-dac42c3a8f01",
+            "created": "2023-08-26T15:42:50.000Z",
+            "modified": "2023-08-26T15:42:50.000Z",
+            "source_ref": "identity--b3bca3c2-1f3d-4b54-b44f-dac42c3a8f01",
+            "relationship_type": "located-at",
+            "target_ref": "location--5a3bed2e-0666-4402-a144-aa8d5871309b",
+            "object_marking_refs": [
+                "marking-definition--479081c8-3a60-4eb8-b410-96a30f395def",
+                "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+            ]
+        },
+        {
+            "id": "report--fda4d4dc-ba7b-440f-8eb0-e10081e6bb6e",
+            "type": "report",
+            "spec_version": "2.1",
+            "created": "2023-08-26T15:42:50.000Z",
+            "modified": "2023-08-26T15:42:50.000Z",
+            "name": "AA23-242A Identification and Disruption of Qakbot Infrastructure",
+            "description": "The Cybersecurity and Infrastructure Security Agency (CISA) and Federal Bureau of Investigation (FBI) are releasing this joint Cybersecurity Advisory (CSA) to disseminate QakBot infrastructure indicators of compromise (IOCs) identified through FBI investigations as of August 2023. On August 25, FBI and international partners executed a coordination operation to disrupt QakBot infrastructure worldwide. Disruption operations targeting QakBot infrastructure resulted in the botnet takeover, which severed the connection between victim computers and QakBot command and control (C2) servers. \n\nQakBot\\u2014also known as Qbot, Quackbot, Pinkslipbot, and TA570\\u2014is responsible for thousands of malware infections globally.  QakBot has been the precursor to a significant amount of computer intrusions, to include ransomware and the compromise of user accounts within the Financial Sector. In existence since at least 2008, QakBot feeds into the global cybercriminal supply chain and has deep-rooted connections to the criminal ecosystem. QakBot was originally used as a banking trojan to steal banking credentials for account compromise; in most cases,  it was delivered via phishing campaigns containing malicious attachments or links to download the malware, which would reside in memory once on the victim network. QakBot has since grown to deploy multiple types of malware, trojans, and highly-destructive ransomware variants.",
+            "published": "2023-08-26T00:00:00Z",
+            "created_by_ref": "identity--b3bca3c2-1f3d-4b54-b44f-dac42c3a8f01",
+            "object_refs": [
+                "marking-definition--479081c8-3a60-4eb8-b410-96a30f395def",
+                "attack-pattern--d0fb872b-96f5-4d11-877a-b153094dbf3a",
+                "attack-pattern--8e73de92-7e77-48ed-9193-7461b8ced8d4",
+                "attack-pattern--591b44be-bfaf-4e8f-8820-594e386d429c",
+                "indicator--d34fc11c-813e-4106-892b-1a3f0dc5a234",
+                "indicator--d18b73da-e427-49b3-b492-e93617ddb5b8",
+                "indicator--0d38bcb3-8cad-4a44-b3b4-897b331e125d",
+                "indicator--6a71a016-23bb-4c28-83e0-cd01757f7d0d",
+                "indicator--a02b9b0e-c6ed-4e19-b3bf-1263ea0144b8",
+                "indicator--fd087b4a-e3f6-44fb-883a-3a5778500b0f",
+                "indicator--458983c4-93d9-461f-9912-550414daea00",
+                "indicator--9b26b142-7891-44e0-9a4a-fa65dad36177",
+                "indicator--d027fb43-35b8-4f4f-a4c1-b6f345bda447",
+                "indicator--37666d4e-50c5-4854-b751-0857d854e37a",
+                "indicator--6be7526a-f460-44e2-a7fc-cb0b024eaebe",
+                "indicator--943af22c-5f4b-4cb4-b19d-2fc77ddf3012",
+                "indicator--cca71c1e-87a1-41ac-8c5a-ddc6a036077a",
+                "indicator--99f8013c-59eb-45c1-8463-256a8853582d",
+                "indicator--2d5bdd1c-ec58-457e-acd4-3173cf4f69c5",
+                "indicator--7685c1bb-74a0-4603-ae5b-a76bc6ee5a1a",
+                "indicator--277dd6d7-5c68-4412-9872-842cddcad265",
+                "indicator--62821176-1ee0-4212-baa5-f1cf3049e66b",
+                "indicator--92e61a21-fe31-4d04-9008-11f937eaa959",
+                "indicator--bb807a6f-5c69-4d6c-a31e-083addb2fccd",
+                "indicator--a4df4510-9779-4e9d-8f8b-366beee64767",
+                "indicator--598518ac-ea4a-4799-9624-9a8da3c18704",
+                "indicator--7a9fdf40-d6d4-47c8-984f-762f68c0d412",
+                "indicator--a34f7aa9-492c-4baf-a1bc-36dbe37f3c79",
+                "indicator--7437302d-faaf-4a1f-8d3d-02e84bbfe348",
+                "indicator--fd530088-e4fd-415e-a535-ec3b569e5160",
+                "indicator--9c096fd9-18a2-4c16-b0e4-f951973f3309",
+                "indicator--e287ca32-d081-473a-8fd3-de600496709a",
+                "indicator--d29509ed-2de1-47f8-9976-415cf6794b4f",
+                "indicator--e4404a0f-410c-45ee-bb53-0132a5396320",
+                "indicator--e7c42d54-031f-4585-ba13-bb7d14bcf40b",
+                "indicator--35131293-7336-4ca6-bc05-c24aebfb4f5a",
+                "indicator--03d9de9d-3ddb-4593-950b-85588df411c1",
+                "indicator--ff7ab1cb-4ad5-4700-9d61-59f53a7b40ca",
+                "indicator--737f8ac0-c86a-4efc-95dc-1ad18f7e8093",
+                "indicator--432709a9-1c87-4719-a47e-607f5542fe38",
+                "indicator--e51bd074-2b22-48d0-8edc-f0595e6ce214",
+                "indicator--aff1780b-8db3-426f-8b55-1a82d001b94f",
+                "indicator--7a642006-f75e-46c4-9125-f9690fd366a2",
+                "indicator--c037fe3b-e7f4-451a-8998-65147f40970e",
+                "indicator--408ee167-74c5-4478-8905-a496b3fd1570",
+                "relationship--512be859-ed6e-4cac-80dd-0e6642fc5ef1"
+            ],
+            "object_marking_refs": [
+                "marking-definition--479081c8-3a60-4eb8-b410-96a30f395def",
+                "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,24 @@
+Watering Holes Are Back, and They Brought a Budget
+
+By the Argus Point Intelligence Team
+
+We spent most of last year telling customers that strategic web compromise was a dying art.
+We were wrong, and this post is the correction.
+
+In March we responded to an intrusion at a European engineering firm that began, of all
+places, at an industry association website the victim's employees visit daily. The
+association's site had been modified to profile visitors and selectively redirect a small
+subset of them, based on IP range and browser fingerprint, to an exploitation server at
+203.0.113[.]61. Everyone else got the normal site. That selectivity is why the compromise
+survived for nine weeks before anyone noticed.
+
+The redirect chain ended at a domain the actor clearly registered for this campaign,
+quiet-harbor[dot]example, which served a browser exploit to a small number of profiled
+targets and a blank page to everyone else. The exploit itself was not novel; the targeting
+discipline was. Fewer than forty machines worldwide ever saw the second stage.
+
+We defang indicators in prose as a matter of house style; refang them before adding them to
+your blocklists. And if you run a niche industry association website, understand that your
+security posture is now part of your members' attack surface. That is the uncomfortable
+economics of watering holes in 2026: the attacker compromises one under-resourced site and
+inherits the trust of every well-resourced organization that visits it.

@@ -1,0 +1,23 @@
+Why Your CDN Allowlist Is Lying to You
+
+By Cordelia Venn, Principal Researcher
+
+Here is a pattern we have now seen in four unrelated intrusions this year, which makes it a
+trend and not an anecdote: attackers are naming their infrastructure to exploit the implicit
+trust that security teams place in content delivery networks.
+
+The most recent case is illustrative. An intrusion at a media company exfiltrated roughly
+sixty gigabytes of pre-release content over two weeks, in small encrypted chunks, to a host
+whose name was chosen with obvious care: bracken-cdn.example. Every analyst who triaged the
+alerts saw the letters c-d-n and moved on. The traffic pattern, steady small uploads to a
+"CDN," read as telemetry or cache synchronization to three separate reviewers before someone
+finally asked why a CDN was receiving uploads at all.
+
+That question is the entire lesson of this post. Content delivery networks deliver content.
+They are download infrastructure. Sustained uploads to anything named like a CDN should be
+treated as exfiltration until proven otherwise, no matter how boring the hostname looks.
+
+We increasingly believe that naming psychology is an underrated attacker skill. Blocklists
+and reputation feeds will always lag a freshly registered name, but an analyst's attention
+is the scarcer resource, and a well-chosen hostname buys the attacker exactly the analyst
+inattention they need. Audit your egress by behavior, not by vibes.

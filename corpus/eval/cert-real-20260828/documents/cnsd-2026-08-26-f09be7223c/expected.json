@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "document": "cnsd-2026-08-26-f09be7223c",
+  "annotation_status": "CORRECTED",
+  "scope_note": "Segunda revisión interna. Incluye los seis CVE nombrados en el cuerpo. Excluye productos y versiones afectados porque el contrato v2.1 los define como contexto, así como URLs bibliográficas, identificadores GHSA y relaciones no expresadas por los tipos admitidos.",
+  "entities": [
+    {
+      "id": "e1",
+      "type": "vulnerability",
+      "value": "CVE-2026-75604",
+      "source_value": "CVE -2026 -75604",
+      "quote": "La primera vulnerabilidad, identificada como CVE -2026 -75604, afecta a aplicaciones Next.js que utilizan Pages Router o App Router sin Cache Components, cuando se ejecutan sobre sistemas de archivos Windows.",
+      "page": 4
+    },
+    {
+      "id": "e3",
+      "type": "vulnerability",
+      "value": "CVE-2026-73678",
+      "source_value": "CVE-2026 -73678",
+      "quote": "La vulnerabilidad de severida d \"crítica \" identificada por MITRE como \" CVE-2026 -73678 \", clasificada como \"CWE -94: Inyección de Código que afecta a Minds Platform en sus versiones <= 26.1.0, podría permitir a un ciberdelincuent e ejecutar código Python arbitrario en el sistema objetivo sin requerir autenticación previas ni interacción de ningún usuario.",
+      "page": 6
+    },
+    {
+      "id": "e5",
+      "type": "vulnerability",
+      "value": "CVE-2026-55040",
+      "source_value": "CVE-2026 -55040",
+      "quote": "La vulnerabilidad de severidad \" crítica \" iden tificada por MITRE como \" CVE-2026 -55040 \", clasificada como \"CWE - 1390: Debilidad en mecanismos de autenticación\" que afecta a instalaciones on -premises de Microsoft SharePoint Server, podría permit ir a un atacante remoto no autenticado falsificar tokens de autenticación JWT (JSON Web Tokens) e impersonar a cualquier usuario del sistema, incluidos los administradores del sitio, otorgándole acceso administrativo sin requerir contraseñas ni interacción previa del usuario.",
+      "page": 7
+    },
+    {
+      "id": "e7",
+      "type": "vulnerability",
+      "value": "CVE-2026-78370",
+      "source_value": "CVE-2026 -78370",
+      "quote": "La vulnerabilidad de severidad \" crítica \" identificada por MITRE como \" CVE-2026 -78370 \", clasificada como \"CWE - 862: Ausencia de Autorización\" que afecta a los productos RansomLook en versiones comprendidas desde la 0 hasta la 2.0.0 (inclusive), podría permitir la extrac ción masiva e irrestricta de datos sensibles.",
+      "page": 8
+    },
+    {
+      "id": "e9",
+      "type": "vulnerability",
+      "value": "CVE-2026-32558",
+      "source_value": "CVE-2026 -32558",
+      "quote": "La vulnerabilidad de severidad \" crítica \" identificada por MITRE como \" CVE-2026 -32558 \", clasificada como \"CWE - 266: Asignación Incorrecta de Privilegios\" que afecta a los plugins Affiliate Pro – Affiliate Program for Wo oCommerce & WordPress de RedefiningTheWeb, podría permitir a un atacante no autenticado elevar sus privilegios en la aplicación objetivo hasta niveles administrativos.",
+      "page": 9
+    },
+    {
+      "id": "e11",
+      "type": "vulnerability",
+      "value": "CVE-2026-19598",
+      "source_value": "CVE-2026 -19598",
+      "quote": "La vulnerabilidad de severidad \"CRÍTICA\" identificada por MITRE como \" CVE-2026 -19598 \", clasificada como \"CWE - 285\" (Control de Acceso Incorrecto / Omisión de Autorización) que afecta a Pods – Custom Content Types and Fields en versiones 2.8 hasta 3.3.9, podría permitir a un atacante remoto no autenticado realizar acciones administrativas no autorizadas, sobrescribir contraseñas de cuentas de usuario clave (incluido el propietario del sitio) e истоchase un compromiso total de la confidencialidad, integridad y disponibilidad del sitio web.",
+      "page": 10
+    }
+  ],
+  "relationships": []
+}

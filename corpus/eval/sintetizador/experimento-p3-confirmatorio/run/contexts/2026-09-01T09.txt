@@ -1,0 +1,8 @@
+Period: last 1h (ending 2026-09-01T10:00Z).
+IOC activity in period: 3233 indicators total (247 newly created, 2986 pre-existing ones re-updated). The 25 highest-confidence of them are sampled below: (2 Hostname, 7 Domain-Name, 16 StixFile), top confidence: 0.50.
+Highest-confidence indicator values, verbatim: c2.installscenter.com (Hostname), installscenter.com (Domain-Name), infectonline.store (Domain-Name), caixaentradas1inboxshop.site (Domain-Name), caixaentradas1boxshop.site (Domain-Name), f775fe06a4c2563cb03e1aa42eb4e9532840cce9dc168ea2ca97cee7972e6b17 (StixFile), d881a60ccd03b5417a1eed184143a18a333e7e9e9e351596a7a765843643af99 (StixFile), cd8fc8effea20d28e76c53f3386c783e55dcb309e1525b27f7a141d51b6f6c78 (StixFile), c4dd46e5b450349fd9fbf686a5a22f55f8371123b098104db663a3980646e138 (StixFile), bc91f90a5677404cf9c8f4bed7b36c22027b1549ffefee129b41fab3db3108b8 (StixFile).
+Tracked threat actors (knowledge base, most recently updated first): Exilware, BREEZE COMET, Mini Shai-Hulud, Sandworm Team, Aurora, Dark Caracal, Tortoiseshell, DukeEugene, Vanilla Tempest, UAT-10147.
+Tracked malware families (knowledge base): PollCat, NodeRabbit, Concipit1248, Cerberus, AgenteV2, CNABHunter, BraZetsu, Trinitite, BOATBEAM, KICKPLATE.
+Campaigns tracked in knowledge base: Quad7 Activity, CostaRicto, FLORAHOX Activity, C0027, C0026 (+5 more).
+ATT&CK techniques tracked (knowledge base): T1682 (Query Public AI Services), T1021.002 (SMB/Windows Admin Shares), T1025 (Data from Removable Media).
+Affected sectors: none identified.

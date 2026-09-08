@@ -1,0 +1,18 @@
+{
+  "source_name": "ColCERT Boletines",
+  "title": "COLCERT AL – 20260825 - 115 Alerta: Campaña de Ransomware-as-a-Service (RaaS) “Moondancer”",
+  "publication_date": "2026-08-25",
+  "landing_url": "https://www.colcert.gov.co/800/w3-article-440417.html",
+  "document_url": "https://www.colcert.gov.co/800/articles-440417_COLCERT_AL__20260825__115_Alerta_Campana_de_RansomwareasaService_RaaS_Moondancer_.pdf",
+  "title_source": "collection_anchor+landing_confirmed",
+  "publication_date_source": "collection_card_text+landing_confirmed",
+  "selection_order": 2,
+  "selection_rule": "first unseen eligible PDF in collection order",
+  "sha256_pdf": "2e0da96f839d27ad72b4e5d314b1ac1c391b9277bf35c2ef7f56f824483695f6",
+  "sha256_text": "fbce626cc40f6695d0eafa1633ea82f477d1aa0d2a500b03efa800b4577f2192",
+  "pdf_bytes": 638669,
+  "text_chars": 11909,
+  "llm_calls": 0,
+  "opencti_writes": 0,
+  "stem": "colcert-2026-08-25-25c7bbd453"
+}

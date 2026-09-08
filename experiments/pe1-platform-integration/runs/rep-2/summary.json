@@ -1,0 +1,70 @@
+{
+  "accepted": true,
+  "errors": [],
+  "integration": {
+    "accepted": true,
+    "indicator_count": 34,
+    "job_id": "8423f0a1-854c-4c2f-8eea-63d082f63103",
+    "processing_time_s": 134.66,
+    "relationship_count": 136,
+    "report_id": "f064dc36-8ff0-4e2a-9f20-27a6e59a7ff6"
+  },
+  "repetition": 2,
+  "shutdown": {
+    "accepted": true,
+    "exit_code": 0
+  },
+  "startup": {
+    "accepted": true,
+    "bootstrap_exit_code": 0,
+    "duration_s": 93.194,
+    "expected": 39,
+    "healthy": 38,
+    "issues": [],
+    "running": 39,
+    "services": [
+      "elasticsearch",
+      "minio",
+      "rabbitmq",
+      "redis",
+      "opencti",
+      "connector-alienvault",
+      "connector-ipinfo",
+      "connector-abuseipdb",
+      "connector-export-file-stix",
+      "connector-import-document",
+      "connector-import-file-stix",
+      "connector-malwarebazaar",
+      "connector-shodan",
+      "kibana",
+      "connector-cve",
+      "connector-export-file-txt",
+      "feed-orchestrator",
+      "ollama",
+      "connector-mitre",
+      "connector-opencti",
+      "briefing-generator",
+      "connector-cisa-kev",
+      "connector-greynoise-feed",
+      "connector-hygiene",
+      "connector-misp-feed",
+      "worker",
+      "connector-urlhaus",
+      "connector-virustotal",
+      "chromadb",
+      "semantic-engine",
+      "soc-dashboard",
+      "connector-export-file-csv",
+      "connector-export-report-pdf",
+      "connector-first-epss",
+      "connector-google-dns",
+      "intel-extractor",
+      "connector-disarm-framework",
+      "connector-import-external-reference",
+      "connector-misp-feed-certfr"
+    ],
+    "without_healthcheck": [
+      "connector-opencti"
+    ]
+  }
+}

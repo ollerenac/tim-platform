@@ -1,0 +1,181 @@
+# sources.yaml — collector source registry (ROB-04).
+#
+# NOTE: this file is COPYed into the image at build time — changes require an
+# image rebuild, not just a container restart.
+#
+# KEV is deliberately ABSENT: connector-cisa-kev ingests KEV JSON natively
+# (locked decision ROB-04). The collector's CISA scope is CSAF advisory
+# documents from GitHub cisagov/CSAF only.
+sources:
+  - name: NCSC UK
+    type: rss
+    url: https://www.ncsc.gov.uk/api/1/services/v1/all-rss-feed.xml
+    source_type: advisory
+    poll_interval_hours: 24
+  - name: CERT-EU Threat Intelligence
+    type: rss
+    url: https://cert.europa.eu/publications/threat-intelligence-rss
+    source_type: report
+    poll_interval_hours: 24
+  - name: CISA CSAF
+    type: csaf_github
+    repo: cisagov/CSAF
+    branch: develop
+    source_type: advisory
+    # {year} is resolved at poll time (UTC) — advisories live in per-year dirs
+    path: csaf_files/OT/white/{year}
+    max_advisories: 10
+    poll_interval_hours: 24
+  - name: CERT-FR IOC
+    type: rss
+    url: https://www.cert.ssi.gouv.fr/ioc/feed/
+    source_type: advisory
+    poll_interval_hours: 24
+  - name: CERT-PL EN
+    type: rss
+    url: https://cert.pl/en/rss.xml
+    source_type: advisory
+    poll_interval_hours: 24
+  - name: JPCERT/CC English
+    type: rss
+    url: https://www.jpcert.or.jp/english/rss/jpcert-en.rdf
+    source_type: advisory
+    poll_interval_hours: 24
+  - name: ACSC Advisories
+    type: rss
+    url: https://www.cyber.gov.au/rss/advisories
+    source_type: advisory
+    poll_interval_hours: 24
+  - name: CCCS Canada
+    type: rss
+    url: https://www.cyber.gc.ca/api/cccs/atom/v1/get?feed=alerts_advisories&lang=en
+    source_type: advisory
+    poll_interval_hours: 24
+  - name: The DFIR Report
+    type: rss
+    url: https://thedfirreport.com/feed/
+    source_type: blog
+    poll_interval_hours: 24
+  - name: Unit 42
+    type: rss
+    url: https://unit42.paloaltonetworks.com/feed/
+    source_type: blog
+    poll_interval_hours: 24
+  - name: Cisco Talos
+    type: rss
+    url: http://feeds.feedburner.com/feedburner/Talos
+    source_type: blog
+    poll_interval_hours: 24
+  - name: SentinelLabs
+    type: rss
+    url: https://www.sentinelone.com/labs/feed/
+    source_type: blog
+    poll_interval_hours: 24
+  - name: Kaspersky Securelist
+    type: rss
+    url: https://securelist.com/feed/
+    source_type: blog
+    poll_interval_hours: 24
+  - name: Check Point Research
+    type: rss
+    url: https://research.checkpoint.com/feed/
+    source_type: blog
+    poll_interval_hours: 24
+  - name: ESET WeLiveSecurity
+    type: rss
+    url: https://www.welivesecurity.com/en/rss/feed/
+    source_type: blog
+    poll_interval_hours: 24
+  - name: Google Mandiant Threat Intelligence
+    type: rss
+    url: https://feeds.feedburner.com/threatintelligence/pvexyqv7v0v
+    source_type: blog
+    poll_interval_hours: 24
+  - name: Volexity
+    type: rss
+    url: https://www.volexity.com/feed/
+    source_type: blog
+    poll_interval_hours: 24
+  - name: CNSD Integrated Digital Security Alerts
+    type: html_collection
+    url: https://www.gob.pe/institucion/pcm/colecciones/791-alerta-integrada-de-seguridad-digital-del-cnsd
+    source_type: bulletin
+    collection_item_selector: a.leading-6.font-bold[href]
+    landing_allowed_hosts:
+      - www.gob.pe
+    landing_path_pattern: ^/institucion/pcm/informes-publicaciones/.*cnsd$
+    document_link_selector: a.track-ga-click[href]
+    document_allowed_hosts:
+      - cdn.www.gob.pe
+    document_path_pattern: ^/uploads/document/file/.*\.pdf$
+    max_candidates: 3
+    max_new_per_cycle: 1
+    automatic_dispatch: true
+    dispatch_pipeline: cnsd_strict
+    identity:
+      name: Centro Nacional de Seguridad Digital (CNSD)
+      type: Organization
+    processed_seed_documents:
+      - landing_url: https://www.gob.pe/institucion/pcm/informes-publicaciones/8359341-alerta-integrada-de-seguridad-digital-n-117-2026-cnsd
+        document_url: https://cdn.www.gob.pe/uploads/document/file/10288111/8359341-alerta-integrada-de-seguridad-digital-117-2026-cnsd.pdf
+      - landing_url: https://www.gob.pe/institucion/pcm/informes-publicaciones/8359338-alerta-integrada-de-seguridad-digital-n-116-2026-cnsd
+        document_url: https://cdn.www.gob.pe/uploads/document/file/10288107/8359338-alerta-integrada-de-seguridad-digital-116-2026-cnsd.pdf
+      - landing_url: https://www.gob.pe/institucion/pcm/informes-publicaciones/8346789-alerta-integrada-de-seguridad-digital-n-115-2026-cnsd
+        document_url: https://cdn.www.gob.pe/uploads/document/file/10271221/8346789-alerta-integrada-de-seguridad-digital-115-2026-cnsd.pdf
+    poll_interval_hours: 24
+  - name: ColCERT Boletines
+    type: html_collection
+    url: https://www.colcert.gov.co/800/w3-propertyvalue-412601.html
+    source_type: bulletin
+    # Article title anchors live in div.h5.font-weight-bold cards; first matches
+    # in DOM order are the newest bulletins (196 matches, newest-first, verified 2026-07-17).
+    collection_item_selector: div.h5.font-weight-bold > a[href]
+    landing_allowed_hosts:
+      - www.colcert.gov.co
+    landing_path_pattern: ^/800/w3-article-\d+\.html$
+    # Newtenberg CMS renders each attachment inside a div whose class list contains
+    # "binary-<filename>"; exactly one match per landing, zero on the collection page.
+    document_link_selector: div[class*="binary-"] > a[href]
+    document_allowed_hosts:
+      - www.colcert.gov.co
+    # NOT anchored on a pdf extension — some docs have a CMS-truncated bare-dot name
+    # yet serve application/pdf; looks_like_pdf() content sniffing is the real gate.
+    document_path_pattern: ^/800/articles-\d+_
+    max_candidates: 3
+    max_new_per_cycle: 1
+    automatic_dispatch: true
+    # No dispatch_pipeline: rides the generic run_extraction branch with the
+    # identity below as created_by (pipeline-optional-with-identity, quick-260717-col).
+    identity:
+      name: Grupo de Respuesta a Emergencias Ciberneticas de Colombia (ColCERT)
+      type: Organization
+    # Two newest bulletins seeded; 439553 (Informe de apreciacion Sector Industria)
+    # deliberately unseeded so the first live cycle deterministically ingests it.
+    processed_seed_documents:
+      - landing_url: https://www.colcert.gov.co/800/w3-article-439644.html
+        document_url: https://www.colcert.gov.co/800/articles-439644_COLCERT_AL__20260710__102_Alerta_Red_de_Retransmision_Operativa_CHARLIE.
+      - landing_url: https://www.colcert.gov.co/800/w3-article-439567.html
+        document_url: https://www.colcert.gov.co/800/articles-439567_COLCERT_IN20260703034_Informe_de_apreciacion_Sector_Salud_.pdf
+    poll_interval_hours: 24
+  - name: MITRE ATT&CK Groups
+    type: html_index
+    url: https://attack.mitre.org/groups/
+    source_type: report
+    # Broad selector is intentional — host + path confinement does the filtering,
+    # and the duplicate ID/Name-column links dedupe on the confined URL.
+    # Index hrefs are exactly /groups/G0018 (no trailing slash), 178 groups.
+    item_selector: "a[href]"
+    allowed_hosts:
+      - attack.mitre.org
+    path_pattern: ^/groups/G\d{4}$
+    # The site 301-redirects /groups/GXXXX to /groups/GXXXX/ and the extractor
+    # never follows redirects — dispatch the canonical trailing-slash URL.
+    append_slash: true
+    # 10 pages/cycle with Ollama at 6 GiB (was 5 on the 2 GiB limit). The one-time
+    # 178-page backfill runs via scripts/drain_mitre_groups.sh (verify + retry);
+    # steady state after the drain is only newly published groups.
+    max_new_per_cycle: 10
+    identity:
+      name: The MITRE Corporation
+      type: Organization
+    poll_interval_hours: 24

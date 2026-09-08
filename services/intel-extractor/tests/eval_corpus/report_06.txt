@@ -1,0 +1,26 @@
+QUARTERLY THREAT LANDSCAPE REPORT Q2-2026
+Sector Focus: Financial Services
+Classification: TLP:CLEAR
+
+1. QUARTER IN REVIEW
+Attack volume against financial services rose 18 percent quarter over quarter, driven
+primarily by credential phishing and infostealer distribution. Destructive incidents
+remained rare; monetization continues to favor fraud and access resale over disruption.
+
+2. NOTABLE CAMPAIGN
+The most significant campaign of the quarter distributed a banking-focused variant of a
+commodity stealer through search advertisements impersonating tax preparation software.
+The installer (MD5: df5308c8768f3aff336c2356871ef24d) dropped a payload with SHA-256 c085655ce22a9ac3a4c183705c9253027581b15082c389ee51c20116ddd4476f that targeted
+browser-stored credentials for regional banking portals.
+
+Command-and-control for the campaign resolved through ledger-relay.example, with victim
+data posted to https://ledger-relay.example/ingest. Interactive fraud sessions following
+credential capture originated from 203.0.113.140 and 203.0.113.141, typically within one
+business day of infection.
+
+3. OUTLOOK
+We expect infostealer-to-fraud pipelines to remain the dominant threat to the sector
+through year end. Controls that break the pipeline early, particularly blocking execution
+of unsigned installers delivered via browser download, offer the best return on effort.
+Institutions should also rehearse rapid credential invalidation for customer-facing
+portals, as the interval between capture and fraudulent use continues to shrink.

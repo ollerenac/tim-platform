@@ -1,0 +1,20 @@
+SECURITY BULLETIN 2026-052
+Severity: MEDIUM
+Subject: Malicious build dependency published to public package registry
+
+A malicious package impersonating a popular logging library was published to a public
+package registry and downloaded approximately 3,400 times before removal. The package name
+differed from the legitimate library by a single transposed character.
+
+On installation, the package's post-install script retrieves a second-stage archive from
+https://pkg-mirror-cache.example/dl/setup.tgz and executes it. The archive
+(SHA-256: 8dcfd4551eed9e5423cfa6ab1294362e304d973938c24b081e52bf1cb47d34e2) collects environment variables, CI secrets, and cloud credential
+files, and transmits them to the same host.
+
+The registry removed the package on 2026-06-10. Build systems that installed it between
+2026-06-03 and 2026-06-10 should be considered compromised.
+
+RECOMMENDATIONS
+Audit dependency lockfiles for the affected package name and version range. Rotate all
+secrets accessible to affected build environments. Pin dependencies by hash where the
+ecosystem supports it.

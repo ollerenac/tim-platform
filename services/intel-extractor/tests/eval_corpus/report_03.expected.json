@@ -1,0 +1,54 @@
+{
+  "format": "report",
+  "iocs": [
+    {
+      "type": "ip",
+      "value": "192.0.2.61"
+    },
+    {
+      "type": "ip",
+      "value": "192.0.2.62"
+    },
+    {
+      "type": "ip",
+      "value": "192.0.2.63"
+    },
+    {
+      "type": "ip",
+      "value": "198.51.100.170"
+    },
+    {
+      "type": "ip",
+      "value": "198.51.100.171"
+    },
+    {
+      "type": "domain",
+      "value": "session-broker.example"
+    },
+    {
+      "type": "domain",
+      "value": "mail-archive-sync.example"
+    },
+    {
+      "type": "domain",
+      "value": "diplomatic-cache.example"
+    },
+    {
+      "type": "url",
+      "value": "https://session-broker.example/api/poll"
+    },
+    {
+      "type": "url",
+      "value": "https://mail-archive-sync.example/put"
+    },
+    {
+      "type": "hash_sha256",
+      "value": "71813dfe13accf8f1424e38360e590b24390b1d6861982fb1f7ebb8cee27a818"
+    },
+    {
+      "type": "hash_sha256",
+      "value": "fbd691fc846eec2fe8d746911f3c68b6414a0e1613fd384c55bd013aba3dcba9"
+    }
+  ],
+  "notes": "infrastructure report, 12 IOCs in clustered lists"
+}

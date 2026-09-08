@@ -1,0 +1,20 @@
+ICS ADVISORY ICSA-26-160-01
+Trojanized Firmware Update Targeting Building Automation Controllers
+
+SUMMARY
+An unattributed actor is distributing trojanized firmware images for a widely deployed line
+of building automation controllers. The malicious firmware opens a reverse shell to actor
+infrastructure while preserving normal controller operation, delaying detection.
+
+TECHNICAL DETAILS
+Victims are directed to a spoofed vendor support portal by search engine advertisements. The
+spoofed portal at firmware-check.example serves a modified firmware bundle from
+http://firmware-check.example/fw.bin. Once flashed, the controller opens outbound TLS
+connections to 198.51.100.88 and 198.51.100.89 on port 443 and awaits tasking.
+
+The trojanized firmware bundle has SHA-1 hash dc9e9f488e523e2eeae01166a691ad9386422891.
+
+MITIGATIONS
+* Obtain firmware exclusively from the vendor portal reached by typed URL, never via ads.
+* Verify firmware digests against vendor-published values before flashing.
+* Monitor controller VLANs for unexpected outbound TLS sessions.

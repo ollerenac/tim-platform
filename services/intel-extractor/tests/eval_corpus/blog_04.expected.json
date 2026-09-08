@@ -1,0 +1,18 @@
+{
+  "format": "blog",
+  "iocs": [
+    {
+      "type": "hash_md5",
+      "value": "e8f98c08e9501fa2fbfc94ee77123264"
+    },
+    {
+      "type": "domain",
+      "value": "tidepump-updates.example"
+    },
+    {
+      "type": "url",
+      "value": "https://tidepump-updates.example/get"
+    }
+  ],
+  "notes": "blog, 3 IOCs: md5, domain, and url on that domain"
+}

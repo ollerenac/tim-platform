@@ -1,0 +1,26 @@
+{
+  "format": "advisory",
+  "iocs": [
+    {
+      "type": "ip",
+      "value": "198.51.100.88"
+    },
+    {
+      "type": "ip",
+      "value": "198.51.100.89"
+    },
+    {
+      "type": "domain",
+      "value": "firmware-check.example"
+    },
+    {
+      "type": "url",
+      "value": "http://firmware-check.example/fw.bin"
+    },
+    {
+      "type": "hash_sha1",
+      "value": "dc9e9f488e523e2eeae01166a691ad9386422891"
+    }
+  ],
+  "notes": "compact OT advisory, 5 IOCs"
+}

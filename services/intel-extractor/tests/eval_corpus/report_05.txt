@@ -1,0 +1,41 @@
+THREAT INTELLIGENCE REPORT TR-2026-023
+Quiet Harbor: A Selective Watering-Hole Campaign Against the Engineering Sector
+Classification: TLP:CLEAR
+
+1. EXECUTIVE SUMMARY
+This report expands on public reporting of the Quiet Harbor watering-hole campaign with
+infrastructure and tooling detail recovered from two incident response engagements. The
+campaign profiled visitors to niche industry websites and delivered a browser exploit to a
+narrowly selected subset, followed by a bespoke loader on hosts of continuing interest.
+
+2. VICTIMOLOGY
+Confirmed second-stage delivery at fewer than forty organizations worldwide, concentrated in
+mechanical and civil engineering. Profiling criteria included IP range, locale, and time
+zone, indicating a target list rather than opportunistic collection.
+
+3. TECHNICAL DETAIL
+Per distribution policy for this report series, network indicators below are defanged.
+
+Exploitation servers:
+  203.0.113[.]61
+  203.0.113[.]62
+  192.0.2[.]190
+
+Campaign domains:
+  quiet-harbor[.]example
+  anchor-light[.]example
+
+Loader retrieval and telemetry URLs:
+  hxxps://quiet-harbor[.]example/stage
+  hxxp://anchor-light[.]example/t
+
+Operator contact observed in a recovered configuration block: pilot[at]anchor-light[.]example
+
+The loader recovered from both engagements is identical: SHA-256 cf2ef8f7c222cc90f5914a4a7ed13797a5e7db2fe829d5389e8d977a9e6263ef. It
+executes only after verifying the host matches the profiling criteria a second time,
+discarding sandbox and researcher environments.
+
+4. ASSESSMENT
+Selectivity, not novelty, is this campaign's defining feature. We assess the operators
+will re-provision and continue; the profiling behavior described in section 3 is the
+durable detection opportunity.

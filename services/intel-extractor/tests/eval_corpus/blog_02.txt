@@ -1,0 +1,23 @@
+The Quiet Persistence of MireRAT
+
+By Cordelia Venn, Principal Researcher
+
+Every few months a customer asks us whether MireRAT is "still a thing." It is. It never
+stopped being a thing. It just stopped being loud.
+
+MireRAT's operators learned the lesson that most of the industry teaches attackers for free:
+noisy malware gets written about, and written-about malware gets detected. So they went
+quiet. The builds we recovered this quarter make exactly one network request per day, at a
+time derived from the victim's own system clock, to whatever infrastructure was seeded at
+install time. There is no domain generation algorithm to reverse, no burst of beacons to
+alert on, nothing that trips a threshold-based detection.
+
+What finally gave this campaign away was not the network layer at all. It was a file. The
+core implant, once unpacked, always writes a state blob with the same structure, and the
+unpacked module we recovered carries the SHA-256 hash 84d60dd008e7b5b40191bc0919401ed5ed5756b1f46da3febbafe0712e548c03. One hash is a thin
+thread to pull, but it was enough: retro-hunting across our telemetry surfaced eleven more
+victims, all in the maritime logistics sector, all infected for over a year.
+
+The lesson for defenders is uncomfortable. Everything about modern detection assumes the
+attacker will eventually make noise. MireRAT is a bet that patience beats every threshold
+you will ever set, and so far the bet is paying off. Hunt for artifacts, not just anomalies.

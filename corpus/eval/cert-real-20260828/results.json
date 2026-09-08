@@ -1,0 +1,3509 @@
+{
+  "aggregate": {
+    "citations": {
+      "localized": 157,
+      "rate": 1.0,
+      "total": 157
+    },
+    "entities": {
+      "by_type": {
+        "attack-pattern": {
+          "counts": {
+            "fn": 21,
+            "fp": 1,
+            "tp": 30
+          },
+          "f1": 0.7317073170731707,
+          "precision": 0.967741935483871,
+          "recall": 0.5882352941176471
+        },
+        "country": {
+          "counts": {
+            "fn": 19,
+            "fp": 3,
+            "tp": 5
+          },
+          "f1": 0.3125,
+          "precision": 0.625,
+          "recall": 0.20833333333333334
+        },
+        "indicator": {
+          "counts": {
+            "fn": 65,
+            "fp": 1,
+            "tp": 112
+          },
+          "f1": 0.7724137931034483,
+          "precision": 0.9911504424778761,
+          "recall": 0.632768361581921
+        },
+        "malware": {
+          "counts": {
+            "fn": 7,
+            "fp": 1,
+            "tp": 5
+          },
+          "f1": 0.5555555555555556,
+          "precision": 0.8333333333333334,
+          "recall": 0.4166666666666667
+        },
+        "sector": {
+          "counts": {
+            "fn": 21,
+            "fp": 0,
+            "tp": 0
+          },
+          "f1": 0.0,
+          "precision": null,
+          "recall": 0.0
+        },
+        "technology": {
+          "counts": {
+            "fn": 46,
+            "fp": 10,
+            "tp": 2
+          },
+          "f1": 0.06666666666666667,
+          "precision": 0.16666666666666666,
+          "recall": 0.041666666666666664
+        },
+        "threat-actor": {
+          "counts": {
+            "fn": 6,
+            "fp": 0,
+            "tp": 0
+          },
+          "f1": 0.0,
+          "precision": null,
+          "recall": 0.0
+        },
+        "vulnerability": {
+          "counts": {
+            "fn": 33,
+            "fp": 0,
+            "tp": 0
+          },
+          "f1": 0.0,
+          "precision": null,
+          "recall": 0.0
+        }
+      },
+      "counts": {
+        "fn": 218,
+        "fp": 16,
+        "tp": 154
+      },
+      "f1": 0.5682656826568265,
+      "precision": 0.9058823529411765,
+      "recall": 0.41397849462365593
+    },
+    "indicators": {
+      "counts": {
+        "fn": 65,
+        "fp": 1,
+        "tp": 112
+      },
+      "f1": 0.7724137931034483,
+      "precision": 0.9911504424778761,
+      "recall": 0.632768361581921
+    },
+    "knowledge_entities": {
+      "counts": {
+        "fn": 153,
+        "fp": 15,
+        "tp": 42
+      },
+      "f1": 0.3333333333333333,
+      "precision": 0.7368421052631579,
+      "recall": 0.2153846153846154
+    },
+    "relationships": {
+      "counts": {
+        "fn": 62,
+        "fp": 13,
+        "tp": 7
+      },
+      "f1": 0.15730337078651685,
+      "precision": 0.35,
+      "recall": 0.10144927536231885
+    }
+  },
+  "experiment": "cnsd-colcert-haiku-20260828",
+  "generated_at_utc": "2026-08-28T11:20:18.785970Z",
+  "integrity": {
+    "aws_region": "us-east-1",
+    "documents": 4,
+    "model": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
+    "opencti_writes": 0,
+    "provider": "bedrock",
+    "repetitions_per_document": 3,
+    "runs": 12,
+    "statuses": [
+      "success"
+    ]
+  },
+  "per_document": {
+    "cnsd-2026-08-26-f09be7223c": {
+      "citations": {
+        "localized": 10,
+        "rate": 1.0,
+        "total": 10
+      },
+      "entities": {
+        "by_type": {
+          "malware": {
+            "counts": {
+              "fn": 0,
+              "fp": 1,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": 0.0,
+            "recall": null
+          },
+          "technology": {
+            "counts": {
+              "fn": 0,
+              "fp": 7,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": 0.0,
+            "recall": null
+          },
+          "vulnerability": {
+            "counts": {
+              "fn": 18,
+              "fp": 0,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": null,
+            "recall": 0.0
+          }
+        },
+        "counts": {
+          "fn": 18,
+          "fp": 8,
+          "tp": 0
+        },
+        "f1": 0.0,
+        "precision": 0.0,
+        "recall": 0.0
+      },
+      "indicators": {
+        "counts": {
+          "fn": 0,
+          "fp": 0,
+          "tp": 0
+        },
+        "f1": null,
+        "precision": null,
+        "recall": null
+      },
+      "knowledge_entities": {
+        "counts": {
+          "fn": 18,
+          "fp": 8,
+          "tp": 0
+        },
+        "f1": 0.0,
+        "precision": 0.0,
+        "recall": 0.0
+      },
+      "relationships": {
+        "counts": {
+          "fn": 0,
+          "fp": 2,
+          "tp": 0
+        },
+        "f1": 0.0,
+        "precision": 0.0,
+        "recall": null
+      }
+    },
+    "cnsd-2026-08-27-e9f7f97545": {
+      "citations": {
+        "localized": 45,
+        "rate": 1.0,
+        "total": 45
+      },
+      "entities": {
+        "by_type": {
+          "country": {
+            "counts": {
+              "fn": 6,
+              "fp": 0,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "indicator": {
+            "counts": {
+              "fn": 41,
+              "fp": 0,
+              "tp": 91
+            },
+            "f1": 0.8161434977578476,
+            "precision": 1.0,
+            "recall": 0.6893939393939394
+          },
+          "malware": {
+            "counts": {
+              "fn": 3,
+              "fp": 0,
+              "tp": 3
+            },
+            "f1": 0.6666666666666666,
+            "precision": 1.0,
+            "recall": 0.5
+          },
+          "technology": {
+            "counts": {
+              "fn": 36,
+              "fp": 0,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "threat-actor": {
+            "counts": {
+              "fn": 3,
+              "fp": 0,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "vulnerability": {
+            "counts": {
+              "fn": 15,
+              "fp": 0,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": null,
+            "recall": 0.0
+          }
+        },
+        "counts": {
+          "fn": 104,
+          "fp": 0,
+          "tp": 94
+        },
+        "f1": 0.6438356164383562,
+        "precision": 1.0,
+        "recall": 0.47474747474747475
+      },
+      "indicators": {
+        "counts": {
+          "fn": 41,
+          "fp": 0,
+          "tp": 91
+        },
+        "f1": 0.8161434977578476,
+        "precision": 1.0,
+        "recall": 0.6893939393939394
+      },
+      "knowledge_entities": {
+        "counts": {
+          "fn": 63,
+          "fp": 0,
+          "tp": 3
+        },
+        "f1": 0.08695652173913043,
+        "precision": 1.0,
+        "recall": 0.045454545454545456
+      },
+      "relationships": {
+        "counts": {
+          "fn": 24,
+          "fp": 0,
+          "tp": 0
+        },
+        "f1": 0.0,
+        "precision": null,
+        "recall": 0.0
+      }
+    },
+    "colcert-2026-08-25-25c7bbd453": {
+      "citations": {
+        "localized": 6,
+        "rate": 1.0,
+        "total": 6
+      },
+      "entities": {
+        "by_type": {
+          "attack-pattern": {
+            "counts": {
+              "fn": 15,
+              "fp": 0,
+              "tp": 6
+            },
+            "f1": 0.4444444444444444,
+            "precision": 1.0,
+            "recall": 0.2857142857142857
+          },
+          "country": {
+            "counts": {
+              "fn": 3,
+              "fp": 0,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "indicator": {
+            "counts": {
+              "fn": 6,
+              "fp": 0,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "malware": {
+            "counts": {
+              "fn": 3,
+              "fp": 0,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "sector": {
+            "counts": {
+              "fn": 18,
+              "fp": 0,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "technology": {
+            "counts": {
+              "fn": 3,
+              "fp": 0,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "threat-actor": {
+            "counts": {
+              "fn": 3,
+              "fp": 0,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": null,
+            "recall": 0.0
+          }
+        },
+        "counts": {
+          "fn": 51,
+          "fp": 0,
+          "tp": 6
+        },
+        "f1": 0.19047619047619047,
+        "precision": 1.0,
+        "recall": 0.10526315789473684
+      },
+      "indicators": {
+        "counts": {
+          "fn": 6,
+          "fp": 0,
+          "tp": 0
+        },
+        "f1": 0.0,
+        "precision": null,
+        "recall": 0.0
+      },
+      "knowledge_entities": {
+        "counts": {
+          "fn": 45,
+          "fp": 0,
+          "tp": 6
+        },
+        "f1": 0.21052631578947367,
+        "precision": 1.0,
+        "recall": 0.11764705882352941
+      },
+      "relationships": {
+        "counts": {
+          "fn": 21,
+          "fp": 0,
+          "tp": 0
+        },
+        "f1": 0.0,
+        "precision": null,
+        "recall": 0.0
+      }
+    },
+    "colcert-2026-08-26-92539d2a32": {
+      "citations": {
+        "localized": 96,
+        "rate": 1.0,
+        "total": 96
+      },
+      "entities": {
+        "by_type": {
+          "attack-pattern": {
+            "counts": {
+              "fn": 6,
+              "fp": 1,
+              "tp": 24
+            },
+            "f1": 0.8727272727272727,
+            "precision": 0.96,
+            "recall": 0.8
+          },
+          "country": {
+            "counts": {
+              "fn": 10,
+              "fp": 3,
+              "tp": 5
+            },
+            "f1": 0.43478260869565216,
+            "precision": 0.625,
+            "recall": 0.3333333333333333
+          },
+          "indicator": {
+            "counts": {
+              "fn": 18,
+              "fp": 1,
+              "tp": 21
+            },
+            "f1": 0.6885245901639344,
+            "precision": 0.9545454545454546,
+            "recall": 0.5384615384615384
+          },
+          "malware": {
+            "counts": {
+              "fn": 1,
+              "fp": 0,
+              "tp": 2
+            },
+            "f1": 0.8,
+            "precision": 1.0,
+            "recall": 0.6666666666666666
+          },
+          "sector": {
+            "counts": {
+              "fn": 3,
+              "fp": 0,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "technology": {
+            "counts": {
+              "fn": 7,
+              "fp": 3,
+              "tp": 2
+            },
+            "f1": 0.2857142857142857,
+            "precision": 0.4,
+            "recall": 0.2222222222222222
+          }
+        },
+        "counts": {
+          "fn": 45,
+          "fp": 8,
+          "tp": 54
+        },
+        "f1": 0.6708074534161491,
+        "precision": 0.8709677419354839,
+        "recall": 0.5454545454545454
+      },
+      "indicators": {
+        "counts": {
+          "fn": 18,
+          "fp": 1,
+          "tp": 21
+        },
+        "f1": 0.6885245901639344,
+        "precision": 0.9545454545454546,
+        "recall": 0.5384615384615384
+      },
+      "knowledge_entities": {
+        "counts": {
+          "fn": 27,
+          "fp": 7,
+          "tp": 33
+        },
+        "f1": 0.66,
+        "precision": 0.825,
+        "recall": 0.55
+      },
+      "relationships": {
+        "counts": {
+          "fn": 17,
+          "fp": 11,
+          "tp": 7
+        },
+        "f1": 0.3333333333333333,
+        "precision": 0.3888888888888889,
+        "recall": 0.2916666666666667
+      }
+    }
+  },
+  "reference": {
+    "entity_instances_per_repetition": 124,
+    "relationship_instances_per_repetition": 23
+  },
+  "runs": [
+    {
+      "citations": {
+        "localized": 1,
+        "rate": 1.0,
+        "total": 1
+      },
+      "document": "cnsd-2026-08-27-e9f7f97545",
+      "elapsed_seconds": 54.484565,
+      "emitted_flat_entities": 26,
+      "emitted_v2_entities": 1,
+      "emitted_v2_relationships": 0,
+      "entities": {
+        "by_type": {
+          "country": {
+            "counts": {
+              "fn": 2,
+              "fp": 0,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "indicator": {
+            "counts": {
+              "fn": 19,
+              "fp": 0,
+              "tp": 25
+            },
+            "f1": 0.7246376811594203,
+            "precision": 1.0,
+            "recall": 0.5681818181818182
+          },
+          "malware": {
+            "counts": {
+              "fn": 1,
+              "fp": 0,
+              "tp": 1
+            },
+            "f1": 0.6666666666666666,
+            "precision": 1.0,
+            "recall": 0.5
+          },
+          "technology": {
+            "counts": {
+              "fn": 12,
+              "fp": 0,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "threat-actor": {
+            "counts": {
+              "fn": 1,
+              "fp": 0,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "vulnerability": {
+            "counts": {
+              "fn": 5,
+              "fp": 0,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": null,
+            "recall": 0.0
+          }
+        },
+        "counts": {
+          "fn": 40,
+          "fp": 0,
+          "tp": 26
+        },
+        "f1": 0.5652173913043478,
+        "false_negatives": [
+          {
+            "type": "country",
+            "value": "corea del sur"
+          },
+          {
+            "type": "country",
+            "value": "japon"
+          },
+          {
+            "type": "indicator",
+            "value": "103.249.117.183"
+          },
+          {
+            "type": "indicator",
+            "value": "103.77.242.187"
+          },
+          {
+            "type": "indicator",
+            "value": "160.187.147.119"
+          },
+          {
+            "type": "indicator",
+            "value": "210.183.177.217"
+          },
+          {
+            "type": "indicator",
+            "value": "5727c0ff18c58b80bca5ce80575996bd"
+          },
+          {
+            "type": "indicator",
+            "value": "84.247.145.65"
+          },
+          {
+            "type": "indicator",
+            "value": "http://103.249.117.183/1.bat"
+          },
+          {
+            "type": "indicator",
+            "value": "http://103.249.117.183/receive.php"
+          },
+          {
+            "type": "indicator",
+            "value": "http://103.77.242.187/jinf.pdf"
+          },
+          {
+            "type": "indicator",
+            "value": "http://103.77.242.187/logo.png"
+          },
+          {
+            "type": "indicator",
+            "value": "http://160.187.147.119/any/app.vmd"
+          },
+          {
+            "type": "indicator",
+            "value": "http://160.187.147.119/any/attach.vmd"
+          },
+          {
+            "type": "indicator",
+            "value": "http://160.187.147.119/any/bimage.vmd"
+          },
+          {
+            "type": "indicator",
+            "value": "http://160.187.147.119/any/mnfst.vmd"
+          },
+          {
+            "type": "indicator",
+            "value": "http://160.187.147.119/any/sch.vmd"
+          },
+          {
+            "type": "indicator",
+            "value": "http://160.187.147.119/any/vpost.vmd"
+          },
+          {
+            "type": "indicator",
+            "value": "https://1drv.ms/u/c/2c732f3239360d98/iqdihidlh5agtk-prrmltrbiacbeyfb4_w7hubefeizu6go?e=wpzabo"
+          },
+          {
+            "type": "indicator",
+            "value": "https://sweet-iki-4263.holy.jp/gmail.php"
+          },
+          {
+            "type": "indicator",
+            "value": "sweet-iki-4263.holy.jp"
+          },
+          {
+            "type": "malware",
+            "value": "e4del"
+          },
+          {
+            "type": "technology",
+            "value": "anydesk"
+          },
+          {
+            "type": "technology",
+            "value": "chrome remote desktop"
+          },
+          {
+            "type": "technology",
+            "value": "electron"
+          },
+          {
+            "type": "technology",
+            "value": "google chrome"
+          },
+          {
+            "type": "technology",
+            "value": "microsoft outlook"
+          },
+          {
+            "type": "technology",
+            "value": "microsoft windows"
+          },
+          {
+            "type": "technology",
+            "value": "mozilla thunderbird"
+          },
+          {
+            "type": "technology",
+            "value": "node js"
+          },
+          {
+            "type": "technology",
+            "value": "onedrive"
+          },
+          {
+            "type": "technology",
+            "value": "pinterest"
+          },
+          {
+            "type": "technology",
+            "value": "powershell"
+          },
+          {
+            "type": "technology",
+            "value": "survey monkey"
+          },
+          {
+            "type": "threat-actor",
+            "value": "kimsuky"
+          },
+          {
+            "type": "vulnerability",
+            "value": "cve-2026-18963"
+          },
+          {
+            "type": "vulnerability",
+            "value": "cve-2026-57909"
+          },
+          {
+            "type": "vulnerability",
+            "value": "cve-2026-57910"
+          },
+          {
+            "type": "vulnerability",
+            "value": "cve-2026-60004"
+          },
+          {
+            "type": "vulnerability",
+            "value": "cve-2026-77148"
+          }
+        ],
+        "false_positives": [],
+        "precision": 1.0,
+        "recall": 0.3939393939393939
+      },
+      "indicators": {
+        "counts": {
+          "fn": 19,
+          "fp": 0,
+          "tp": 25
+        },
+        "f1": 0.7246376811594203,
+        "precision": 1.0,
+        "recall": 0.5681818181818182
+      },
+      "knowledge_entities": {
+        "counts": {
+          "fn": 21,
+          "fp": 0,
+          "tp": 1
+        },
+        "f1": 0.08695652173913043,
+        "precision": 1.0,
+        "recall": 0.045454545454545456
+      },
+      "relationships": {
+        "counts": {
+          "fn": 8,
+          "fp": 0,
+          "tp": 0
+        },
+        "f1": 0.0,
+        "false_negatives": [
+          {
+            "source_type": "malware",
+            "source_value": "e4del",
+            "target_type": "technology",
+            "target_value": "microsoft windows",
+            "type": "targets"
+          },
+          {
+            "source_type": "malware",
+            "source_value": "e4del",
+            "target_type": "technology",
+            "target_value": "electron",
+            "type": "uses"
+          },
+          {
+            "source_type": "malware",
+            "source_value": "e4del",
+            "target_type": "technology",
+            "target_value": "node js",
+            "type": "uses"
+          },
+          {
+            "source_type": "malware",
+            "source_value": "pinhole",
+            "target_type": "technology",
+            "target_value": "microsoft windows",
+            "type": "targets"
+          },
+          {
+            "source_type": "malware",
+            "source_value": "pinhole",
+            "target_type": "technology",
+            "target_value": "pinterest",
+            "type": "uses"
+          },
+          {
+            "source_type": "malware",
+            "source_value": "pinhole",
+            "target_type": "technology",
+            "target_value": "survey monkey",
+            "type": "uses"
+          },
+          {
+            "source_type": "threat-actor",
+            "source_value": "kimsuky",
+            "target_type": "country",
+            "target_value": "corea del sur",
+            "type": "targets"
+          },
+          {
+            "source_type": "threat-actor",
+            "source_value": "kimsuky",
+            "target_type": "country",
+            "target_value": "japon",
+            "type": "targets"
+          }
+        ],
+        "false_positives": [],
+        "invalid_endpoint_relationships": 0,
+        "precision": null,
+        "recall": 0.0
+      },
+      "repetition": 1,
+      "status": "success"
+    },
+    {
+      "citations": {
+        "localized": 42,
+        "rate": 1.0,
+        "total": 42
+      },
+      "document": "cnsd-2026-08-27-e9f7f97545",
+      "elapsed_seconds": 54.342767,
+      "emitted_flat_entities": 41,
+      "emitted_v2_entities": 42,
+      "emitted_v2_relationships": 0,
+      "entities": {
+        "by_type": {
+          "country": {
+            "counts": {
+              "fn": 2,
+              "fp": 0,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "indicator": {
+            "counts": {
+              "fn": 4,
+              "fp": 0,
+              "tp": 40
+            },
+            "f1": 0.9523809523809523,
+            "precision": 1.0,
+            "recall": 0.9090909090909091
+          },
+          "malware": {
+            "counts": {
+              "fn": 1,
+              "fp": 0,
+              "tp": 1
+            },
+            "f1": 0.6666666666666666,
+            "precision": 1.0,
+            "recall": 0.5
+          },
+          "technology": {
+            "counts": {
+              "fn": 12,
+              "fp": 0,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "threat-actor": {
+            "counts": {
+              "fn": 1,
+              "fp": 0,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "vulnerability": {
+            "counts": {
+              "fn": 5,
+              "fp": 0,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": null,
+            "recall": 0.0
+          }
+        },
+        "counts": {
+          "fn": 25,
+          "fp": 0,
+          "tp": 41
+        },
+        "f1": 0.7663551401869159,
+        "false_negatives": [
+          {
+            "type": "country",
+            "value": "corea del sur"
+          },
+          {
+            "type": "country",
+            "value": "japon"
+          },
+          {
+            "type": "indicator",
+            "value": "5727c0ff18c58b80bca5ce80575996bd"
+          },
+          {
+            "type": "indicator",
+            "value": "https://1drv.ms/u/c/2c732f3239360d98/iqdihidlh5agtk-prrmltrbiacbeyfb4_w7hubefeizu6go?e=wpzabo"
+          },
+          {
+            "type": "indicator",
+            "value": "https://sweet-iki-4263.holy.jp/gmail.php"
+          },
+          {
+            "type": "indicator",
+            "value": "sweet-iki-4263.holy.jp"
+          },
+          {
+            "type": "malware",
+            "value": "e4del"
+          },
+          {
+            "type": "technology",
+            "value": "anydesk"
+          },
+          {
+            "type": "technology",
+            "value": "chrome remote desktop"
+          },
+          {
+            "type": "technology",
+            "value": "electron"
+          },
+          {
+            "type": "technology",
+            "value": "google chrome"
+          },
+          {
+            "type": "technology",
+            "value": "microsoft outlook"
+          },
+          {
+            "type": "technology",
+            "value": "microsoft windows"
+          },
+          {
+            "type": "technology",
+            "value": "mozilla thunderbird"
+          },
+          {
+            "type": "technology",
+            "value": "node js"
+          },
+          {
+            "type": "technology",
+            "value": "onedrive"
+          },
+          {
+            "type": "technology",
+            "value": "pinterest"
+          },
+          {
+            "type": "technology",
+            "value": "powershell"
+          },
+          {
+            "type": "technology",
+            "value": "survey monkey"
+          },
+          {
+            "type": "threat-actor",
+            "value": "kimsuky"
+          },
+          {
+            "type": "vulnerability",
+            "value": "cve-2026-18963"
+          },
+          {
+            "type": "vulnerability",
+            "value": "cve-2026-57909"
+          },
+          {
+            "type": "vulnerability",
+            "value": "cve-2026-57910"
+          },
+          {
+            "type": "vulnerability",
+            "value": "cve-2026-60004"
+          },
+          {
+            "type": "vulnerability",
+            "value": "cve-2026-77148"
+          }
+        ],
+        "false_positives": [],
+        "precision": 1.0,
+        "recall": 0.6212121212121212
+      },
+      "indicators": {
+        "counts": {
+          "fn": 4,
+          "fp": 0,
+          "tp": 40
+        },
+        "f1": 0.9523809523809523,
+        "precision": 1.0,
+        "recall": 0.9090909090909091
+      },
+      "knowledge_entities": {
+        "counts": {
+          "fn": 21,
+          "fp": 0,
+          "tp": 1
+        },
+        "f1": 0.08695652173913043,
+        "precision": 1.0,
+        "recall": 0.045454545454545456
+      },
+      "relationships": {
+        "counts": {
+          "fn": 8,
+          "fp": 0,
+          "tp": 0
+        },
+        "f1": 0.0,
+        "false_negatives": [
+          {
+            "source_type": "malware",
+            "source_value": "e4del",
+            "target_type": "technology",
+            "target_value": "microsoft windows",
+            "type": "targets"
+          },
+          {
+            "source_type": "malware",
+            "source_value": "e4del",
+            "target_type": "technology",
+            "target_value": "electron",
+            "type": "uses"
+          },
+          {
+            "source_type": "malware",
+            "source_value": "e4del",
+            "target_type": "technology",
+            "target_value": "node js",
+            "type": "uses"
+          },
+          {
+            "source_type": "malware",
+            "source_value": "pinhole",
+            "target_type": "technology",
+            "target_value": "microsoft windows",
+            "type": "targets"
+          },
+          {
+            "source_type": "malware",
+            "source_value": "pinhole",
+            "target_type": "technology",
+            "target_value": "pinterest",
+            "type": "uses"
+          },
+          {
+            "source_type": "malware",
+            "source_value": "pinhole",
+            "target_type": "technology",
+            "target_value": "survey monkey",
+            "type": "uses"
+          },
+          {
+            "source_type": "threat-actor",
+            "source_value": "kimsuky",
+            "target_type": "country",
+            "target_value": "corea del sur",
+            "type": "targets"
+          },
+          {
+            "source_type": "threat-actor",
+            "source_value": "kimsuky",
+            "target_type": "country",
+            "target_value": "japon",
+            "type": "targets"
+          }
+        ],
+        "false_positives": [],
+        "invalid_endpoint_relationships": 0,
+        "precision": null,
+        "recall": 0.0
+      },
+      "repetition": 2,
+      "status": "success"
+    },
+    {
+      "citations": {
+        "localized": 2,
+        "rate": 1.0,
+        "total": 2
+      },
+      "document": "cnsd-2026-08-27-e9f7f97545",
+      "elapsed_seconds": 58.297035,
+      "emitted_flat_entities": 27,
+      "emitted_v2_entities": 2,
+      "emitted_v2_relationships": 0,
+      "entities": {
+        "by_type": {
+          "country": {
+            "counts": {
+              "fn": 2,
+              "fp": 0,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "indicator": {
+            "counts": {
+              "fn": 18,
+              "fp": 0,
+              "tp": 26
+            },
+            "f1": 0.7428571428571429,
+            "precision": 1.0,
+            "recall": 0.5909090909090909
+          },
+          "malware": {
+            "counts": {
+              "fn": 1,
+              "fp": 0,
+              "tp": 1
+            },
+            "f1": 0.6666666666666666,
+            "precision": 1.0,
+            "recall": 0.5
+          },
+          "technology": {
+            "counts": {
+              "fn": 12,
+              "fp": 0,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "threat-actor": {
+            "counts": {
+              "fn": 1,
+              "fp": 0,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "vulnerability": {
+            "counts": {
+              "fn": 5,
+              "fp": 0,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": null,
+            "recall": 0.0
+          }
+        },
+        "counts": {
+          "fn": 39,
+          "fp": 0,
+          "tp": 27
+        },
+        "f1": 0.5806451612903226,
+        "false_negatives": [
+          {
+            "type": "country",
+            "value": "corea del sur"
+          },
+          {
+            "type": "country",
+            "value": "japon"
+          },
+          {
+            "type": "indicator",
+            "value": "103.249.117.183"
+          },
+          {
+            "type": "indicator",
+            "value": "160.187.147.119"
+          },
+          {
+            "type": "indicator",
+            "value": "210.183.177.217"
+          },
+          {
+            "type": "indicator",
+            "value": "5727c0ff18c58b80bca5ce80575996bd"
+          },
+          {
+            "type": "indicator",
+            "value": "84.247.145.65"
+          },
+          {
+            "type": "indicator",
+            "value": "http://103.249.117.183/1.bat"
+          },
+          {
+            "type": "indicator",
+            "value": "http://103.249.117.183/receive.php"
+          },
+          {
+            "type": "indicator",
+            "value": "http://103.77.242.187/jinf.pdf"
+          },
+          {
+            "type": "indicator",
+            "value": "http://103.77.242.187/logo.png"
+          },
+          {
+            "type": "indicator",
+            "value": "http://160.187.147.119/any/app.vmd"
+          },
+          {
+            "type": "indicator",
+            "value": "http://160.187.147.119/any/attach.vmd"
+          },
+          {
+            "type": "indicator",
+            "value": "http://160.187.147.119/any/bimage.vmd"
+          },
+          {
+            "type": "indicator",
+            "value": "http://160.187.147.119/any/mnfst.vmd"
+          },
+          {
+            "type": "indicator",
+            "value": "http://160.187.147.119/any/sch.vmd"
+          },
+          {
+            "type": "indicator",
+            "value": "http://160.187.147.119/any/vpost.vmd"
+          },
+          {
+            "type": "indicator",
+            "value": "https://1drv.ms/u/c/2c732f3239360d98/iqdihidlh5agtk-prrmltrbiacbeyfb4_w7hubefeizu6go?e=wpzabo"
+          },
+          {
+            "type": "indicator",
+            "value": "https://sweet-iki-4263.holy.jp/gmail.php"
+          },
+          {
+            "type": "indicator",
+            "value": "sweet-iki-4263.holy.jp"
+          },
+          {
+            "type": "malware",
+            "value": "e4del"
+          },
+          {
+            "type": "technology",
+            "value": "anydesk"
+          },
+          {
+            "type": "technology",
+            "value": "chrome remote desktop"
+          },
+          {
+            "type": "technology",
+            "value": "electron"
+          },
+          {
+            "type": "technology",
+            "value": "google chrome"
+          },
+          {
+            "type": "technology",
+            "value": "microsoft outlook"
+          },
+          {
+            "type": "technology",
+            "value": "microsoft windows"
+          },
+          {
+            "type": "technology",
+            "value": "mozilla thunderbird"
+          },
+          {
+            "type": "technology",
+            "value": "node js"
+          },
+          {
+            "type": "technology",
+            "value": "onedrive"
+          },
+          {
+            "type": "technology",
+            "value": "pinterest"
+          },
+          {
+            "type": "technology",
+            "value": "powershell"
+          },
+          {
+            "type": "technology",
+            "value": "survey monkey"
+          },
+          {
+            "type": "threat-actor",
+            "value": "kimsuky"
+          },
+          {
+            "type": "vulnerability",
+            "value": "cve-2026-18963"
+          },
+          {
+            "type": "vulnerability",
+            "value": "cve-2026-57909"
+          },
+          {
+            "type": "vulnerability",
+            "value": "cve-2026-57910"
+          },
+          {
+            "type": "vulnerability",
+            "value": "cve-2026-60004"
+          },
+          {
+            "type": "vulnerability",
+            "value": "cve-2026-77148"
+          }
+        ],
+        "false_positives": [],
+        "precision": 1.0,
+        "recall": 0.4090909090909091
+      },
+      "indicators": {
+        "counts": {
+          "fn": 18,
+          "fp": 0,
+          "tp": 26
+        },
+        "f1": 0.7428571428571429,
+        "precision": 1.0,
+        "recall": 0.5909090909090909
+      },
+      "knowledge_entities": {
+        "counts": {
+          "fn": 21,
+          "fp": 0,
+          "tp": 1
+        },
+        "f1": 0.08695652173913043,
+        "precision": 1.0,
+        "recall": 0.045454545454545456
+      },
+      "relationships": {
+        "counts": {
+          "fn": 8,
+          "fp": 0,
+          "tp": 0
+        },
+        "f1": 0.0,
+        "false_negatives": [
+          {
+            "source_type": "malware",
+            "source_value": "e4del",
+            "target_type": "technology",
+            "target_value": "microsoft windows",
+            "type": "targets"
+          },
+          {
+            "source_type": "malware",
+            "source_value": "e4del",
+            "target_type": "technology",
+            "target_value": "electron",
+            "type": "uses"
+          },
+          {
+            "source_type": "malware",
+            "source_value": "e4del",
+            "target_type": "technology",
+            "target_value": "node js",
+            "type": "uses"
+          },
+          {
+            "source_type": "malware",
+            "source_value": "pinhole",
+            "target_type": "technology",
+            "target_value": "microsoft windows",
+            "type": "targets"
+          },
+          {
+            "source_type": "malware",
+            "source_value": "pinhole",
+            "target_type": "technology",
+            "target_value": "pinterest",
+            "type": "uses"
+          },
+          {
+            "source_type": "malware",
+            "source_value": "pinhole",
+            "target_type": "technology",
+            "target_value": "survey monkey",
+            "type": "uses"
+          },
+          {
+            "source_type": "threat-actor",
+            "source_value": "kimsuky",
+            "target_type": "country",
+            "target_value": "corea del sur",
+            "type": "targets"
+          },
+          {
+            "source_type": "threat-actor",
+            "source_value": "kimsuky",
+            "target_type": "country",
+            "target_value": "japon",
+            "type": "targets"
+          }
+        ],
+        "false_positives": [],
+        "invalid_endpoint_relationships": 0,
+        "precision": null,
+        "recall": 0.0
+      },
+      "repetition": 3,
+      "status": "success"
+    },
+    {
+      "citations": {
+        "localized": 1,
+        "rate": 1.0,
+        "total": 1
+      },
+      "document": "cnsd-2026-08-26-f09be7223c",
+      "elapsed_seconds": 30.163166,
+      "emitted_flat_entities": 1,
+      "emitted_v2_entities": 1,
+      "emitted_v2_relationships": 0,
+      "entities": {
+        "by_type": {
+          "technology": {
+            "counts": {
+              "fn": 0,
+              "fp": 1,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": 0.0,
+            "recall": null
+          },
+          "vulnerability": {
+            "counts": {
+              "fn": 6,
+              "fp": 0,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": null,
+            "recall": 0.0
+          }
+        },
+        "counts": {
+          "fn": 6,
+          "fp": 1,
+          "tp": 0
+        },
+        "f1": 0.0,
+        "false_negatives": [
+          {
+            "type": "vulnerability",
+            "value": "cve-2026-19598"
+          },
+          {
+            "type": "vulnerability",
+            "value": "cve-2026-32558"
+          },
+          {
+            "type": "vulnerability",
+            "value": "cve-2026-55040"
+          },
+          {
+            "type": "vulnerability",
+            "value": "cve-2026-73678"
+          },
+          {
+            "type": "vulnerability",
+            "value": "cve-2026-75604"
+          },
+          {
+            "type": "vulnerability",
+            "value": "cve-2026-78370"
+          }
+        ],
+        "false_positives": [
+          {
+            "type": "technology",
+            "value": "next js"
+          }
+        ],
+        "precision": 0.0,
+        "recall": 0.0
+      },
+      "indicators": {
+        "counts": {
+          "fn": 0,
+          "fp": 0,
+          "tp": 0
+        },
+        "f1": null,
+        "precision": null,
+        "recall": null
+      },
+      "knowledge_entities": {
+        "counts": {
+          "fn": 6,
+          "fp": 1,
+          "tp": 0
+        },
+        "f1": 0.0,
+        "precision": 0.0,
+        "recall": 0.0
+      },
+      "relationships": {
+        "counts": {
+          "fn": 0,
+          "fp": 0,
+          "tp": 0
+        },
+        "f1": null,
+        "false_negatives": [],
+        "false_positives": [],
+        "invalid_endpoint_relationships": 0,
+        "precision": null,
+        "recall": null
+      },
+      "repetition": 1,
+      "status": "success"
+    },
+    {
+      "citations": {
+        "localized": 6,
+        "rate": 1.0,
+        "total": 6
+      },
+      "document": "cnsd-2026-08-26-f09be7223c",
+      "elapsed_seconds": 29.042551,
+      "emitted_flat_entities": 4,
+      "emitted_v2_entities": 4,
+      "emitted_v2_relationships": 2,
+      "entities": {
+        "by_type": {
+          "malware": {
+            "counts": {
+              "fn": 0,
+              "fp": 1,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": 0.0,
+            "recall": null
+          },
+          "technology": {
+            "counts": {
+              "fn": 0,
+              "fp": 3,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": 0.0,
+            "recall": null
+          },
+          "vulnerability": {
+            "counts": {
+              "fn": 6,
+              "fp": 0,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": null,
+            "recall": 0.0
+          }
+        },
+        "counts": {
+          "fn": 6,
+          "fp": 4,
+          "tp": 0
+        },
+        "f1": 0.0,
+        "false_negatives": [
+          {
+            "type": "vulnerability",
+            "value": "cve-2026-19598"
+          },
+          {
+            "type": "vulnerability",
+            "value": "cve-2026-32558"
+          },
+          {
+            "type": "vulnerability",
+            "value": "cve-2026-55040"
+          },
+          {
+            "type": "vulnerability",
+            "value": "cve-2026-73678"
+          },
+          {
+            "type": "vulnerability",
+            "value": "cve-2026-75604"
+          },
+          {
+            "type": "vulnerability",
+            "value": "cve-2026-78370"
+          }
+        ],
+        "false_positives": [
+          {
+            "type": "malware",
+            "value": "next js"
+          },
+          {
+            "type": "technology",
+            "value": "libheif"
+          },
+          {
+            "type": "technology",
+            "value": "sharp"
+          },
+          {
+            "type": "technology",
+            "value": "windows"
+          }
+        ],
+        "precision": 0.0,
+        "recall": 0.0
+      },
+      "indicators": {
+        "counts": {
+          "fn": 0,
+          "fp": 0,
+          "tp": 0
+        },
+        "f1": null,
+        "precision": null,
+        "recall": null
+      },
+      "knowledge_entities": {
+        "counts": {
+          "fn": 6,
+          "fp": 4,
+          "tp": 0
+        },
+        "f1": 0.0,
+        "precision": 0.0,
+        "recall": 0.0
+      },
+      "relationships": {
+        "counts": {
+          "fn": 0,
+          "fp": 2,
+          "tp": 0
+        },
+        "f1": 0.0,
+        "false_negatives": [],
+        "false_positives": [
+          {
+            "source_type": "malware",
+            "source_value": "next js",
+            "target_type": "technology",
+            "target_value": "windows",
+            "type": "uses"
+          },
+          {
+            "source_type": "technology",
+            "source_value": "sharp",
+            "target_type": "technology",
+            "target_value": "libheif",
+            "type": "uses"
+          }
+        ],
+        "invalid_endpoint_relationships": 0,
+        "precision": 0.0,
+        "recall": null
+      },
+      "repetition": 2,
+      "status": "success"
+    },
+    {
+      "citations": {
+        "localized": 3,
+        "rate": 1.0,
+        "total": 3
+      },
+      "document": "cnsd-2026-08-26-f09be7223c",
+      "elapsed_seconds": 23.670015,
+      "emitted_flat_entities": 3,
+      "emitted_v2_entities": 3,
+      "emitted_v2_relationships": 0,
+      "entities": {
+        "by_type": {
+          "technology": {
+            "counts": {
+              "fn": 0,
+              "fp": 3,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": 0.0,
+            "recall": null
+          },
+          "vulnerability": {
+            "counts": {
+              "fn": 6,
+              "fp": 0,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": null,
+            "recall": 0.0
+          }
+        },
+        "counts": {
+          "fn": 6,
+          "fp": 3,
+          "tp": 0
+        },
+        "f1": 0.0,
+        "false_negatives": [
+          {
+            "type": "vulnerability",
+            "value": "cve-2026-19598"
+          },
+          {
+            "type": "vulnerability",
+            "value": "cve-2026-32558"
+          },
+          {
+            "type": "vulnerability",
+            "value": "cve-2026-55040"
+          },
+          {
+            "type": "vulnerability",
+            "value": "cve-2026-73678"
+          },
+          {
+            "type": "vulnerability",
+            "value": "cve-2026-75604"
+          },
+          {
+            "type": "vulnerability",
+            "value": "cve-2026-78370"
+          }
+        ],
+        "false_positives": [
+          {
+            "type": "technology",
+            "value": "libheif"
+          },
+          {
+            "type": "technology",
+            "value": "next js"
+          },
+          {
+            "type": "technology",
+            "value": "sharp"
+          }
+        ],
+        "precision": 0.0,
+        "recall": 0.0
+      },
+      "indicators": {
+        "counts": {
+          "fn": 0,
+          "fp": 0,
+          "tp": 0
+        },
+        "f1": null,
+        "precision": null,
+        "recall": null
+      },
+      "knowledge_entities": {
+        "counts": {
+          "fn": 6,
+          "fp": 3,
+          "tp": 0
+        },
+        "f1": 0.0,
+        "precision": 0.0,
+        "recall": 0.0
+      },
+      "relationships": {
+        "counts": {
+          "fn": 0,
+          "fp": 0,
+          "tp": 0
+        },
+        "f1": null,
+        "false_negatives": [],
+        "false_positives": [],
+        "invalid_endpoint_relationships": 0,
+        "precision": null,
+        "recall": null
+      },
+      "repetition": 3,
+      "status": "success"
+    },
+    {
+      "citations": {
+        "localized": 27,
+        "rate": 1.0,
+        "total": 27
+      },
+      "document": "colcert-2026-08-26-92539d2a32",
+      "elapsed_seconds": 46.23744,
+      "emitted_flat_entities": 16,
+      "emitted_v2_entities": 19,
+      "emitted_v2_relationships": 8,
+      "entities": {
+        "by_type": {
+          "attack-pattern": {
+            "counts": {
+              "fn": 3,
+              "fp": 0,
+              "tp": 7
+            },
+            "f1": 0.8235294117647058,
+            "precision": 1.0,
+            "recall": 0.7
+          },
+          "country": {
+            "counts": {
+              "fn": 4,
+              "fp": 0,
+              "tp": 1
+            },
+            "f1": 0.3333333333333333,
+            "precision": 1.0,
+            "recall": 0.2
+          },
+          "indicator": {
+            "counts": {
+              "fn": 8,
+              "fp": 1,
+              "tp": 5
+            },
+            "f1": 0.5263157894736842,
+            "precision": 0.8333333333333334,
+            "recall": 0.38461538461538464
+          },
+          "malware": {
+            "counts": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 1
+            },
+            "f1": 1.0,
+            "precision": 1.0,
+            "recall": 1.0
+          },
+          "sector": {
+            "counts": {
+              "fn": 1,
+              "fp": 0,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "technology": {
+            "counts": {
+              "fn": 2,
+              "fp": 0,
+              "tp": 1
+            },
+            "f1": 0.5,
+            "precision": 1.0,
+            "recall": 0.3333333333333333
+          }
+        },
+        "counts": {
+          "fn": 18,
+          "fp": 1,
+          "tp": 15
+        },
+        "f1": 0.6122448979591837,
+        "false_negatives": [
+          {
+            "type": "attack-pattern",
+            "value": "T1140"
+          },
+          {
+            "type": "attack-pattern",
+            "value": "T1497"
+          },
+          {
+            "type": "attack-pattern",
+            "value": "T1564.003"
+          },
+          {
+            "type": "country",
+            "value": "argentina"
+          },
+          {
+            "type": "country",
+            "value": "espana"
+          },
+          {
+            "type": "country",
+            "value": "mexico"
+          },
+          {
+            "type": "country",
+            "value": "peru"
+          },
+          {
+            "type": "indicator",
+            "value": "90254c3baec79cf9b448836293d3864ee273c30de374933296c6e8e3bcaefdbd"
+          },
+          {
+            "type": "indicator",
+            "value": "98e56c5f902fb825f6f122122ba6a2a0febee1e582a462f74dd1d99b018bf7c0"
+          },
+          {
+            "type": "indicator",
+            "value": "b744156103040828396040.nhlfan.net"
+          },
+          {
+            "type": "indicator",
+            "value": "cc238813ab277cbb4324d37875c37985ca5baeaf8c412b4c85aa8ec5faec7096"
+          },
+          {
+            "type": "indicator",
+            "value": "cfbd8d062e9baa98737a0260996f48c6"
+          },
+          {
+            "type": "indicator",
+            "value": "e882ee4a643b00871c98bcfe4b4d7cd1"
+          },
+          {
+            "type": "indicator",
+            "value": "f1aed8cf2adafa86927fc58d5f24073e"
+          },
+          {
+            "type": "indicator",
+            "value": "fad1e9d507c7021a62998a547ab53b3ee438846f7ae753285fdb3917dd2dcdfa"
+          },
+          {
+            "type": "sector",
+            "value": "sector financiero y bancario"
+          },
+          {
+            "type": "technology",
+            "value": "delphi"
+          },
+          {
+            "type": "technology",
+            "value": "ip api com"
+          }
+        ],
+        "false_positives": [
+          {
+            "type": "indicator",
+            "value": "ip-api.com"
+          }
+        ],
+        "precision": 0.9375,
+        "recall": 0.45454545454545453
+      },
+      "indicators": {
+        "counts": {
+          "fn": 8,
+          "fp": 1,
+          "tp": 5
+        },
+        "f1": 0.5263157894736842,
+        "precision": 0.8333333333333334,
+        "recall": 0.38461538461538464
+      },
+      "knowledge_entities": {
+        "counts": {
+          "fn": 10,
+          "fp": 0,
+          "tp": 10
+        },
+        "f1": 0.6666666666666666,
+        "precision": 1.0,
+        "recall": 0.5
+      },
+      "relationships": {
+        "counts": {
+          "fn": 5,
+          "fp": 5,
+          "tp": 3
+        },
+        "f1": 0.375,
+        "false_negatives": [
+          {
+            "source_type": "indicator",
+            "source_value": "077b104db18e1c1fdd0800e6e75a1e26398d97e7",
+            "target_type": "malware",
+            "target_value": "grandoreiro",
+            "type": "indicates"
+          },
+          {
+            "source_type": "indicator",
+            "source_value": "90254c3baec79cf9b448836293d3864ee273c30de374933296c6e8e3bcaefdbd",
+            "target_type": "malware",
+            "target_value": "grandoreiro",
+            "type": "indicates"
+          },
+          {
+            "source_type": "indicator",
+            "source_value": "f1aed8cf2adafa86927fc58d5f24073e",
+            "target_type": "malware",
+            "target_value": "grandoreiro",
+            "type": "indicates"
+          },
+          {
+            "source_type": "malware",
+            "source_value": "grandoreiro",
+            "target_type": "country",
+            "target_value": "espana",
+            "type": "targets"
+          },
+          {
+            "source_type": "malware",
+            "source_value": "grandoreiro",
+            "target_type": "sector",
+            "target_value": "sector financiero y bancario",
+            "type": "targets"
+          }
+        ],
+        "false_positives": [
+          {
+            "source_type": "malware",
+            "source_value": "grandoreiro",
+            "target_type": "country",
+            "target_value": "colombia",
+            "type": "targets"
+          },
+          {
+            "source_type": "malware",
+            "source_value": "grandoreiro",
+            "target_type": "country",
+            "target_value": "spain",
+            "type": "targets"
+          },
+          {
+            "source_type": "malware",
+            "source_value": "grandoreiro",
+            "target_type": "sector",
+            "target_value": "financial",
+            "type": "targets"
+          },
+          {
+            "source_type": "malware",
+            "source_value": "grandoreiro",
+            "target_type": "attack-pattern",
+            "target_value": "T1574",
+            "type": "uses"
+          },
+          {
+            "source_type": "malware",
+            "source_value": "grandoreiro",
+            "target_type": "technology",
+            "target_value": "duplicate files finder",
+            "type": "uses"
+          }
+        ],
+        "invalid_endpoint_relationships": 0,
+        "precision": 0.375,
+        "recall": 0.375
+      },
+      "repetition": 1,
+      "status": "success"
+    },
+    {
+      "citations": {
+        "localized": 22,
+        "rate": 1.0,
+        "total": 22
+      },
+      "document": "colcert-2026-08-26-92539d2a32",
+      "elapsed_seconds": 41.90793,
+      "emitted_flat_entities": 16,
+      "emitted_v2_entities": 22,
+      "emitted_v2_relationships": 0,
+      "entities": {
+        "by_type": {
+          "attack-pattern": {
+            "counts": {
+              "fn": 3,
+              "fp": 0,
+              "tp": 7
+            },
+            "f1": 0.8235294117647058,
+            "precision": 1.0,
+            "recall": 0.7
+          },
+          "country": {
+            "counts": {
+              "fn": 5,
+              "fp": 0,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "indicator": {
+            "counts": {
+              "fn": 5,
+              "fp": 0,
+              "tp": 8
+            },
+            "f1": 0.7619047619047619,
+            "precision": 1.0,
+            "recall": 0.6153846153846154
+          },
+          "malware": {
+            "counts": {
+              "fn": 1,
+              "fp": 0,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "sector": {
+            "counts": {
+              "fn": 1,
+              "fp": 0,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "technology": {
+            "counts": {
+              "fn": 3,
+              "fp": 1,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": 0.0,
+            "recall": 0.0
+          }
+        },
+        "counts": {
+          "fn": 18,
+          "fp": 1,
+          "tp": 15
+        },
+        "f1": 0.6122448979591837,
+        "false_negatives": [
+          {
+            "type": "attack-pattern",
+            "value": "T1071.004"
+          },
+          {
+            "type": "attack-pattern",
+            "value": "T1082"
+          },
+          {
+            "type": "attack-pattern",
+            "value": "T1574"
+          },
+          {
+            "type": "country",
+            "value": "argentina"
+          },
+          {
+            "type": "country",
+            "value": "colombia"
+          },
+          {
+            "type": "country",
+            "value": "espana"
+          },
+          {
+            "type": "country",
+            "value": "mexico"
+          },
+          {
+            "type": "country",
+            "value": "peru"
+          },
+          {
+            "type": "indicator",
+            "value": "90254c3baec79cf9b448836293d3864ee273c30de374933296c6e8e3bcaefdbd"
+          },
+          {
+            "type": "indicator",
+            "value": "98e56c5f902fb825f6f122122ba6a2a0febee1e582a462f74dd1d99b018bf7c0"
+          },
+          {
+            "type": "indicator",
+            "value": "b744156103040828396040.nhlfan.net"
+          },
+          {
+            "type": "indicator",
+            "value": "cc238813ab277cbb4324d37875c37985ca5baeaf8c412b4c85aa8ec5faec7096"
+          },
+          {
+            "type": "indicator",
+            "value": "fad1e9d507c7021a62998a547ab53b3ee438846f7ae753285fdb3917dd2dcdfa"
+          },
+          {
+            "type": "malware",
+            "value": "grandoreiro"
+          },
+          {
+            "type": "sector",
+            "value": "sector financiero y bancario"
+          },
+          {
+            "type": "technology",
+            "value": "delphi"
+          },
+          {
+            "type": "technology",
+            "value": "duplicate files finder"
+          },
+          {
+            "type": "technology",
+            "value": "ip api com"
+          }
+        ],
+        "false_positives": [
+          {
+            "type": "technology",
+            "value": "pgbouncer"
+          }
+        ],
+        "precision": 0.9375,
+        "recall": 0.45454545454545453
+      },
+      "indicators": {
+        "counts": {
+          "fn": 5,
+          "fp": 0,
+          "tp": 8
+        },
+        "f1": 0.7619047619047619,
+        "precision": 1.0,
+        "recall": 0.6153846153846154
+      },
+      "knowledge_entities": {
+        "counts": {
+          "fn": 13,
+          "fp": 1,
+          "tp": 7
+        },
+        "f1": 0.5,
+        "precision": 0.875,
+        "recall": 0.35
+      },
+      "relationships": {
+        "counts": {
+          "fn": 8,
+          "fp": 0,
+          "tp": 0
+        },
+        "f1": 0.0,
+        "false_negatives": [
+          {
+            "source_type": "indicator",
+            "source_value": "077b104db18e1c1fdd0800e6e75a1e26398d97e7",
+            "target_type": "malware",
+            "target_value": "grandoreiro",
+            "type": "indicates"
+          },
+          {
+            "source_type": "indicator",
+            "source_value": "90254c3baec79cf9b448836293d3864ee273c30de374933296c6e8e3bcaefdbd",
+            "target_type": "malware",
+            "target_value": "grandoreiro",
+            "type": "indicates"
+          },
+          {
+            "source_type": "indicator",
+            "source_value": "f1aed8cf2adafa86927fc58d5f24073e",
+            "target_type": "malware",
+            "target_value": "grandoreiro",
+            "type": "indicates"
+          },
+          {
+            "source_type": "malware",
+            "source_value": "grandoreiro",
+            "target_type": "country",
+            "target_value": "argentina",
+            "type": "targets"
+          },
+          {
+            "source_type": "malware",
+            "source_value": "grandoreiro",
+            "target_type": "country",
+            "target_value": "espana",
+            "type": "targets"
+          },
+          {
+            "source_type": "malware",
+            "source_value": "grandoreiro",
+            "target_type": "country",
+            "target_value": "mexico",
+            "type": "targets"
+          },
+          {
+            "source_type": "malware",
+            "source_value": "grandoreiro",
+            "target_type": "country",
+            "target_value": "peru",
+            "type": "targets"
+          },
+          {
+            "source_type": "malware",
+            "source_value": "grandoreiro",
+            "target_type": "sector",
+            "target_value": "sector financiero y bancario",
+            "type": "targets"
+          }
+        ],
+        "false_positives": [],
+        "invalid_endpoint_relationships": 0,
+        "precision": null,
+        "recall": 0.0
+      },
+      "repetition": 2,
+      "status": "success"
+    },
+    {
+      "citations": {
+        "localized": 47,
+        "rate": 1.0,
+        "total": 47
+      },
+      "document": "colcert-2026-08-26-92539d2a32",
+      "elapsed_seconds": 42.304291,
+      "emitted_flat_entities": 30,
+      "emitted_v2_entities": 37,
+      "emitted_v2_relationships": 10,
+      "entities": {
+        "by_type": {
+          "attack-pattern": {
+            "counts": {
+              "fn": 0,
+              "fp": 1,
+              "tp": 10
+            },
+            "f1": 0.9523809523809523,
+            "precision": 0.9090909090909091,
+            "recall": 1.0
+          },
+          "country": {
+            "counts": {
+              "fn": 1,
+              "fp": 3,
+              "tp": 4
+            },
+            "f1": 0.6666666666666666,
+            "precision": 0.5714285714285714,
+            "recall": 0.8
+          },
+          "indicator": {
+            "counts": {
+              "fn": 5,
+              "fp": 0,
+              "tp": 8
+            },
+            "f1": 0.7619047619047619,
+            "precision": 1.0,
+            "recall": 0.6153846153846154
+          },
+          "malware": {
+            "counts": {
+              "fn": 0,
+              "fp": 0,
+              "tp": 1
+            },
+            "f1": 1.0,
+            "precision": 1.0,
+            "recall": 1.0
+          },
+          "sector": {
+            "counts": {
+              "fn": 1,
+              "fp": 0,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "technology": {
+            "counts": {
+              "fn": 2,
+              "fp": 2,
+              "tp": 1
+            },
+            "f1": 0.3333333333333333,
+            "precision": 0.3333333333333333,
+            "recall": 0.3333333333333333
+          }
+        },
+        "counts": {
+          "fn": 9,
+          "fp": 6,
+          "tp": 24
+        },
+        "f1": 0.7619047619047619,
+        "false_negatives": [
+          {
+            "type": "country",
+            "value": "argentina"
+          },
+          {
+            "type": "indicator",
+            "value": "90254c3baec79cf9b448836293d3864ee273c30de374933296c6e8e3bcaefdbd"
+          },
+          {
+            "type": "indicator",
+            "value": "98e56c5f902fb825f6f122122ba6a2a0febee1e582a462f74dd1d99b018bf7c0"
+          },
+          {
+            "type": "indicator",
+            "value": "b744156103040828396040.nhlfan.net"
+          },
+          {
+            "type": "indicator",
+            "value": "cc238813ab277cbb4324d37875c37985ca5baeaf8c412b4c85aa8ec5faec7096"
+          },
+          {
+            "type": "indicator",
+            "value": "fad1e9d507c7021a62998a547ab53b3ee438846f7ae753285fdb3917dd2dcdfa"
+          },
+          {
+            "type": "sector",
+            "value": "sector financiero y bancario"
+          },
+          {
+            "type": "technology",
+            "value": "duplicate files finder"
+          },
+          {
+            "type": "technology",
+            "value": "ip api com"
+          }
+        ],
+        "false_positives": [
+          {
+            "type": "attack-pattern",
+            "value": "malicious email"
+          },
+          {
+            "type": "country",
+            "value": "paises bajos"
+          },
+          {
+            "type": "country",
+            "value": "republica checa"
+          },
+          {
+            "type": "country",
+            "value": "rusia"
+          },
+          {
+            "type": "technology",
+            "value": "virtualbox"
+          },
+          {
+            "type": "technology",
+            "value": "vmware"
+          }
+        ],
+        "precision": 0.8,
+        "recall": 0.7272727272727273
+      },
+      "indicators": {
+        "counts": {
+          "fn": 5,
+          "fp": 0,
+          "tp": 8
+        },
+        "f1": 0.7619047619047619,
+        "precision": 1.0,
+        "recall": 0.6153846153846154
+      },
+      "knowledge_entities": {
+        "counts": {
+          "fn": 4,
+          "fp": 6,
+          "tp": 16
+        },
+        "f1": 0.7619047619047619,
+        "precision": 0.7272727272727273,
+        "recall": 0.8
+      },
+      "relationships": {
+        "counts": {
+          "fn": 4,
+          "fp": 6,
+          "tp": 4
+        },
+        "f1": 0.4444444444444444,
+        "false_negatives": [
+          {
+            "source_type": "indicator",
+            "source_value": "077b104db18e1c1fdd0800e6e75a1e26398d97e7",
+            "target_type": "malware",
+            "target_value": "grandoreiro",
+            "type": "indicates"
+          },
+          {
+            "source_type": "indicator",
+            "source_value": "90254c3baec79cf9b448836293d3864ee273c30de374933296c6e8e3bcaefdbd",
+            "target_type": "malware",
+            "target_value": "grandoreiro",
+            "type": "indicates"
+          },
+          {
+            "source_type": "indicator",
+            "source_value": "f1aed8cf2adafa86927fc58d5f24073e",
+            "target_type": "malware",
+            "target_value": "grandoreiro",
+            "type": "indicates"
+          },
+          {
+            "source_type": "malware",
+            "source_value": "grandoreiro",
+            "target_type": "sector",
+            "target_value": "sector financiero y bancario",
+            "type": "targets"
+          }
+        ],
+        "false_positives": [
+          {
+            "source_type": "malware",
+            "source_value": "grandoreiro",
+            "target_type": "country",
+            "target_value": "brasil",
+            "type": "targets"
+          },
+          {
+            "source_type": "malware",
+            "source_value": "grandoreiro",
+            "target_type": "country",
+            "target_value": "portugal",
+            "type": "targets"
+          },
+          {
+            "source_type": "malware",
+            "source_value": "grandoreiro",
+            "target_type": "sector",
+            "target_value": "financial",
+            "type": "targets"
+          },
+          {
+            "source_type": "malware",
+            "source_value": "grandoreiro",
+            "target_type": "attack-pattern",
+            "target_value": "T1497",
+            "type": "uses"
+          },
+          {
+            "source_type": "malware",
+            "source_value": "grandoreiro",
+            "target_type": "attack-pattern",
+            "target_value": "T1574",
+            "type": "uses"
+          },
+          {
+            "source_type": "malware",
+            "source_value": "grandoreiro",
+            "target_type": "attack-pattern",
+            "target_value": "malicious email",
+            "type": "uses"
+          }
+        ],
+        "invalid_endpoint_relationships": 0,
+        "precision": 0.4,
+        "recall": 0.5
+      },
+      "repetition": 3,
+      "status": "success"
+    },
+    {
+      "citations": {
+        "localized": 0,
+        "rate": null,
+        "total": 0
+      },
+      "document": "colcert-2026-08-25-25c7bbd453",
+      "elapsed_seconds": 31.33418,
+      "emitted_flat_entities": 0,
+      "emitted_v2_entities": 0,
+      "emitted_v2_relationships": 0,
+      "entities": {
+        "by_type": {
+          "attack-pattern": {
+            "counts": {
+              "fn": 7,
+              "fp": 0,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "country": {
+            "counts": {
+              "fn": 1,
+              "fp": 0,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "indicator": {
+            "counts": {
+              "fn": 2,
+              "fp": 0,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "malware": {
+            "counts": {
+              "fn": 1,
+              "fp": 0,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "sector": {
+            "counts": {
+              "fn": 6,
+              "fp": 0,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "technology": {
+            "counts": {
+              "fn": 1,
+              "fp": 0,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "threat-actor": {
+            "counts": {
+              "fn": 1,
+              "fp": 0,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": null,
+            "recall": 0.0
+          }
+        },
+        "counts": {
+          "fn": 19,
+          "fp": 0,
+          "tp": 0
+        },
+        "f1": 0.0,
+        "false_negatives": [
+          {
+            "type": "attack-pattern",
+            "value": "T1021"
+          },
+          {
+            "type": "attack-pattern",
+            "value": "T1069"
+          },
+          {
+            "type": "attack-pattern",
+            "value": "T1078"
+          },
+          {
+            "type": "attack-pattern",
+            "value": "T1087"
+          },
+          {
+            "type": "attack-pattern",
+            "value": "T1204"
+          },
+          {
+            "type": "attack-pattern",
+            "value": "T1486"
+          },
+          {
+            "type": "attack-pattern",
+            "value": "T1685"
+          },
+          {
+            "type": "country",
+            "value": "colombia"
+          },
+          {
+            "type": "indicator",
+            "value": "darkforums.ru"
+          },
+          {
+            "type": "indicator",
+            "value": "https://darkforums.ru/thread-raas-moondancer-ransomware"
+          },
+          {
+            "type": "malware",
+            "value": "moondancer"
+          },
+          {
+            "type": "sector",
+            "value": "infraestructura critica"
+          },
+          {
+            "type": "sector",
+            "value": "sector de telecomunicaciones"
+          },
+          {
+            "type": "sector",
+            "value": "sector de transporte"
+          },
+          {
+            "type": "sector",
+            "value": "sector energetico"
+          },
+          {
+            "type": "sector",
+            "value": "sector financiero"
+          },
+          {
+            "type": "sector",
+            "value": "sector gubernamental"
+          },
+          {
+            "type": "technology",
+            "value": "windows"
+          },
+          {
+            "type": "threat-actor",
+            "value": "exiliados"
+          }
+        ],
+        "false_positives": [],
+        "precision": null,
+        "recall": 0.0
+      },
+      "indicators": {
+        "counts": {
+          "fn": 2,
+          "fp": 0,
+          "tp": 0
+        },
+        "f1": 0.0,
+        "precision": null,
+        "recall": 0.0
+      },
+      "knowledge_entities": {
+        "counts": {
+          "fn": 17,
+          "fp": 0,
+          "tp": 0
+        },
+        "f1": 0.0,
+        "precision": null,
+        "recall": 0.0
+      },
+      "relationships": {
+        "counts": {
+          "fn": 7,
+          "fp": 0,
+          "tp": 0
+        },
+        "f1": 0.0,
+        "false_negatives": [
+          {
+            "source_type": "malware",
+            "source_value": "moondancer",
+            "target_type": "country",
+            "target_value": "colombia",
+            "type": "targets"
+          },
+          {
+            "source_type": "malware",
+            "source_value": "moondancer",
+            "target_type": "sector",
+            "target_value": "infraestructura critica",
+            "type": "targets"
+          },
+          {
+            "source_type": "malware",
+            "source_value": "moondancer",
+            "target_type": "technology",
+            "target_value": "windows",
+            "type": "targets"
+          },
+          {
+            "source_type": "threat-actor",
+            "source_value": "exiliados",
+            "target_type": "country",
+            "target_value": "colombia",
+            "type": "targets"
+          },
+          {
+            "source_type": "threat-actor",
+            "source_value": "exiliados",
+            "target_type": "sector",
+            "target_value": "infraestructura critica",
+            "type": "targets"
+          },
+          {
+            "source_type": "threat-actor",
+            "source_value": "exiliados",
+            "target_type": "attack-pattern",
+            "target_value": "T1021",
+            "type": "uses"
+          },
+          {
+            "source_type": "threat-actor",
+            "source_value": "exiliados",
+            "target_type": "malware",
+            "target_value": "moondancer",
+            "type": "uses"
+          }
+        ],
+        "false_positives": [],
+        "invalid_endpoint_relationships": 0,
+        "precision": null,
+        "recall": 0.0
+      },
+      "repetition": 1,
+      "status": "success"
+    },
+    {
+      "citations": {
+        "localized": 6,
+        "rate": 1.0,
+        "total": 6
+      },
+      "document": "colcert-2026-08-25-25c7bbd453",
+      "elapsed_seconds": 26.05329,
+      "emitted_flat_entities": 6,
+      "emitted_v2_entities": 6,
+      "emitted_v2_relationships": 0,
+      "entities": {
+        "by_type": {
+          "attack-pattern": {
+            "counts": {
+              "fn": 1,
+              "fp": 0,
+              "tp": 6
+            },
+            "f1": 0.9230769230769231,
+            "precision": 1.0,
+            "recall": 0.8571428571428571
+          },
+          "country": {
+            "counts": {
+              "fn": 1,
+              "fp": 0,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "indicator": {
+            "counts": {
+              "fn": 2,
+              "fp": 0,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "malware": {
+            "counts": {
+              "fn": 1,
+              "fp": 0,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "sector": {
+            "counts": {
+              "fn": 6,
+              "fp": 0,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "technology": {
+            "counts": {
+              "fn": 1,
+              "fp": 0,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "threat-actor": {
+            "counts": {
+              "fn": 1,
+              "fp": 0,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": null,
+            "recall": 0.0
+          }
+        },
+        "counts": {
+          "fn": 13,
+          "fp": 0,
+          "tp": 6
+        },
+        "f1": 0.48,
+        "false_negatives": [
+          {
+            "type": "attack-pattern",
+            "value": "T1078"
+          },
+          {
+            "type": "country",
+            "value": "colombia"
+          },
+          {
+            "type": "indicator",
+            "value": "darkforums.ru"
+          },
+          {
+            "type": "indicator",
+            "value": "https://darkforums.ru/thread-raas-moondancer-ransomware"
+          },
+          {
+            "type": "malware",
+            "value": "moondancer"
+          },
+          {
+            "type": "sector",
+            "value": "infraestructura critica"
+          },
+          {
+            "type": "sector",
+            "value": "sector de telecomunicaciones"
+          },
+          {
+            "type": "sector",
+            "value": "sector de transporte"
+          },
+          {
+            "type": "sector",
+            "value": "sector energetico"
+          },
+          {
+            "type": "sector",
+            "value": "sector financiero"
+          },
+          {
+            "type": "sector",
+            "value": "sector gubernamental"
+          },
+          {
+            "type": "technology",
+            "value": "windows"
+          },
+          {
+            "type": "threat-actor",
+            "value": "exiliados"
+          }
+        ],
+        "false_positives": [],
+        "precision": 1.0,
+        "recall": 0.3157894736842105
+      },
+      "indicators": {
+        "counts": {
+          "fn": 2,
+          "fp": 0,
+          "tp": 0
+        },
+        "f1": 0.0,
+        "precision": null,
+        "recall": 0.0
+      },
+      "knowledge_entities": {
+        "counts": {
+          "fn": 11,
+          "fp": 0,
+          "tp": 6
+        },
+        "f1": 0.5217391304347826,
+        "precision": 1.0,
+        "recall": 0.35294117647058826
+      },
+      "relationships": {
+        "counts": {
+          "fn": 7,
+          "fp": 0,
+          "tp": 0
+        },
+        "f1": 0.0,
+        "false_negatives": [
+          {
+            "source_type": "malware",
+            "source_value": "moondancer",
+            "target_type": "country",
+            "target_value": "colombia",
+            "type": "targets"
+          },
+          {
+            "source_type": "malware",
+            "source_value": "moondancer",
+            "target_type": "sector",
+            "target_value": "infraestructura critica",
+            "type": "targets"
+          },
+          {
+            "source_type": "malware",
+            "source_value": "moondancer",
+            "target_type": "technology",
+            "target_value": "windows",
+            "type": "targets"
+          },
+          {
+            "source_type": "threat-actor",
+            "source_value": "exiliados",
+            "target_type": "country",
+            "target_value": "colombia",
+            "type": "targets"
+          },
+          {
+            "source_type": "threat-actor",
+            "source_value": "exiliados",
+            "target_type": "sector",
+            "target_value": "infraestructura critica",
+            "type": "targets"
+          },
+          {
+            "source_type": "threat-actor",
+            "source_value": "exiliados",
+            "target_type": "attack-pattern",
+            "target_value": "T1021",
+            "type": "uses"
+          },
+          {
+            "source_type": "threat-actor",
+            "source_value": "exiliados",
+            "target_type": "malware",
+            "target_value": "moondancer",
+            "type": "uses"
+          }
+        ],
+        "false_positives": [],
+        "invalid_endpoint_relationships": 0,
+        "precision": null,
+        "recall": 0.0
+      },
+      "repetition": 2,
+      "status": "success"
+    },
+    {
+      "citations": {
+        "localized": 0,
+        "rate": null,
+        "total": 0
+      },
+      "document": "colcert-2026-08-25-25c7bbd453",
+      "elapsed_seconds": 31.939275,
+      "emitted_flat_entities": 0,
+      "emitted_v2_entities": 0,
+      "emitted_v2_relationships": 0,
+      "entities": {
+        "by_type": {
+          "attack-pattern": {
+            "counts": {
+              "fn": 7,
+              "fp": 0,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "country": {
+            "counts": {
+              "fn": 1,
+              "fp": 0,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "indicator": {
+            "counts": {
+              "fn": 2,
+              "fp": 0,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "malware": {
+            "counts": {
+              "fn": 1,
+              "fp": 0,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "sector": {
+            "counts": {
+              "fn": 6,
+              "fp": 0,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "technology": {
+            "counts": {
+              "fn": 1,
+              "fp": 0,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": null,
+            "recall": 0.0
+          },
+          "threat-actor": {
+            "counts": {
+              "fn": 1,
+              "fp": 0,
+              "tp": 0
+            },
+            "f1": 0.0,
+            "precision": null,
+            "recall": 0.0
+          }
+        },
+        "counts": {
+          "fn": 19,
+          "fp": 0,
+          "tp": 0
+        },
+        "f1": 0.0,
+        "false_negatives": [
+          {
+            "type": "attack-pattern",
+            "value": "T1021"
+          },
+          {
+            "type": "attack-pattern",
+            "value": "T1069"
+          },
+          {
+            "type": "attack-pattern",
+            "value": "T1078"
+          },
+          {
+            "type": "attack-pattern",
+            "value": "T1087"
+          },
+          {
+            "type": "attack-pattern",
+            "value": "T1204"
+          },
+          {
+            "type": "attack-pattern",
+            "value": "T1486"
+          },
+          {
+            "type": "attack-pattern",
+            "value": "T1685"
+          },
+          {
+            "type": "country",
+            "value": "colombia"
+          },
+          {
+            "type": "indicator",
+            "value": "darkforums.ru"
+          },
+          {
+            "type": "indicator",
+            "value": "https://darkforums.ru/thread-raas-moondancer-ransomware"
+          },
+          {
+            "type": "malware",
+            "value": "moondancer"
+          },
+          {
+            "type": "sector",
+            "value": "infraestructura critica"
+          },
+          {
+            "type": "sector",
+            "value": "sector de telecomunicaciones"
+          },
+          {
+            "type": "sector",
+            "value": "sector de transporte"
+          },
+          {
+            "type": "sector",
+            "value": "sector energetico"
+          },
+          {
+            "type": "sector",
+            "value": "sector financiero"
+          },
+          {
+            "type": "sector",
+            "value": "sector gubernamental"
+          },
+          {
+            "type": "technology",
+            "value": "windows"
+          },
+          {
+            "type": "threat-actor",
+            "value": "exiliados"
+          }
+        ],
+        "false_positives": [],
+        "precision": null,
+        "recall": 0.0
+      },
+      "indicators": {
+        "counts": {
+          "fn": 2,
+          "fp": 0,
+          "tp": 0
+        },
+        "f1": 0.0,
+        "precision": null,
+        "recall": 0.0
+      },
+      "knowledge_entities": {
+        "counts": {
+          "fn": 17,
+          "fp": 0,
+          "tp": 0
+        },
+        "f1": 0.0,
+        "precision": null,
+        "recall": 0.0
+      },
+      "relationships": {
+        "counts": {
+          "fn": 7,
+          "fp": 0,
+          "tp": 0
+        },
+        "f1": 0.0,
+        "false_negatives": [
+          {
+            "source_type": "malware",
+            "source_value": "moondancer",
+            "target_type": "country",
+            "target_value": "colombia",
+            "type": "targets"
+          },
+          {
+            "source_type": "malware",
+            "source_value": "moondancer",
+            "target_type": "sector",
+            "target_value": "infraestructura critica",
+            "type": "targets"
+          },
+          {
+            "source_type": "malware",
+            "source_value": "moondancer",
+            "target_type": "technology",
+            "target_value": "windows",
+            "type": "targets"
+          },
+          {
+            "source_type": "threat-actor",
+            "source_value": "exiliados",
+            "target_type": "country",
+            "target_value": "colombia",
+            "type": "targets"
+          },
+          {
+            "source_type": "threat-actor",
+            "source_value": "exiliados",
+            "target_type": "sector",
+            "target_value": "infraestructura critica",
+            "type": "targets"
+          },
+          {
+            "source_type": "threat-actor",
+            "source_value": "exiliados",
+            "target_type": "attack-pattern",
+            "target_value": "T1021",
+            "type": "uses"
+          },
+          {
+            "source_type": "threat-actor",
+            "source_value": "exiliados",
+            "target_type": "malware",
+            "target_value": "moondancer",
+            "type": "uses"
+          }
+        ],
+        "false_positives": [],
+        "invalid_endpoint_relationships": 0,
+        "precision": null,
+        "recall": 0.0
+      },
+      "repetition": 3,
+      "status": "success"
+    }
+  ],
+  "schema_version": 1,
+  "timing_seconds": {
+    "max": 58.297035,
+    "mean": 39.14804208333334,
+    "min": 23.670015
+  },
+  "variability": {
+    "cnsd-2026-08-26-f09be7223c": {
+      "entity_recall_range": [
+        0.0,
+        0.0
+      ],
+      "flat_entity_count_range": [
+        1,
+        4
+      ],
+      "relationship_recall_range": null,
+      "v2_relationship_count_range": [
+        0,
+        2
+      ]
+    },
+    "cnsd-2026-08-27-e9f7f97545": {
+      "entity_recall_range": [
+        0.3939393939393939,
+        0.6212121212121212
+      ],
+      "flat_entity_count_range": [
+        26,
+        41
+      ],
+      "relationship_recall_range": [
+        0.0,
+        0.0
+      ],
+      "v2_relationship_count_range": [
+        0,
+        0
+      ]
+    },
+    "colcert-2026-08-25-25c7bbd453": {
+      "entity_recall_range": [
+        0.0,
+        0.3157894736842105
+      ],
+      "flat_entity_count_range": [
+        0,
+        6
+      ],
+      "relationship_recall_range": [
+        0.0,
+        0.0
+      ],
+      "v2_relationship_count_range": [
+        0,
+        0
+      ]
+    },
+    "colcert-2026-08-26-92539d2a32": {
+      "entity_recall_range": [
+        0.45454545454545453,
+        0.7272727272727273
+      ],
+      "flat_entity_count_range": [
+        16,
+        30
+      ],
+      "relationship_recall_range": [
+        0.0,
+        0.5
+      ],
+      "v2_relationship_count_range": [
+        0,
+        10
+      ]
+    }
+  }
+}

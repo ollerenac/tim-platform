@@ -1,0 +1,10 @@
+{
+  "format": "bulletin",
+  "iocs": [
+    {
+      "type": "email",
+      "value": "grants-office@funding-portal.example"
+    }
+  ],
+  "notes": "phishing bulletin, single email IOC"
+}

@@ -1,0 +1,44 @@
+CYBERSECURITY ADVISORY AA26-118A
+Release Date: April 28, 2026
+
+VELVET MANTIS Actors Exploiting Internet-Exposed HMI Interfaces at Water and Wastewater Facilities
+
+SUMMARY
+The Cybersecurity Directorate is releasing this advisory to warn of ongoing activity by the
+actor tracked as VELVET MANTIS targeting human-machine interface (HMI) software at water and
+wastewater treatment facilities. Since February 2026, the actors have exploited weak
+credentials on internet-exposed HMIs to modify pump telemetry set points and to deploy the
+StoneLoader implant.
+
+TECHNICAL DETAILS
+VELVET MANTIS actors authenticate to exposed HMI panels using default vendor credentials,
+consistent with MITRE ATT&CK technique T1078 (Valid Accounts). After initial access, the
+actors download a second-stage payload from attacker-controlled infrastructure and establish
+persistence via a scheduled task (T1053.005).
+
+Observed command-and-control infrastructure:
+- 192.0.2.44
+- 192.0.2.45
+- 198.51.100.12
+- 203.0.113.9
+
+Observed staging domains:
+- pump-telemetry.example
+- scada-sync.example
+
+Payload retrieval URLs:
+- http://pump-telemetry.example/init
+- https://scada-sync.example/cfg
+
+File hashes associated with StoneLoader:
+- MD5: 75668ad1bb3915fca2209c165b7afc5c
+- SHA-256: 4c7bf192284983cdb53f47f5f059861bd601e68a900004c7c2d5b1edcf9462ac
+
+MITIGATIONS
+* Change default HMI credentials immediately and enforce phishing-resistant MFA.
+* Disconnect HMI panels from the public internet or place them behind a VPN.
+* Hunt for the indicators above in perimeter and DNS logs going back to February 2026.
+* Report intrusions to your national CSIRT.
+
+The indicators listed are attributable to activity observed between February and April 2026
+at multiple water sector entities. This advisory is provided for informational purposes.

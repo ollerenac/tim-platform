@@ -1,0 +1,8 @@
+Period: last 1h (ending 2026-08-08T11:00Z).
+IOC activity in period: 164 indicators total (198 newly created, 0 pre-existing ones re-updated). The 25 highest-confidence of them are sampled below: (1 Url, 19 StixFile, 5 Text), top confidence: 0.90.
+Highest-confidence indicator values, verbatim: http://windows.network.troubleshooter.com/jdrop.js (Url), 52be04c420795b0d9c7cd1a4acbf8d5953fafd16 (StixFile), WinSrcNT.exe (StixFile), 5445ca8e5f076c2147bc9312b61a224a (StixFile), sysleg.ini (StixFile), et2z7q0FREZ.cr (StixFile), kb4480959_EdgeUpdate.exe (StixFile), EsetUpdate-0117583943.exe (StixFile), nullnat.ini (StixFile), index.html (StixFile).
+Tracked threat actors (knowledge base, most recently updated first): Exilware, BREEZE COMET, Mini Shai-Hulud, Sandworm Team, Aurora, Dark Caracal, Tortoiseshell, DukeEugene, Vanilla Tempest, UAT-10147.
+Tracked malware families (knowledge base): PollCat, NodeRabbit, Concipit1248, Cerberus, AgenteV2, CNABHunter, BraZetsu, Trinitite, BOATBEAM, KICKPLATE.
+Campaigns tracked in knowledge base: Quad7 Activity, CostaRicto, FLORAHOX Activity, C0027, C0026 (+5 more).
+ATT&CK techniques tracked (knowledge base): T1682 (Query Public AI Services), T1021.002 (SMB/Windows Admin Shares), T1025 (Data from Removable Media).
+Affected sectors: none identified.

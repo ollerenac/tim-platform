@@ -1,0 +1,64 @@
+{
+  "experiment_id": "EXP-01",
+  "invariants": {
+    "canonical_ids_stable": {
+      "passed": 3,
+      "total": 3
+    },
+    "empty_baselines": {
+      "passed": 9,
+      "total": 9
+    },
+    "queue_recovery_confirmed": {
+      "passed": 3,
+      "total": 3
+    }
+  },
+  "overall_status": "pass",
+  "replica_ids": [
+    1,
+    2,
+    3
+  ],
+  "replications": {
+    "passed": 3,
+    "total": 3
+  },
+  "scored_conditions": {
+    "passed": 9,
+    "total": 9
+  },
+  "timings_seconds": {
+    "automated_worker_recovery": {
+      "max": 10.13,
+      "mean": 10.125,
+      "median": 10.125,
+      "min": 10.119,
+      "n": 2,
+      "sample_standard_deviation": 0.008
+    },
+    "exact_replay": {
+      "max": 0.907,
+      "mean": 0.881,
+      "median": 0.896,
+      "min": 0.84,
+      "n": 3,
+      "sample_standard_deviation": 0.036
+    },
+    "manual_worker_recovery_observations": [
+      {
+        "note": "The interruption duration includes a deliberate manual pause and is excluded from automated recovery timing statistics.",
+        "replica": 1,
+        "seconds": 63.994
+      }
+    ],
+    "normal_import": {
+      "max": 54.939,
+      "mean": 52.901,
+      "median": 51.909,
+      "min": 51.854,
+      "n": 3,
+      "sample_standard_deviation": 1.765
+    }
+  }
+}

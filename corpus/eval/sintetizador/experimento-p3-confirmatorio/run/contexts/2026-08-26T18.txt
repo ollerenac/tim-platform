@@ -1,0 +1,8 @@
+Period: last 1h (ending 2026-08-26T19:00Z).
+IOC activity in period: 56 indicators total (49 newly created, 7 pre-existing ones re-updated). The 25 highest-confidence of them are sampled below: (5 Url, 2 StixFile, 1 Hostname, 12 IPv4-Addr, 5 Domain-Name), top confidence: 0.50.
+Highest-confidence indicator values, verbatim: http://timelevel12.com/big. (Url), http://snake.zooparkko.com/collect. (Url), http://snake.zooparkko.com/collect (Url), http://fine-work-team.com/6272 (Url), 7447d0d0c34779d4c519823b39bf6ddc16d2b34a226b82ee69da6f5b4a77ad82 (StixFile), 10df3451915ea35bcb17efe121415f24182680e2d07fc09df07ee695072104c1 (StixFile), snake.zooparkko.com (Hostname), http://timelevel12.com/big (Url), 31.58.209.241 (IPv4-Addr), timelevel12.com (Domain-Name).
+Tracked threat actors (knowledge base, most recently updated first): Exilware, BREEZE COMET, Mini Shai-Hulud, Sandworm Team, Aurora, Dark Caracal, Tortoiseshell, DukeEugene, Vanilla Tempest, UAT-10147.
+Tracked malware families (knowledge base): PollCat, NodeRabbit, Concipit1248, Cerberus, AgenteV2, CNABHunter, BraZetsu, Trinitite, BOATBEAM, KICKPLATE.
+Campaigns tracked in knowledge base: Quad7 Activity, CostaRicto, FLORAHOX Activity, C0027, C0026 (+5 more).
+ATT&CK techniques tracked (knowledge base): T1682 (Query Public AI Services), T1021.002 (SMB/Windows Admin Shares), T1025 (Data from Removable Media).
+Affected sectors: none identified.

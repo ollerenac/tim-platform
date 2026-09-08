@@ -1,0 +1,34 @@
+{
+  "format": "report",
+  "iocs": [
+    {
+      "type": "hash_md5",
+      "value": "7f969b028baa123f4296a39d0378836b"
+    },
+    {
+      "type": "hash_sha256",
+      "value": "1e6846efdd186fa786b2c8df624ca118d8a920756f24cf3796a565d5c7b4e5b4"
+    },
+    {
+      "type": "ip",
+      "value": "198.51.100.111"
+    },
+    {
+      "type": "ip",
+      "value": "198.51.100.112"
+    },
+    {
+      "type": "domain",
+      "value": "agent-heartbeat.example"
+    },
+    {
+      "type": "domain",
+      "value": "update-manifest.example"
+    },
+    {
+      "type": "url",
+      "value": "https://update-manifest.example/pkg/agent"
+    }
+  ],
+  "notes": "supply-chain incident report, 7 IOCs"
+}

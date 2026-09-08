@@ -1,0 +1,26 @@
+Inside StoneLoader: How a Commodity Loader Grew Up
+
+By the Helios Labs Threat Research Team
+
+When we first saw StoneLoader in late 2025 it was, frankly, boring: a two-stage loader with
+hardcoded infrastructure and no obfuscation to speak of. Six months later it has become the
+delivery vehicle of choice for at least three distinct intrusion sets, and the latest builds
+show a level of operational discipline that deserves attention.
+
+The most interesting change is in how StoneLoader resolves its command-and-control. Early
+builds embedded raw addresses in the binary. Current builds compute a per-victim beacon
+schedule and fetch their tasking from a metrics-themed domain, stone-metrics.example, that
+blends neatly into the noise of legitimate telemetry traffic most enterprises generate. If
+you are hunting, DNS is your friend here: the domain has no legitimate business appearing in
+your logs.
+
+We also observed the operators experimenting with signed drivers to blind endpoint sensors,
+a technique that has been trickling down from ransomware crews for a year now. The sample we
+analyzed in depth carries the SHA-256 hash 4c7bf192284983cdb53f47f5f059861bd601e68a900004c7c2d5b1edcf9462ac and was compiled
+less than 48 hours before we caught it in a customer environment, which tells you something
+about how short the shelf life of these builds is.
+
+Our full technical teardown, including the beacon scheduling algorithm and YARA rules, is
+available to Helios Labs subscribers. The short version for defenders: watch your DNS, watch
+for drivers loaded from user-writable paths, and assume any loader infection is thirty
+minutes away from becoming a hands-on-keyboard intrusion.

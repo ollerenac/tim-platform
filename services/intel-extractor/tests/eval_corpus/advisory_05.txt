@@ -1,0 +1,39 @@
+CYBERSECURITY ADVISORY AA26-155A
+HOLLOW CRANE Botnet Targeting Small Office Routers
+
+SUMMARY
+The HOLLOW CRANE botnet is compromising end-of-life small office and home office routers via
+default credentials and a chain of known vulnerabilities. Compromised devices are used as
+residential proxies to obfuscate follow-on intrusions against enterprise targets.
+
+TECHNICAL DETAILS
+Infected routers beacon to a tiered C2 architecture and periodically retrieve updated bot
+binaries. Two payload variants have been observed, differing only in persistence mechanism.
+Operators rotate relay infrastructure weekly; the addresses below were active in May 2026.
+
+INDICATOR APPENDIX
+
+Tier-1 C2 addresses:
+- 192.0.2.10
+- 192.0.2.11
+- 192.0.2.12
+- 198.51.100.30
+- 198.51.100.31
+- 203.0.113.50
+
+Distribution domains:
+- relay-node-a.example
+- relay-node-b.example
+
+Payload URLs:
+- http://relay-node-a.example/bot.bin
+- http://relay-node-b.example/upd
+
+Payload hashes (SHA-256):
+- Variant A: 090d32e08da17b991ef003c26bb6ce40ef680941f415e7900aabb9c62aa4d5ec
+- Variant B: f0b057640bffdabf75c7dd01f53cff6810b2bcab622a0f07e589f69f91278c42
+
+MITIGATIONS
+* Replace end-of-life routers that no longer receive firmware updates.
+* Reboot suspected devices and change administrative credentials from a trusted network.
+* Block the listed infrastructure and monitor for beaconing on unusual high ports.

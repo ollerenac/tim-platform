@@ -1,0 +1,10 @@
+{
+  "format": "blog",
+  "iocs": [
+    {
+      "type": "domain",
+      "value": "bracken-cdn.example"
+    }
+  ],
+  "notes": "blog, single domain IOC in prose"
+}

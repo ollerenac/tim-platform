@@ -1,0 +1,548 @@
+{
+  "aws_region": "us-east-1",
+  "created_at_utc": "2026-08-28T11:11:53.235999Z",
+  "document": "colcert-2026-08-26-92539d2a32",
+  "elapsed_seconds": 42.304291,
+  "input_sha256": "b17298185915b6046f58a683fb7a70a8fc7b85944a185a4681e453dfc7694ca2",
+  "kind": "document_extraction",
+  "model": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
+  "model_output": {
+    "accepted_iocs": [
+      {
+        "type": "hash_sha1",
+        "value": "7fa480b8a7dbcc1ce826d1cd6b82d5ee75552484"
+      },
+      {
+        "type": "hash_md5",
+        "value": "82f771c3ec4fe979c3ae00372e8c3ac8"
+      },
+      {
+        "type": "hash_sha1",
+        "value": "7bc79e8bbff363b41fd73f9bea102ddc4a404cbe"
+      },
+      {
+        "type": "hash_md5",
+        "value": "cfbd8d062e9baa98737a0260996f48c6"
+      },
+      {
+        "type": "hash_sha1",
+        "value": "e6ae8be61928e1279190b0df28ac8ad94f3ac29d"
+      },
+      {
+        "type": "hash_md5",
+        "value": "e882ee4a643b00871c98bcfe4b4d7cd1"
+      },
+      {
+        "type": "hash_sha1",
+        "value": "077b104db18e1c1fdd0800e6e75a1e26398d97e7"
+      },
+      {
+        "type": "hash_md5",
+        "value": "f1aed8cf2adafa86927fc58d5f24073e"
+      }
+    ],
+    "campaign_summary": "Grandoreiro, a Delphi-developed banking trojan active since at least 2016, has resurged across Latin America with a strategic focus on Mexico, Spain, and other LATAM countries after relocating from Brazil and Portugal. The campaign targets the financial and banking sector through malicious email attachments disguised as invoices, leveraging DLL side-loading via the legitimate Duplicate Files Finder application combined with sophisticated anti-sandbox/anti-VM evasion techniques to bypass security controls. Active telemetry detections in Colombia confirm active malicious artifacts are currently deployed in the region, representing a high-impact threat to financial institutions across the Americas.",
+    "chunk_diagnostics": [
+      {
+        "attempts": 1,
+        "chunk_index": 0,
+        "error": null,
+        "retry_count": 0,
+        "status": "complete"
+      }
+    ],
+    "exploited_cves": [],
+    "malware_families": [
+      "Grandoreiro"
+    ],
+    "rejected_ioc_candidates": [
+      {
+        "reason": "ungrounded",
+        "stage": "grounding",
+        "type": "hash_sha256",
+        "value": "_2IH4ENJIRRNCobran_03732qyykae214BKXXN6180-Dt.exe"
+      },
+      {
+        "reason": "duplicate",
+        "stage": "dedup",
+        "type": "hash_sha1",
+        "value": "7fa480b8a7dbcc1ce826d1cd6b82d5ee75552484"
+      },
+      {
+        "reason": "duplicate",
+        "stage": "dedup",
+        "type": "hash_sha1",
+        "value": "7bc79e8bbff363b41fd73f9bea102ddc4a404cbe"
+      },
+      {
+        "reason": "duplicate",
+        "stage": "dedup",
+        "type": "hash_sha1",
+        "value": "e6ae8be61928e1279190b0df28ac8ad94f3ac29d"
+      },
+      {
+        "reason": "duplicate",
+        "stage": "dedup",
+        "type": "hash_sha1",
+        "value": "077b104db18e1c1fdd0800e6e75a1e26398d97e7"
+      },
+      {
+        "reason": "duplicate",
+        "stage": "dedup",
+        "type": "hash_md5",
+        "value": "82f771c3ec4fe979c3ae00372e8c3ac8"
+      }
+    ],
+    "targeted_countries": [
+      "Colombia",
+      "España",
+      "México",
+      "Países Bajos",
+      "Perú",
+      "República Checa",
+      "Rusia"
+    ],
+    "targeted_sectors": [],
+    "technique_keywords": [
+      "anti-sandbox evasion [t1497]",
+      "application layer protocol: dns resolution (doh) [t1071.004]",
+      "application layer protocol: web protocols [t1071.001]",
+      "deobfuscate /decode information [t1140]",
+      "dll side-loading [t1574]",
+      "hide artifacts: hidden window [t1564.003]",
+      "hijack execution flow [t1574]",
+      "malicious email",
+      "masquerading: match legitimate resource name or location [t1036.005]",
+      "process discovery [t1057]",
+      "system information discovery [t1082]",
+      "system location discovery [t1614]",
+      "virtualization/sandbox evasion: system checks [t1497]"
+    ],
+    "threat_actors": [],
+    "unique_iocs": [
+      {
+        "type": "hash_sha1",
+        "value": "7fa480b8a7dbcc1ce826d1cd6b82d5ee75552484"
+      },
+      {
+        "type": "hash_md5",
+        "value": "82f771c3ec4fe979c3ae00372e8c3ac8"
+      },
+      {
+        "type": "hash_sha1",
+        "value": "7bc79e8bbff363b41fd73f9bea102ddc4a404cbe"
+      },
+      {
+        "type": "hash_md5",
+        "value": "cfbd8d062e9baa98737a0260996f48c6"
+      },
+      {
+        "type": "hash_sha1",
+        "value": "e6ae8be61928e1279190b0df28ac8ad94f3ac29d"
+      },
+      {
+        "type": "hash_md5",
+        "value": "e882ee4a643b00871c98bcfe4b4d7cd1"
+      },
+      {
+        "type": "hash_sha1",
+        "value": "077b104db18e1c1fdd0800e6e75a1e26398d97e7"
+      },
+      {
+        "type": "hash_md5",
+        "value": "f1aed8cf2adafa86927fc58d5f24073e"
+      }
+    ],
+    "v2_entities": [
+      {
+        "aliases": [],
+        "id": "e1",
+        "page": 1,
+        "quote": "Se identificó un resurgimiento activo del troyano bancario Grandoreiro ,una amenaza que compromete críticamente a organizaciones enAmérica Latina",
+        "type": "malware",
+        "value": "Grandoreiro"
+      },
+      {
+        "aliases": [],
+        "id": "e2",
+        "page": 1,
+        "quote": "conunfoco particular deriesgo enMéxico, Perú yArgentina, entre otros países delaregión",
+        "type": "country",
+        "value": "México"
+      },
+      {
+        "aliases": [],
+        "id": "e3",
+        "page": 1,
+        "quote": "conunfoco particular deriesgo enMéxico, Perú yArgentina, entre otros países delaregión",
+        "type": "country",
+        "value": "Perú"
+      },
+      {
+        "aliases": [],
+        "id": "e4",
+        "page": 1,
+        "quote": "conunfoco particular deriesgo enMéxico, Perú yArgentina, entre otros países delaregión",
+        "type": "country",
+        "value": "Argentina"
+      },
+      {
+        "aliases": [],
+        "id": "e5",
+        "page": 1,
+        "quote": "Esta amenaza, desarrollada enDelphi yactiva desde almenos 2016",
+        "type": "technology",
+        "value": "Delphi"
+      },
+      {
+        "aliases": [],
+        "id": "e6",
+        "page": 1,
+        "quote": "laversión observada entre mayo yjunio de2026 cesó operaciones enBrasil yPortugal",
+        "type": "country",
+        "value": "Brasil"
+      },
+      {
+        "aliases": [],
+        "id": "e7",
+        "page": 1,
+        "quote": "laversión observada entre mayo yjunio de2026 cesó operaciones enBrasil yPortugal",
+        "type": "country",
+        "value": "Portugal"
+      },
+      {
+        "aliases": [],
+        "id": "e8",
+        "page": 1,
+        "quote": "para concentrar estratégicamente sucapacidad deataque contra objetivos enMéxico, elresto deLATAM yEspaña",
+        "type": "country",
+        "value": "España"
+      },
+      {
+        "aliases": [],
+        "id": "e9",
+        "page": 1,
+        "quote": "lacadena de infección eleva elriesgo alabusar delaaplicación legítima Duplicate Files Finder (DFF) mediante latécnica deDLL side-loading",
+        "type": "attack-pattern",
+        "value": "DLL side-loading [T1574]"
+      },
+      {
+        "aliases": [],
+        "id": "e11",
+        "page": 1,
+        "quote": "Como contramedida frente aloscontroles deseguridad, antes de contactar asuservidor deComando yControl (C2),elcargador ejecuta rigurosas validaciones anti-sandbox yanti-VM",
+        "type": "attack-pattern",
+        "value": "Anti-sandbox evasion [T1497]"
+      },
+      {
+        "aliases": [],
+        "id": "e12",
+        "page": 1,
+        "quote": "Estas incluyen laverificación del tiempo deactividad, perfilado de hardware, detección de hipervisores (VMware, VirtualBox)",
+        "type": "technology",
+        "value": "VMware"
+      },
+      {
+        "aliases": [],
+        "id": "e13",
+        "page": 1,
+        "quote": "detección de hipervisores (VMware, VirtualBox)",
+        "type": "technology",
+        "value": "VirtualBox"
+      },
+      {
+        "aliases": [],
+        "id": "e17",
+        "ioc_type": "hash_sha256",
+        "page": 2,
+        "quote": "Mediante análisis detelemetría enColombia, seidentificó eluso deeste artefacto bajo elnombre _2IH4ENJIRRNCobran_ 03732 qyykae 214BKXXN 6180 -Dt.exe",
+        "type": "indicator",
+        "value": "_2IH4ENJIRRNCobran_03732qyykae214BKXXN6180-Dt.exe"
+      },
+      {
+        "aliases": [],
+        "id": "e18",
+        "page": 2,
+        "quote": "Mediante análisis detelemetría enColombia, seidentificó eluso deeste artefacto bajo elnombre",
+        "type": "country",
+        "value": "Colombia"
+      },
+      {
+        "aliases": [],
+        "id": "e19",
+        "page": 2,
+        "quote": "Lectura de espacio libre en C:, número de CPUs , memoria RAM física y resolución de pantalla",
+        "type": "attack-pattern",
+        "value": "System Information Discovery [T1082]"
+      },
+      {
+        "aliases": [],
+        "id": "e20",
+        "page": 2,
+        "quote": "Escaneo activo de 49 nombres de procesos correspondientes a depuradores, EDR y herramientas de análisis de red",
+        "type": "attack-pattern",
+        "value": "Process Discovery [T1057]"
+      },
+      {
+        "aliases": [],
+        "id": "e21",
+        "page": 2,
+        "quote": "Consulta a ip-api.com y descarte de ejecución por geolocalización (observado: República Checa, Rusia, Países Bajos)",
+        "type": "attack-pattern",
+        "value": "System Location Discovery [T1614]"
+      },
+      {
+        "aliases": [],
+        "id": "e22",
+        "page": 2,
+        "quote": "Consulta a ip-api.com y descarte de ejecución por geolocalización (observado: República Checa, Rusia, Países Bajos)",
+        "type": "country",
+        "value": "República Checa"
+      },
+      {
+        "aliases": [],
+        "id": "e23",
+        "page": 2,
+        "quote": "Consulta a ip-api.com y descarte de ejecución por geolocalización (observado: República Checa, Rusia, Países Bajos)",
+        "type": "country",
+        "value": "Rusia"
+      },
+      {
+        "aliases": [],
+        "id": "e24",
+        "page": 2,
+        "quote": "Consulta a ip-api.com y descarte de ejecución por geolocalización (observado: República Checa, Rusia, Países Bajos)",
+        "type": "country",
+        "value": "Países Bajos"
+      },
+      {
+        "aliases": [],
+        "id": "e25",
+        "page": 2,
+        "quote": "Solicitud HTTP GET cifrada sobre el puerto no estándar TCP 6432 para descargar el payload de segunda etapa",
+        "type": "attack-pattern",
+        "value": "Application Layer Protocol: Web Protocols [T1071.001]"
+      },
+      {
+        "aliases": [],
+        "id": "e26",
+        "page": 2,
+        "quote": "Uso de DNS -over-HTTPS de Google ( dns.google ) para resolver la dirección IP del servidor C2, ocultando la consulta DNS real",
+        "type": "attack-pattern",
+        "value": "Application Layer Protocol: DNS Resolution (DoH) [T1071.004]"
+      },
+      {
+        "aliases": [],
+        "id": "e28",
+        "ioc_type": "hash_sha1",
+        "page": 3,
+        "quote": "SHA1: 7fa480b8a7dbcc1ce826d1cd6b82d5ee75552484",
+        "type": "indicator",
+        "value": "7fa480b8a7dbcc1ce826d1cd6b82d5ee75552484"
+      },
+      {
+        "aliases": [],
+        "id": "e29",
+        "ioc_type": "hash_md5",
+        "page": 3,
+        "quote": "MD5: 82f771c3ec4fe979c3ae00372e8c3ac8",
+        "type": "indicator",
+        "value": "82f771c3ec4fe979c3ae00372e8c3ac8"
+      },
+      {
+        "aliases": [],
+        "id": "e31",
+        "ioc_type": "hash_sha1",
+        "page": 3,
+        "quote": "SHA1: 7bc79e8bbff363b41fd73f9bea102ddc4a404cbe",
+        "type": "indicator",
+        "value": "7bc79e8bbff363b41fd73f9bea102ddc4a404cbe"
+      },
+      {
+        "aliases": [],
+        "id": "e32",
+        "ioc_type": "hash_md5",
+        "page": 3,
+        "quote": "MD5: cfbd8d062e9baa98737a0260996f48c6",
+        "type": "indicator",
+        "value": "cfbd8d062e9baa98737a0260996f48c6"
+      },
+      {
+        "aliases": [],
+        "id": "e34",
+        "ioc_type": "hash_sha1",
+        "page": 3,
+        "quote": "SHA1: e6ae8be61928e1279190b0df28ac8ad94f3ac29d",
+        "type": "indicator",
+        "value": "e6ae8be61928e1279190b0df28ac8ad94f3ac29d"
+      },
+      {
+        "aliases": [],
+        "id": "e35",
+        "ioc_type": "hash_md5",
+        "page": 3,
+        "quote": "MD5: e882ee4a643b00871c98bcfe4b4d7cd1",
+        "type": "indicator",
+        "value": "e882ee4a643b00871c98bcfe4b4d7cd1"
+      },
+      {
+        "aliases": [],
+        "id": "e37",
+        "ioc_type": "hash_sha1",
+        "page": 3,
+        "quote": "SHA1: 077b104db18e1c1fdd0800e6e75a1e26398d97e7",
+        "type": "indicator",
+        "value": "077b104db18e1c1fdd0800e6e75a1e26398d97e7"
+      },
+      {
+        "aliases": [],
+        "id": "e38",
+        "ioc_type": "hash_md5",
+        "page": 3,
+        "quote": "MD5: f1aed8cf2adafa86927fc58d5f24073e",
+        "type": "indicator",
+        "value": "f1aed8cf2adafa86927fc58d5f24073e"
+      },
+      {
+        "aliases": [],
+        "id": "e41",
+        "page": 2,
+        "quote": "Carga de la DLL maliciosa mingwm10.dll a través del ejecutable legítimo de Duplicate Files Finder (DLL side-loading )",
+        "type": "attack-pattern",
+        "value": "Hijack Execution Flow [T1574]"
+      },
+      {
+        "aliases": [],
+        "id": "e42",
+        "page": 2,
+        "quote": "Verificación de tiempo de actividad del sistema (>180 segundos), detección de hipervisores, accesos directos y claves de BIOS",
+        "type": "attack-pattern",
+        "value": "Virtualization/Sandbox Evasion: System Checks [T1497]"
+      },
+      {
+        "aliases": [],
+        "id": "e43",
+        "page": 2,
+        "quote": "Ocultamiento inmediato de la ventana de interfaz gráfica (GUI) del ejecutable DFF tras la carga lateral",
+        "type": "attack-pattern",
+        "value": "Hide Artifacts: Hidden Window [T1564.003]"
+      },
+      {
+        "aliases": [],
+        "id": "e44",
+        "page": 2,
+        "quote": "Rutina personalizada en memoria para desofuscar cadenas de texto mediante Base64 combinado con operaciones XOR",
+        "type": "attack-pattern",
+        "value": "Deobfuscate /Decode Information [T1140]"
+      },
+      {
+        "aliases": [],
+        "id": "e45",
+        "page": 2,
+        "quote": "Renombrado del binario benigno de Duplicate Files Finder a una cadena aleatoria para enmascaramiento",
+        "type": "attack-pattern",
+        "value": "Masquerading: Match Legitimate Resource Name or Location [T1036.005]"
+      },
+      {
+        "aliases": [],
+        "id": "e46",
+        "page": 2,
+        "quote": "elobjetivo primordial y demáximo riesgo para esta reciente campaña recae demanera directa sobre lasentidades delecosistema financiero ybancario alolargo deAmérica Latina (LATAM )",
+        "type": "sector",
+        "value": "Financial"
+      },
+      {
+        "aliases": [],
+        "id": "e47",
+        "page": 1,
+        "quote": "Para materializar elcompromiso, lacampaña emplea unvector de entrega basado encorreos maliciosos (malspam )que adjuntan un archivo ZIP camuflado como factura",
+        "type": "attack-pattern",
+        "value": "Malicious Email"
+      }
+    ],
+    "v2_relationships": [
+      {
+        "page": 1,
+        "quote": "laversión observada entre mayo yjunio de2026 cesó operaciones enBrasil yPortugal para concentrar estratégicamente sucapacidad deataque contra objetivos enMéxico, elresto deLATAM yEspaña",
+        "source": "e1",
+        "target": "e2",
+        "type": "targets"
+      },
+      {
+        "page": 1,
+        "quote": "conunfoco particular deriesgo enMéxico, Perú yArgentina, entre otros países delaregión",
+        "source": "e1",
+        "target": "e3",
+        "type": "targets"
+      },
+      {
+        "page": 1,
+        "quote": "conunfoco particular deriesgo enMéxico, Perú yArgentina, entre otros países delaregión",
+        "source": "e1",
+        "target": "e4",
+        "type": "targets"
+      },
+      {
+        "page": 1,
+        "quote": "laversión observada entre mayo yjunio de2026 cesó operaciones enBrasil yPortugal",
+        "source": "e1",
+        "target": "e6",
+        "type": "targets"
+      },
+      {
+        "page": 1,
+        "quote": "laversión observada entre mayo yjunio de2026 cesó operaciones enBrasil yPortugal",
+        "source": "e1",
+        "target": "e7",
+        "type": "targets"
+      },
+      {
+        "page": 1,
+        "quote": "para concentrar estratégicamente sucapacidad deataque contra objetivos enMéxico, elresto deLATAM yEspaña",
+        "source": "e1",
+        "target": "e8",
+        "type": "targets"
+      },
+      {
+        "page": 1,
+        "quote": "lacadena de infección eleva elriesgo alabusar delaaplicación legítima Duplicate Files Finder (DFF) mediante latécnica deDLL side-loading",
+        "source": "e1",
+        "target": "e9",
+        "type": "uses"
+      },
+      {
+        "page": 1,
+        "quote": "Como contramedida frente aloscontroles deseguridad, antes de contactar asuservidor deComando yControl (C2),elcargador ejecuta rigurosas validaciones anti-sandbox yanti-VM",
+        "source": "e1",
+        "target": "e11",
+        "type": "uses"
+      },
+      {
+        "page": 2,
+        "quote": "elobjetivo primordial y demáximo riesgo para esta reciente campaña recae demanera directa sobre lasentidades delecosistema financiero ybancario alolargo deAmérica Latina (LATAM )",
+        "source": "e1",
+        "target": "e46",
+        "type": "targets"
+      },
+      {
+        "page": 1,
+        "quote": "Para materializar elcompromiso, lacampaña emplea unvector de entrega basado encorreos maliciosos (malspam )que adjuntan un archivo ZIP camuflado como factura",
+        "source": "e1",
+        "target": "e47",
+        "type": "uses"
+      }
+    ],
+    "victim_technologies": [
+      "Delphi",
+      "VMware",
+      "VirtualBox"
+    ]
+  },
+  "opencti_writes": 0,
+  "provider": "bedrock",
+  "reference_sha256": "dea9cc67a264710c20bc9b46e7065d6dfe0b076616802d11e01a95b7cd2fe97a",
+  "repetition": 3,
+  "schema_version": 1,
+  "source_type": "bulletin",
+  "status": "success"
+}

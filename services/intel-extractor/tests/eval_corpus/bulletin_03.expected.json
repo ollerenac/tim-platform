@@ -1,0 +1,10 @@
+{
+  "format": "bulletin",
+  "iocs": [
+    {
+      "type": "domain",
+      "value": "glass-mirror-cdn.example"
+    }
+  ],
+  "notes": "bulletin, single domain IOC"
+}

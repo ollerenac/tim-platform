@@ -1,0 +1,8 @@
+Period: last 1h (ending 2026-08-25T15:00Z).
+IOC activity in period: 121 indicators total (0 newly created, 121 pre-existing ones re-updated). The 25 highest-confidence of them are sampled below: (16 IPv4-Addr, 9 Url), top confidence: 0.20.
+Highest-confidence indicator values, verbatim: 37.153.90.88 (IPv4-Addr), 23.234.94.43 (IPv4-Addr), 92.118.112.181 (IPv4-Addr), 87.249.138.34 (IPv4-Addr), 94.156.154.48 (IPv4-Addr), 213.176.72.223 (IPv4-Addr), http://yuhvgbzsa66biqeatbmdvfo5b5jjefcmz5t2vjuvco5qtdkshfpabyid.onion:50051 (Url), 83.97.20.150 (IPv4-Addr), http://www.icloud-cdn.net/dnscfg.dll (Url), http://www.wangmengsb.com/GetReplicas (Url).
+Tracked threat actors (knowledge base, most recently updated first): Exilware, BREEZE COMET, Mini Shai-Hulud, Sandworm Team, Aurora, Dark Caracal, Tortoiseshell, DukeEugene, Vanilla Tempest, UAT-10147.
+Tracked malware families (knowledge base): PollCat, NodeRabbit, Concipit1248, Cerberus, AgenteV2, CNABHunter, BraZetsu, Trinitite, BOATBEAM, KICKPLATE.
+Campaigns tracked in knowledge base: Quad7 Activity, CostaRicto, FLORAHOX Activity, C0027, C0026 (+5 more).
+ATT&CK techniques tracked (knowledge base): T1682 (Query Public AI Services), T1021.002 (SMB/Windows Admin Shares), T1025 (Data from Removable Media).
+Affected sectors: none identified.

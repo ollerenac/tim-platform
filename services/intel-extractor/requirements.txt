@@ -1,0 +1,16 @@
+fastapi==0.129.2
+uvicorn
+pycti==7.260706.0
+ollama
+anthropic[bedrock]>=0.116.0
+PyPDF2==3.0.1
+trafilatura
+requests
+python-multipart
+beautifulsoup4
+pytest
+pytest-mock
+feedparser==6.0.11
+PyYAML>=6.0
+curl_cffi==0.15.0
+ioc-fanger==5.1.1

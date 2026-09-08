@@ -1,0 +1,105 @@
+{
+  "aws_region": "us-east-1",
+  "created_at_utc": "2026-08-28T11:09:32.358758Z",
+  "document": "cnsd-2026-08-26-f09be7223c",
+  "elapsed_seconds": 29.042551,
+  "input_sha256": "e7922864a43d9d3f77bd0c3118e7bfaf46106eb434e2fb09686f508684bc76b3",
+  "kind": "document_extraction",
+  "model": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
+  "model_output": {
+    "accepted_iocs": [],
+    "campaign_summary": "A Peruvian integrated digital security alert bulletin details six critical vulnerabilities affecting popular frameworks and applications: Next.js (CVE-2026-75604, GHSA-2xp9-vwfh-vxw4), MindsDB Minds Platform (CVE-2026-73678), Microsoft SharePoint Server (CVE-2026-55040, actively exploited), RansomLook (CVE-2026-78370), Affiliate Pro WooCommerce plugin (CVE-2026-32558), and Pods WordPress plugin (CVE-2026-19598). These vulnerabilities enable remote code execution, authentication bypass, privilege escalation, and unauthorized data access without authentication, posing severe risk to enterprises and public sector entities across Peru.",
+    "chunk_diagnostics": [
+      {
+        "attempts": 1,
+        "chunk_index": 0,
+        "error": null,
+        "retry_count": 0,
+        "status": "complete"
+      }
+    ],
+    "exploited_cves": [],
+    "malware_families": [
+      "Next.js"
+    ],
+    "rejected_ioc_candidates": [
+      {
+        "reason": "bulletin_reference_section",
+        "stage": "bulletin_policy",
+        "type": "hash_sha1",
+        "value": "ff97a3489d70ffc3c1d09ea2c7d25137edfffb2a"
+      }
+    ],
+    "targeted_countries": [],
+    "targeted_sectors": [],
+    "technique_keywords": [],
+    "threat_actors": [],
+    "unique_iocs": [],
+    "v2_entities": [
+      {
+        "aliases": [],
+        "id": "e3",
+        "ioc_type": null,
+        "page": 4,
+        "quote": "Se han identificado dos vulnerabilidades críticas en Next.js, framework ampliamente utilizado para el desarrollo de aplicaciones web, que podrían permitir la ejecución remota de código (RCE) sin autenticación en aplicaciones alojadas en servidores Windows y que utilizan la API de optimización de imágenes para procesar archivos AVIF.",
+        "type": "malware",
+        "value": "Next.js"
+      },
+      {
+        "aliases": [],
+        "id": "e20",
+        "ioc_type": null,
+        "page": 4,
+        "quote": "Se han identificado dos vulnerabilidades críticas en Next.js, framework ampliamente utilizado para el desarrollo de aplicaciones web, que podrían permitir la ejecución remota de código (RCE) sin autenticación en aplicaciones alojadas en servidores Windows y que utilizan la API de optimización de imágenes para procesar archivos AVIF.",
+        "type": "technology",
+        "value": "Windows"
+      },
+      {
+        "aliases": [],
+        "id": "e21",
+        "ioc_type": null,
+        "page": 4,
+        "quote": "El problema se origina en la biblioteca libheif, utilizada indirectamente mediante el paquete Sharp, encargado del procesamiento, conversión y optimización de imágenes.",
+        "type": "technology",
+        "value": "libheif"
+      },
+      {
+        "aliases": [],
+        "id": "e22",
+        "ioc_type": null,
+        "page": 4,
+        "quote": "El problema se origina en la biblioteca libheif, utilizada indirectamente mediante el paquete Sharp, encargado del procesamiento, conversión y optimización de imágenes.",
+        "type": "technology",
+        "value": "Sharp"
+      }
+    ],
+    "v2_relationships": [
+      {
+        "page": 4,
+        "quote": "Se han identificado dos vulnerabilidades críticas en Next.js, framework ampliamente utilizado para el desarrollo de aplicaciones web, que podrían permitir la ejecución remota de código (RCE) sin autenticación en aplicaciones alojadas en servidores Windows y que utilizan la API de optimización de imágenes para procesar archivos AVIF.",
+        "source": "e3",
+        "target": "e20",
+        "type": "uses"
+      },
+      {
+        "page": 4,
+        "quote": "El problema se origina en la biblioteca libheif, utilizada indirectamente mediante el paquete Sharp, encargado del procesamiento, conversión y optimización de imágenes.",
+        "source": "e22",
+        "target": "e21",
+        "type": "uses"
+      }
+    ],
+    "victim_technologies": [
+      "Sharp",
+      "Windows",
+      "libheif"
+    ]
+  },
+  "opencti_writes": 0,
+  "provider": "bedrock",
+  "reference_sha256": "ac6ceca39afa52e9a131ccadf70be7178a7e33bceb7cacc0184d272f6ad86fdd",
+  "repetition": 2,
+  "schema_version": 1,
+  "source_type": "bulletin",
+  "status": "success"
+}

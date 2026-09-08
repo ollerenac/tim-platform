@@ -1,0 +1,19 @@
+SECURITY BULLETIN 2026-047
+Severity: HIGH
+Subject: Watering-hole campaign abusing browser zero-day CVE-2026-23310
+
+A zero-day type-confusion vulnerability (CVE-2026-23310) in a major browser engine was
+exploited in a watering-hole campaign prior to this week's emergency patch. The campaign
+selectively targeted visitors of policy research and defense analysis websites.
+
+Compromised sites loaded profiling script from glass-mirror-cdn.example, which delivered
+the exploit only to visitors matching narrow language and time zone criteria. All other
+visitors received benign content, complicating detection and takedown.
+
+The browser vendor released an emergency update on 2026-06-02. Exploitation before that
+date is assessed as limited and highly targeted.
+
+RECOMMENDATIONS
+Ensure browser auto-updates are enforced across managed fleets. Organizations in the
+targeted sectors should review proxy logs for contact with the profiling domain and treat
+matches as potential compromise requiring endpoint triage, not merely blocking.

@@ -1,0 +1,8 @@
+Period: last 1h (ending 2026-08-08T21:00Z).
+IOC activity in period: 1967 indicators total (1957 newly created, 10 pre-existing ones re-updated). The 25 highest-confidence of them are sampled below: (18 Hostname, 7 StixFile), top confidence: 0.50.
+Highest-confidence indicator values, verbatim: exampleentity.setpasskey.com (Hostname), w456w5.s3.eu-central-003.backblazeb2.com (Hostname), sentiwaw.s3.eu-central-003.backblazeb2.com (Hostname), pois43.s3.eu-central-003.backblazeb2.com (Hostname), f06e7e1a4363a01ba2a4fee2e28abdd623abf4194bda373f23ff0e151b5c2b45 (StixFile), c79091ceae7cd592fc08e4854cda7c1182af762b6b126371cc604debdc995fc7 (StixFile), aa7ea19e34567458b4ee66a7cd274181764984bf32123f756a7fdc64d5857b31 (StixFile), 3b7642b0f84e83a36334c608655c6cb7aae774839a6a3488526b853d89830a60 (StixFile), 291cb1fd0f2709b4457447cbb87adacf5c36c1bcb0f8754524024d44174bb195 (StixFile), 1f00fd604bb18bbe3081f9ce8d741c4029d2a2125eb8888ac4e0d955938059d6 (StixFile).
+Tracked threat actors (knowledge base, most recently updated first): Exilware, BREEZE COMET, Mini Shai-Hulud, Sandworm Team, Aurora, Dark Caracal, Tortoiseshell, DukeEugene, Vanilla Tempest, UAT-10147.
+Tracked malware families (knowledge base): PollCat, NodeRabbit, Concipit1248, Cerberus, AgenteV2, CNABHunter, BraZetsu, Trinitite, BOATBEAM, KICKPLATE.
+Campaigns tracked in knowledge base: Quad7 Activity, CostaRicto, FLORAHOX Activity, C0027, C0026 (+5 more).
+ATT&CK techniques tracked (knowledge base): T1682 (Query Public AI Services), T1021.002 (SMB/Windows Admin Shares), T1025 (Data from Removable Media).
+Affected sectors: none identified.

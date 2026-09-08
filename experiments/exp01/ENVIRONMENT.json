@@ -1,0 +1,40 @@
+{
+  "captured_at": "2026-08-29T17:57:56-05:00",
+  "timezone": "America/Lima",
+  "source": {
+    "git_commit": "9368bdcc5696582d0a97a7fe37e80852b6beafe0",
+    "branch": "pilot/opencti-7",
+    "worktree_was_dirty": true
+  },
+  "host": {
+    "architecture": "x86_64",
+    "kernel": "Linux 6.8.0-138-generic #138~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug 7 13:43:15 UTC 2026",
+    "cpu": "11th Gen Intel(R) Core(TM) i7-11800H @ 2.30GHz",
+    "logical_cpus": 16,
+    "physical_cores": 8,
+    "memory_bytes": 33363099648,
+    "swap_bytes": 2147479552
+  },
+  "runtime": {
+    "docker_engine_client": "29.7.1",
+    "docker_engine_server": "29.7.1",
+    "docker_compose": "5.3.1",
+    "container_python": "3.12.13",
+    "pycti": "7.260706.0",
+    "stix2": "3.0.2"
+  },
+  "images": {
+    "elasticsearch": "docker.elastic.co/elasticsearch/elasticsearch@sha256:84a73ced8390c059e7bc2858595c68dc36e6f8bdb98895dcab0074eda35ac96e",
+    "redis": "redis@sha256:dfa18828cbc07b3ae6a95ec7343f6c214fdee2d836197b4be8e9904420762cd8",
+    "rabbitmq": "rabbitmq@sha256:606d8c0d6b3c18d1da9afc53bc7cdb2a8d5486df91b5a9830e9e07626c9ae281",
+    "minio": "minio/minio@sha256:14cea493d9a34af32f524e538b8346cf79f3321eff8e708c1e2960462bd8936e",
+    "opencti": "opencti/platform@sha256:61ae09dbde9edf1d8d03d3807e43f66d8a42dba4e6c92dc0308ce0634fb34f32",
+    "worker_and_harness": "opencti/worker@sha256:73c5bf30ca841775701872e81c78d33ed28d3d26f7586c2dfba45797038c4ab0"
+  },
+  "isolation": {
+    "compose_project_prefix": "timexp_exp01_",
+    "published_endpoint": "127.0.0.1:18080",
+    "other_host_ports_published": false,
+    "preexisting_non_timexp_resources_modified": false
+  }
+}

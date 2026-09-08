@@ -1,0 +1,33 @@
+CYBERSECURITY ADVISORY AA26-131B
+#StopRansomware: CINDER WOLF
+
+SUMMARY
+This joint advisory details tactics, techniques, and procedures associated with the CINDER
+WOLF ransomware operation, observed since January 2026 against healthcare and logistics
+organizations. CINDER WOLF affiliates exfiltrate data prior to encryption and target VMware
+ESXi hypervisors to maximize impact.
+
+TECHNICAL DETAILS
+Initial access is obtained through phishing messages sent from payroll-review@benefits-notice.example
+containing malicious spreadsheet attachments, and through exploitation of CVE-2025-41772 in
+perimeter VPN appliances. Following initial access, affiliates deploy commercial remote
+management tools for persistence (T1219) and disable endpoint protection prior to encryption
+(T1562.001).
+
+Exfiltration traffic has been observed to the following addresses:
+- 198.51.100.71
+- 198.51.100.72
+- 203.0.113.130
+
+Data staging was performed against the following domains:
+- archive-sync.example
+- backup-mirror.example
+
+The CINDER WOLF encryptor binary has the following hashes:
+- SHA-1: a13a416d2246f4af8a135645bbca2f4a50a6c672
+- SHA-256: 691e1ac5a347bcf3fa97ad9a60534cdd8a17c2dc22b2a793a0842daea59982b2
+
+MITIGATIONS
+* Patch CVE-2025-41772 on all internet-facing VPN appliances.
+* Maintain offline, tested backups of ESXi datastores.
+* Block the listed infrastructure at network boundaries and review NetFlow for prior contact.

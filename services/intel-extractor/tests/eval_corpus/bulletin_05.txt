@@ -1,0 +1,17 @@
+SECURITY BULLETIN 2026-058
+Severity: MEDIUM
+Subject: Phishing campaign impersonating research grant administration
+
+A sustained phishing campaign is targeting universities and research institutes with
+messages impersonating grant administration correspondence. Messages are sent from
+grants-office@funding-portal.example and reference plausible, publicly listed grant
+program identifiers to increase credibility.
+
+Recipients are asked to confirm banking details for disbursement via an attached form. The
+form submits entered data to actor infrastructure. Finance and research administration
+staff are the primary targets; several institutions report near-miss fraudulent transfers.
+
+RECOMMENDATIONS
+Block the sender address at the mail gateway and alert finance staff to the lure theme.
+Verify any change of banking details through a known-good channel before processing.
+Report incidents to your sector CSIRT, including message headers where available.

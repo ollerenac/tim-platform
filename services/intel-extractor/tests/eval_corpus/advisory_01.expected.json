@@ -1,0 +1,46 @@
+{
+  "format": "advisory",
+  "iocs": [
+    {
+      "type": "ip",
+      "value": "192.0.2.44"
+    },
+    {
+      "type": "ip",
+      "value": "192.0.2.45"
+    },
+    {
+      "type": "ip",
+      "value": "198.51.100.12"
+    },
+    {
+      "type": "ip",
+      "value": "203.0.113.9"
+    },
+    {
+      "type": "domain",
+      "value": "pump-telemetry.example"
+    },
+    {
+      "type": "domain",
+      "value": "scada-sync.example"
+    },
+    {
+      "type": "url",
+      "value": "http://pump-telemetry.example/init"
+    },
+    {
+      "type": "url",
+      "value": "https://scada-sync.example/cfg"
+    },
+    {
+      "type": "hash_md5",
+      "value": "75668ad1bb3915fca2209c165b7afc5c"
+    },
+    {
+      "type": "hash_sha256",
+      "value": "4c7bf192284983cdb53f47f5f059861bd601e68a900004c7c2d5b1edcf9462ac"
+    }
+  ],
+  "notes": "high-density CISA-style advisory, 10 IOCs, structured lists"
+}

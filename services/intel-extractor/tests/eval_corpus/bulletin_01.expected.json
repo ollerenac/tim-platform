@@ -1,0 +1,10 @@
+{
+  "format": "bulletin",
+  "iocs": [
+    {
+      "type": "ip",
+      "value": "192.0.2.77"
+    }
+  ],
+  "notes": "terse CVE bulletin, single ip IOC among CVE noise"
+}

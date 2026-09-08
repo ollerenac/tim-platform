@@ -1,0 +1,7 @@
+Period: last 12h (ending 2026-08-26T08:02Z).
+IOC activity in period: 1 indicators total (0 newly created, 1 pre-existing ones re-updated). The 1 highest-confidence of them are sampled below: (1 IPv4-Addr), top confidence: 0.20.
+Tracked threat actors (knowledge base, most recently updated first): DukeEugene, Vanilla Tempest, UAT-10147, Balonx Sistema, SilkParasite, mentalpositive, Storm-1516, LinX Coders, Clop, PurpleDelta.
+Tracked malware families (knowledge base): Xerxes, BlackRock, Cerberus, Hook, HookBot, ERMAC, CleanBoost, FunkSec, Vidar, HijackLoader.
+Campaigns tracked in knowledge base: Quad7 Activity, CostaRicto, FLORAHOX Activity, C0027, C0026 (+5 more).
+ATT&CK techniques tracked (knowledge base): T1682 (Query Public AI Services), T1021.002 (SMB/Windows Admin Shares), T1025 (Data from Removable Media).
+Affected sectors: none identified.

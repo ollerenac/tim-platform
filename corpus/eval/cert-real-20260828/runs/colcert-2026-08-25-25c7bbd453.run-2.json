@@ -1,0 +1,90 @@
+{
+  "aws_region": "us-east-1",
+  "created_at_utc": "2026-08-28T11:13:06.884803Z",
+  "document": "colcert-2026-08-25-25c7bbd453",
+  "elapsed_seconds": 26.05329,
+  "input_sha256": "fbce626cc40f6695d0eafa1633ea82f477d1aa0d2a500b03efa800b4577f2192",
+  "kind": "document_extraction",
+  "model": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
+  "model_output": {
+    "accepted_iocs": [],
+    "campaign_summary": "The threat actor EXILIADOS (alias Straightonnumberone) launched an active affiliate recruitment campaign for Moondancer, a Ransomware-as-a-Service (RaaS) platform targeting critical infrastructure organizations across Latin America (excluding healthcare). The group seeks to recruit Initial Access Brokers, advanced penetesting operators, and specialized developers to execute BigGame Hunting operations, offering revenue sharing and real-time technical support. This structured affiliate model represents a significant escalation in operational capability for Colombia and the broader region, with early recruitment activity detected on Telegram and the darkforums.ru platform beginning August 16, 2026.",
+    "chunk_diagnostics": [
+      {
+        "attempts": 1,
+        "chunk_index": 0,
+        "error": null,
+        "retry_count": 0,
+        "status": "complete"
+      }
+    ],
+    "exploited_cves": [],
+    "malware_families": [],
+    "rejected_ioc_candidates": [],
+    "targeted_countries": [],
+    "targeted_sectors": [],
+    "technique_keywords": [
+      "account discovery [t1087]",
+      "data encrypted for impact [t1486]",
+      "disable or modify tools [t1685]",
+      "permission groups discovery [t1069]",
+      "remote services [t1021]",
+      "user execution [t1204]"
+    ],
+    "threat_actors": [],
+    "unique_iocs": [],
+    "v2_entities": [
+      {
+        "id": "e24",
+        "page": 3,
+        "quote": "Ejecución del binario de cifrado de Moondancer en los sistemas objetivo (mecanismo de disparo no detallado en la fuente).",
+        "type": "attack-pattern",
+        "value": "User Execution [T1204]"
+      },
+      {
+        "id": "e25",
+        "page": 3,
+        "quote": "Módulos anunciados para neutralizar/evadir soluciones EDR/XDR, con pruebas reclamadas contra CrowdStrike, SentinelOne y Sophos.",
+        "type": "attack-pattern",
+        "value": "Disable or Modify Tools [T1685]"
+      },
+      {
+        "id": "e26",
+        "page": 3,
+        "quote": "Reconocimiento de cuentas y grupos en Active Directory y entornos en la nube (AWS, Azure, GCP) y de virtualización (VMware ESXi, vCenter).",
+        "type": "attack-pattern",
+        "value": "Account Discovery [T1087]"
+      },
+      {
+        "id": "e27",
+        "page": 3,
+        "quote": "Reconocimiento de cuentas y grupos en Active Directory y entornos en la nube (AWS, Azure, GCP) y de virtualización (VMware ESXi, vCenter).",
+        "type": "attack-pattern",
+        "value": "Permission Groups Discovery [T1069]"
+      },
+      {
+        "id": "e28",
+        "page": 3,
+        "quote": "Despliegue de herramientas y pivoteo dentro de la red interna mediante protocolos remotos, con asesoramiento en tiempo real de los operadores de EXILIADOS.",
+        "type": "attack-pattern",
+        "value": "Remote Services [T1021]"
+      },
+      {
+        "id": "e29",
+        "page": 3,
+        "quote": "Cifrado de archivos con el esquema criptográfico XChaCha20 + ECDH (cifrado simétrico de flujo combinado con intercambio de claves de curva elíptica).",
+        "type": "attack-pattern",
+        "value": "Data Encrypted for Impact [T1486]"
+      }
+    ],
+    "v2_relationships": [],
+    "victim_technologies": []
+  },
+  "opencti_writes": 0,
+  "provider": "bedrock",
+  "reference_sha256": "ea556c50721fbbf7aa85bef2a9b4521e1f63cb5e11c3877d667d7941f3e7b4f3",
+  "repetition": 2,
+  "schema_version": 1,
+  "source_type": "bulletin",
+  "status": "success"
+}

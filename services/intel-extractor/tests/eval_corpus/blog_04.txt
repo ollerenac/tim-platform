@@ -1,0 +1,23 @@
+TidePump: A Cryptominer That Really Wants to Be a Botnet
+
+By Helios Labs Threat Research
+
+Most cryptominers are smash-and-grab operations. TidePump is trying to be something more,
+and watching it evolve has been one of the stranger pleasures of this quarter.
+
+The initial infection is unremarkable: a trojanized system optimization tool, pushed through
+malvertising, with the installer hash e8f98c08e9501fa2fbfc94ee77123264 (MD5). What happens next is not. Instead of
+immediately mining, TidePump inventories the host, estimates its value, and phones home for
+instructions. High-value hosts, those with GPUs or with credentials cached for cloud
+consoles, are held back from mining entirely and cataloged for what we assess is resale to
+other operators.
+
+The update channel lives at tidepump-updates.example and new modules are fetched from
+https://tidepump-updates.example/get with a hardcoded user agent that makes for an easy
+network detection while it lasts. We counted four module updates in five weeks, which is a
+faster development cadence than some commercial software we could name.
+
+The takeaway: the line between commodity crimeware and access brokerage keeps blurring. A
+miner infection is no longer a nuisance to clean up on a quiet Friday. It is a signal that
+your host is being evaluated by someone with a business model, and you should respond to it
+with the urgency that implies.

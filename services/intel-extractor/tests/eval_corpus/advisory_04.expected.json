@@ -1,0 +1,30 @@
+{
+  "format": "advisory",
+  "iocs": [
+    {
+      "type": "email",
+      "value": "invoice-desk@billing-alerts.example"
+    },
+    {
+      "type": "url",
+      "value": "https://secure-login-portal.example/verify"
+    },
+    {
+      "type": "domain",
+      "value": "cdn-fonts-static.example"
+    },
+    {
+      "type": "ip",
+      "value": "203.0.113.18"
+    },
+    {
+      "type": "hash_md5",
+      "value": "b5eaf234714ce8202a82ad60d93ad7fb"
+    },
+    {
+      "type": "hash_sha256",
+      "value": "17fbda7935be138d65b9f9dcec096b3b76cdbab0174e3443cbb83604a1f358eb"
+    }
+  ],
+  "notes": "phishing advisory: email, url, domain, ip and two hashes in prose"
+}

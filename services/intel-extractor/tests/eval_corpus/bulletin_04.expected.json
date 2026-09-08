@@ -1,0 +1,14 @@
+{
+  "format": "bulletin",
+  "iocs": [
+    {
+      "type": "url",
+      "value": "https://pkg-mirror-cache.example/dl/setup.tgz"
+    },
+    {
+      "type": "hash_sha256",
+      "value": "8dcfd4551eed9e5423cfa6ab1294362e304d973938c24b081e52bf1cb47d34e2"
+    }
+  ],
+  "notes": "supply-chain bulletin: url + sha256"
+}

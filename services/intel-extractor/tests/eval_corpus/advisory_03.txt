@@ -1,0 +1,37 @@
+JOINT CYBERSECURITY ADVISORY AA26-092A
+GLASS VIPER Cyber Actors Target Government Email Infrastructure
+
+SUMMARY
+State-sponsored actors tracked as GLASS VIPER are exploiting CVE-2026-10233 in on-premises
+webmail servers belonging to government and diplomatic entities. Successful exploitation
+results in deployment of a webshell (T1505.003) and long-term collection of mailbox contents.
+
+TECHNICAL DETAILS
+After exploiting CVE-2026-10233, the actors write an ASPX webshell to the server and tunnel
+traffic through compromised infrastructure. Session tokens are harvested and replayed to
+maintain access after patching, so credential rotation is required in addition to patching.
+
+INDICATORS OF COMPROMISE
+All network indicators below are defanged with bracket notation; refang before searching.
+
+C2 addresses:
+- 192.0.2[.]101
+- 192.0.2[.]102
+- 198.51.100[.]200
+
+Actor-controlled domains:
+- webmail-session[.]example
+- token-refresh[.]example
+
+Exploitation and token-replay URLs:
+- hxxps://webmail-session[.]example/owa/auth
+- hxxp://token-refresh[.]example/refresh
+
+File hashes:
+- MD5 (webshell): f124c88593e2f7ede10da985c4ccc4da
+- SHA-256 (tunneler): 5232e07fad9772180dfa77bf55cc196d48fdbc6459cd9fb999f251d861e48ab7
+
+MITIGATIONS
+* Apply the vendor patch for CVE-2026-10233 immediately.
+* Rotate all credentials and revoke active sessions after patching.
+* Search web server logs for POST requests to the exploitation URL above.

@@ -1,0 +1,16 @@
+{
+  "block": "2026-08-27 03",
+  "context_sha256": "d1ab44f444825facf038d5a8e0420e3c8d89385d33893f1ffd5870263263b447",
+  "schema_version": 1,
+  "source": {
+    "actor_sample_size": 10,
+    "attack_pattern_sample_size": 10,
+    "campaign_sample_size": 10,
+    "indicator_sample_size": 4,
+    "malware_sample_size": 10,
+    "total_new": 0,
+    "total_touched": 4,
+    "window_end_utc": "2026-08-27T04:00:00+00:00",
+    "window_start_utc": "2026-08-27T03:00:00+00:00"
+  }
+}

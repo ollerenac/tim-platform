@@ -1,0 +1,41 @@
+INFRASTRUCTURE ANALYSIS REPORT TR-2026-019
+GLASS VIPER: Mapping a Espionage Actor's Server Infrastructure
+Classification: TLP:CLEAR
+
+1. SCOPE
+This report maps command-and-control and staging infrastructure attributed to GLASS VIPER
+between January and June 2026, derived from passive DNS, TLS certificate reuse, and incident
+response engagements at three government entities.
+
+2. INFRASTRUCTURE CLUSTERS
+
+Cluster A (exploitation and webshell tasking):
+  192.0.2.61
+  192.0.2.62
+  192.0.2.63
+Associated domain: session-broker.example
+Tasking URL: https://session-broker.example/api/poll
+
+Cluster B (exfiltration relay):
+  198.51.100.170
+  198.51.100.171
+Associated domains: mail-archive-sync.example, diplomatic-cache.example
+Exfiltration URL: https://mail-archive-sync.example/put
+
+3. TOOLING
+Two tunneling utilities were recovered from compromised servers. Both are custom builds of
+publicly available code with modified network signatures:
+  Tool A SHA-256: 71813dfe13accf8f1424e38360e590b24390b1d6861982fb1f7ebb8cee27a818
+  Tool B SHA-256: fbd691fc846eec2fe8d746911f3c68b6414a0e1613fd384c55bd013aba3dcba9
+
+4. PIVOTING NOTES
+All Cluster A servers shared a self-signed TLS certificate for the first three weeks of
+operation, an operational security lapse that enabled the passive DNS pivot underlying this
+report. The actor corrected the lapse in March; subsequent infrastructure required incident
+response artifacts to attribute. Certificate reuse remains the single most productive pivot
+against this actor's infrastructure provisioning habits.
+
+5. ASSESSMENT
+GLASS VIPER provisions infrastructure in small, single-purpose clusters and retires them on
+public exposure. Defenders should expect the indicators in this report to age quickly and
+should prioritize the behavioral detections described in our companion advisory.

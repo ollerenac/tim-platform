@@ -1,0 +1,38 @@
+{
+  "format": "report",
+  "iocs": [
+    {
+      "type": "hash_sha1",
+      "value": "35ce6f52efd127a6d562f2300531656712904bd4"
+    },
+    {
+      "type": "hash_sha256",
+      "value": "84d60dd008e7b5b40191bc0919401ed5ed5756b1f46da3febbafe0712e548c03"
+    },
+    {
+      "type": "ip",
+      "value": "192.0.2.33"
+    },
+    {
+      "type": "ip",
+      "value": "192.0.2.34"
+    },
+    {
+      "type": "ip",
+      "value": "203.0.113.88"
+    },
+    {
+      "type": "domain",
+      "value": "harbor-manifest.example"
+    },
+    {
+      "type": "domain",
+      "value": "tide-tables.example"
+    },
+    {
+      "type": "url",
+      "value": "https://harbor-manifest.example/api/v2/sync"
+    }
+  ],
+  "notes": "incident report, 8 IOCs woven through narrative and lists"
+}

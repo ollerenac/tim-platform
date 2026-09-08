@@ -1,0 +1,336 @@
+{
+ "entities": [
+  {
+   "id": "e3",
+   "type": "vulnerability",
+   "value": "CVE-2025-66376",
+   "quote": "The vulnerability, Common Vulnerabilities and Exposures (CVE) CVE-2025-66376, was patched in November 2025.",
+   "page": 2
+  },
+  {
+   "id": "e6",
+   "type": "technology",
+   "value": "Zimbra Collaboration Suite",
+   "quote": "A group of Russian state-supported cyber actors has been targeting and compromising various Western government and commercial organizations using the Zimbra Collaboration Suite (ZCS) software since at least July 2025.",
+   "page": 1
+  },
+  {
+   "id": "e15",
+   "type": "attack-pattern",
+   "value": "Phishing [T1566]",
+   "quote": "To gain initial access, LAUNDRY BEAR sends an email containing a malicious JavaScript payload to the target [T1566].",
+   "page": 8
+  },
+  {
+   "id": "e16",
+   "type": "attack-pattern",
+   "value": "Exploitation for Client Execution [T1203]",
+   "quote": "Through exploitation of CVE-2025-66376, this JavaScript payload is immediately executed once the user views the malicious email [T1203], such as the one shown in Figure 1, in the ZCS webmail platform.",
+   "page": 8
+  },
+  {
+   "id": "e17",
+   "type": "indicator",
+   "value": "zmailanalytics[.]com",
+   "ioc_type": "domain",
+   "quote": "zmailanalytics[.]com                          216.252.238[.]104   8 July 2025           15 October 2025",
+   "page": 21
+  },
+  {
+   "id": "e18",
+   "type": "indicator",
+   "value": "216.252.238[.]104",
+   "ioc_type": "ip",
+   "quote": "zmailanalytics[.]com                          216.252.238[.]104   8 July 2025           15 October 2025",
+   "page": 21
+  },
+  {
+   "id": "e19",
+   "type": "indicator",
+   "value": "zimbra-metadata[.]com",
+   "ioc_type": "domain",
+   "quote": "zimbra-metadata[.]com                         216.252.238[.]18    20 August 2025        14 October 2025",
+   "page": 21
+  },
+  {
+   "id": "e20",
+   "type": "indicator",
+   "value": "216.252.238[.]18",
+   "ioc_type": "ip",
+   "quote": "zimbra-metadata[.]com                         216.252.238[.]18    20 August 2025        14 October 2025",
+   "page": 21
+  },
+  {
+   "id": "e21",
+   "type": "indicator",
+   "value": "analyticemailmeter[.]com",
+   "ioc_type": "domain",
+   "quote": "analyticemailmeter[.]com                      37.120.247[.]228    24 September 2025     18 March 2026",
+   "page": 21
+  },
+  {
+   "id": "e22",
+   "type": "indicator",
+   "value": "37.120.247[.]228",
+   "ioc_type": "ip",
+   "quote": "analyticemailmeter[.]com                      37.120.247[.]228    24 September 2025     18 March 2026",
+   "page": 21
+  },
+  {
+   "id": "e23",
+   "type": "indicator",
+   "value": "emailanalytics.com[.]ua",
+   "ioc_type": "domain",
+   "quote": "emailanalytics.com[.]ua                       185.86.79[.]95      24 September 2025     18 March 2026",
+   "page": 21
+  },
+  {
+   "id": "e24",
+   "type": "indicator",
+   "value": "185.86.79[.]95",
+   "ioc_type": "ip",
+   "quote": "emailanalytics.com[.]ua                       185.86.79[.]95      24 September 2025     18 March 2026",
+   "page": 21
+  },
+  {
+   "id": "e25",
+   "type": "indicator",
+   "value": "mailnalysis[.]com",
+   "ioc_type": "domain",
+   "quote": "mailnalysis[.]com                             104.248.134[.]194   11 November 2025      17 February 2026",
+   "page": 21
+  },
+  {
+   "id": "e26",
+   "type": "indicator",
+   "value": "104.248.134[.]194",
+   "ioc_type": "ip",
+   "quote": "mailnalysis[.]com                             104.248.134[.]194   11 November 2025      17 February 2026",
+   "page": 21
+  },
+  {
+   "id": "e27",
+   "type": "indicator",
+   "value": "zimbrastat[.]com",
+   "ioc_type": "domain",
+   "quote": "zimbrastat[.]com                              64.226.124[.]190    18 December 2025      18 March 2026",
+   "page": 21
+  },
+  {
+   "id": "e28",
+   "type": "indicator",
+   "value": "64.226.124[.]190",
+   "ioc_type": "ip",
+   "quote": "zimbrastat[.]com                              64.226.124[.]190    18 December 2025      18 March 2026",
+   "page": 21
+  },
+  {
+   "id": "e29",
+   "type": "indicator",
+   "value": "zimbrasoft.com[.]ua",
+   "ioc_type": "domain",
+   "quote": "zimbrasoft.com[.]ua                           193.238.152[.]66    20 January 2026       18 March 2026",
+   "page": 21
+  },
+  {
+   "id": "e30",
+   "type": "indicator",
+   "value": "193.238.152[.]66",
+   "ioc_type": "ip",
+   "quote": "zimbrasoft.com[.]ua                           193.238.152[.]66    20 January 2026       18 March 2026",
+   "page": 21
+  },
+  {
+   "id": "e31",
+   "type": "indicator",
+   "value": "synacorzimbra[.]nl",
+   "ioc_type": "domain",
+   "quote": "synacorzimbra[.]nl                            216.252.238[.]64    3 February 2026       30 March 2026",
+   "page": 21
+  },
+  {
+   "id": "e32",
+   "type": "indicator",
+   "value": "216.252.238[.]64",
+   "ioc_type": "ip",
+   "quote": "synacorzimbra[.]nl                            216.252.238[.]64    3 February 2026       30 March 2026",
+   "page": 21
+  },
+  {
+   "id": "e33",
+   "type": "indicator",
+   "value": "istc-cloud[.]com",
+   "ioc_type": "domain",
+   "quote": "istc-cloud[.]com                              194.156.103[.]193   5 February 2026       30 March 2026",
+   "page": 21
+  },
+  {
+   "id": "e34",
+   "type": "indicator",
+   "value": "194.156.103[.]193",
+   "ioc_type": "ip",
+   "quote": "istc-cloud[.]com                              194.156.103[.]193   5 February 2026       30 March 2026",
+   "page": 21
+  },
+  {
+   "id": "e35",
+   "type": "indicator",
+   "value": "*.i.zmailanalytics[.]com",
+   "ioc_type": "domain",
+   "quote": "*.i.zmailanalytics[.]com                 50a87d926621dd06389ba50d86e0ff574ed713a8              6 Aug 2025    13 Oct 2025",
+   "page": 21
+  },
+  {
+   "id": "e36",
+   "type": "indicator",
+   "value": "*.i.zimbra-metadata[.]com",
+   "ioc_type": "domain",
+   "quote": "*.i.zimbra-metadata[.]com                c5a72420e7bb308d078e62128430897f82194c95              20 Aug 2025   14 Oct 2025",
+   "page": 21
+  },
+  {
+   "id": "e37",
+   "type": "indicator",
+   "value": "*.i.analyticemailmeter[.]com",
+   "ioc_type": "domain",
+   "quote": "*.i.analyticemailmeter[.]com             8959c4d29e29f02ea94ea8bb21c8df2594c5549d              24 Sep 2025   8 Nov 2025",
+   "page": 21
+  },
+  {
+   "id": "e38",
+   "type": "indicator",
+   "value": "*.i.emailanalytics.com[.]ua",
+   "ioc_type": "domain",
+   "quote": "*.i.emailanalytics.com[.]ua              62eb76432597694edb01c1fe57aab0cfe03a7178              25 Sep 2025   27 Sep 2025",
+   "page": 21
+  },
+  {
+   "id": "e39",
+   "type": "indicator",
+   "value": "*.i.mailnalysis[.]com",
+   "ioc_type": "domain",
+   "quote": "*.i.mailnalysis[.]com                    cddf5c3be1e07f28140aed165b929bf2d614922a              12 Nov 2025   17 Dec 2025",
+   "page": 21
+  },
+  {
+   "id": "e40",
+   "type": "indicator",
+   "value": "*.i.zimbrastat[.]com",
+   "ioc_type": "domain",
+   "quote": "*.i.zimbrastat[.]com                     18b3ad442ce73cc8656d51d75bbd7c855f2cb7e8              18 Dec 2025   28 Dec 2025",
+   "page": 21
+  },
+  {
+   "id": "e41",
+   "type": "indicator",
+   "value": "*.i.zimbrasoft.com[.]ua",
+   "ioc_type": "domain",
+   "quote": "*.i.zimbrasoft.com[.]ua                  1b25041ececf2457eef0270fc1d785cec8ec9ded              21 Jan 2026   10 Feb 2026",
+   "page": 21
+  },
+  {
+   "id": "e42",
+   "type": "indicator",
+   "value": "*.i.synacorzimbra[.]nl",
+   "ioc_type": "domain",
+   "quote": "*.i.synacorzimbra[.]nl                   e4fe6466a4f9a4249fe330651e914e45bbdca44a              5 Feb 2026    22 Mar 2026",
+   "page": 21
+  },
+  {
+   "id": "e43",
+   "type": "indicator",
+   "value": "*.i.istc-cloud[.]com",
+   "ioc_type": "domain",
+   "quote": "*.i.istc-cloud[.]com                     b6b77c9a455225d525834a403ca9ef5481ed0447              12 Feb 2026   30 Mar 2026",
+   "page": 21
+  },
+  {
+   "id": "e55",
+   "type": "indicator",
+   "value": "2e4f314bc9943cab5005d6fde0b271c74d47bc9d",
+   "ioc_type": "hash_sha1",
+   "quote": "zmailanalytics[.]com                     2e4f314bc9943cab5005d6fde0b271c74d47bc9d              8 Jul 2025    6 Aug 2025",
+   "page": 21
+  },
+  {
+   "id": "e56",
+   "type": "indicator",
+   "value": "50a87d926621dd06389ba50d86e0ff574ed713a8",
+   "ioc_type": "hash_sha1",
+   "quote": "*.i.zmailanalytics[.]com                 50a87d926621dd06389ba50d86e0ff574ed713a8              6 Aug 2025    13 Oct 2025",
+   "page": 21
+  },
+  {
+   "id": "e57",
+   "type": "indicator",
+   "value": "c5a72420e7bb308d078e62128430897f82194c95",
+   "ioc_type": "hash_sha1",
+   "quote": "*.i.zimbra-metadata[.]com                c5a72420e7bb308d078e62128430897f82194c95              20 Aug 2025   14 Oct 2025",
+   "page": 21
+  },
+  {
+   "id": "e58",
+   "type": "indicator",
+   "value": "8959c4d29e29f02ea94ea8bb21c8df2594c5549d",
+   "ioc_type": "hash_sha1",
+   "quote": "*.i.analyticemailmeter[.]com             8959c4d29e29f02ea94ea8bb21c8df2594c5549d              24 Sep 2025   8 Nov 2025",
+   "page": 21
+  },
+  {
+   "id": "e59",
+   "type": "indicator",
+   "value": "62eb76432597694edb01c1fe57aab0cfe03a7178",
+   "ioc_type": "hash_sha1",
+   "quote": "*.i.emailanalytics.com[.]ua              62eb76432597694edb01c1fe57aab0cfe03a7178              25 Sep 2025   27 Sep 2025",
+   "page": 21
+  },
+  {
+   "id": "e60",
+   "type": "indicator",
+   "value": "cddf5c3be1e07f28140aed165b929bf2d614922a",
+   "ioc_type": "hash_sha1",
+   "quote": "*.i.mailnalysis[.]com                    cddf5c3be1e07f28140aed165b929bf2d614922a              12 Nov 2025   17 Dec 2025",
+   "page": 21
+  },
+  {
+   "id": "e61",
+   "type": "indicator",
+   "value": "18b3ad442ce73cc8656d51d75bbd7c855f2cb7e8",
+   "ioc_type": "hash_sha1",
+   "quote": "*.i.zimbrastat[.]com                     18b3ad442ce73cc8656d51d75bbd7c855f2cb7e8              18 Dec 2025   28 Dec 2025",
+   "page": 21
+  },
+  {
+   "id": "e62",
+   "type": "indicator",
+   "value": "1b25041ececf2457eef0270fc1d785cec8ec9ded",
+   "ioc_type": "hash_sha1",
+   "quote": "*.i.zimbrasoft.com[.]ua                  1b25041ececf2457eef0270fc1d785cec8ec9ded              21 Jan 2026   10 Feb 2026",
+   "page": 21
+  },
+  {
+   "id": "e63",
+   "type": "indicator",
+   "value": "e4fe6466a4f9a4249fe330651e914e45bbdca44a",
+   "ioc_type": "hash_sha1",
+   "quote": "*.i.synacorzimbra[.]nl                   e4fe6466a4f9a4249fe330651e914e45bbdca44a              5 Feb 2026    22 Mar 2026",
+   "page": 21
+  },
+  {
+   "id": "e64",
+   "type": "indicator",
+   "value": "b6b77c9a455225d525834a403ca9ef5481ed0447",
+   "ioc_type": "hash_sha1",
+   "quote": "*.i.istc-cloud[.]com                     b6b77c9a455225d525834a403ca9ef5481ed0447              12 Feb 2026   30 Mar 2026",
+   "page": 21
+  },
+  {
+   "id": "e67",
+   "type": "country",
+   "value": "Ukraine",
+   "quote": "Additionally, extensive Ukrainian targeting, prior to use against U.S. and other NATO allies, outlines an increasing trend within Russian cyber threat groups to target Ukrainian users first—both as a priority target and as a testbench for malicious cyber techniques before broader global deployment.",
+   "page": 5
+  }
+ ],
+ "relationships": []
+}

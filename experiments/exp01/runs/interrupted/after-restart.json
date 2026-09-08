@@ -1,0 +1,429 @@
+{
+  "id": "bundle--aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+  "objects": [
+    {
+      "confidence": 100,
+      "created": "2026-08-29T00:00:00.000Z",
+      "created_by_ref": "identity--de971485-1d1b-5823-939f-c6d11829c75a",
+      "extensions": {
+        "extension-definition--ea279b3e-5c71-4632-ac08-831c66a786ba": {
+          "created_at": "2026-08-29T22:49:23.493Z",
+          "created_by_ref_id": "e84327ec-b493-441a-ad55-92c3783c05d2",
+          "created_by_ref_type": "Organization",
+          "creator_ids": [
+            "88ec0c6a-13ce-5e39-b486-354fe4a7084f"
+          ],
+          "extension_type": "property-extension",
+          "id": "449c4ab7-a48b-4382-a646-999d542f14c0",
+          "is_inferred": false,
+          "source_ref": "b3d9d85e-5a4d-4091-8950-aab3854c4e7e",
+          "source_type": "Malware",
+          "source_value": "TIMEXP EXP-01 Synthetic Malware",
+          "stix_ids": [
+            "relationship--55555555-5555-4555-8555-555555555553"
+          ],
+          "target_ref": "2158fa6b-8e2b-4384-912e-4cc9c2f2de8d",
+          "target_type": "Attack-Pattern",
+          "target_value": "TIMEXP EXP-01 Synthetic Technique",
+          "type": "uses",
+          "updated_at": "2026-08-29T22:49:23.509Z"
+        }
+      },
+      "external_references": [
+        {
+          "external_id": "EXP01-REL-03",
+          "source_name": "TIMEXP-EXP01"
+        }
+      ],
+      "id": "relationship--7c597fbb-ddbf-5367-bec5-29776398bcf9",
+      "lang": "en",
+      "modified": "2026-08-29T22:49:23.509Z",
+      "relationship_type": "uses",
+      "revoked": false,
+      "source_ref": "malware--f3a78284-9e96-5934-9fb7-60ca78b6ee77",
+      "spec_version": "2.1",
+      "target_ref": "attack-pattern--af42edfc-669a-5c41-9613-02a3a3211082",
+      "type": "relationship"
+    },
+    {
+      "confidence": 100,
+      "created": "2026-08-29T00:00:00.000Z",
+      "created_by_ref": "identity--de971485-1d1b-5823-939f-c6d11829c75a",
+      "extensions": {
+        "extension-definition--ea279b3e-5c71-4632-ac08-831c66a786ba": {
+          "created_at": "2026-08-29T22:49:23.239Z",
+          "created_by_ref_id": "e84327ec-b493-441a-ad55-92c3783c05d2",
+          "created_by_ref_type": "Organization",
+          "creator_ids": [
+            "88ec0c6a-13ce-5e39-b486-354fe4a7084f"
+          ],
+          "extension_type": "property-extension",
+          "id": "91351ff1-06ef-4d59-a37a-997c2ecd7191",
+          "is_inferred": false,
+          "source_ref": "abe0ea57-3980-4728-90cf-1e162a8ab022",
+          "source_type": "Indicator",
+          "source_value": "TIMEXP EXP-01 IPv4 indicator",
+          "stix_ids": [
+            "relationship--55555555-5555-4555-8555-555555555551"
+          ],
+          "target_ref": "b3d9d85e-5a4d-4091-8950-aab3854c4e7e",
+          "target_type": "Malware",
+          "target_value": "TIMEXP EXP-01 Synthetic Malware",
+          "type": "indicates",
+          "updated_at": "2026-08-29T22:49:23.259Z"
+        }
+      },
+      "external_references": [
+        {
+          "external_id": "EXP01-REL-01",
+          "source_name": "TIMEXP-EXP01"
+        }
+      ],
+      "id": "relationship--8a406f1f-8010-5897-a996-cf7a0edd9e74",
+      "lang": "en",
+      "modified": "2026-08-29T22:49:23.259Z",
+      "relationship_type": "indicates",
+      "revoked": false,
+      "source_ref": "indicator--be4dcaed-9f81-52bb-a48a-5e403589a739",
+      "spec_version": "2.1",
+      "target_ref": "malware--f3a78284-9e96-5934-9fb7-60ca78b6ee77",
+      "type": "relationship"
+    },
+    {
+      "confidence": 100,
+      "created": "2026-08-29T00:00:00.000Z",
+      "created_by_ref": "identity--de971485-1d1b-5823-939f-c6d11829c75a",
+      "extensions": {
+        "extension-definition--ea279b3e-5c71-4632-ac08-831c66a786ba": {
+          "created_at": "2026-08-29T22:49:23.364Z",
+          "created_by_ref_id": "e84327ec-b493-441a-ad55-92c3783c05d2",
+          "created_by_ref_type": "Organization",
+          "creator_ids": [
+            "88ec0c6a-13ce-5e39-b486-354fe4a7084f"
+          ],
+          "extension_type": "property-extension",
+          "id": "62d88808-f00e-4cac-a170-6bc211633271",
+          "is_inferred": false,
+          "source_ref": "fa46976a-954a-4cd3-8ad1-5641abe8d278",
+          "source_type": "Indicator",
+          "source_value": "TIMEXP EXP-01 domain indicator",
+          "stix_ids": [
+            "relationship--55555555-5555-4555-8555-555555555552"
+          ],
+          "target_ref": "b3d9d85e-5a4d-4091-8950-aab3854c4e7e",
+          "target_type": "Malware",
+          "target_value": "TIMEXP EXP-01 Synthetic Malware",
+          "type": "indicates",
+          "updated_at": "2026-08-29T22:49:23.381Z"
+        }
+      },
+      "external_references": [
+        {
+          "external_id": "EXP01-REL-02",
+          "source_name": "TIMEXP-EXP01"
+        }
+      ],
+      "id": "relationship--b599c749-1588-5a44-b65d-7af5814dffd6",
+      "lang": "en",
+      "modified": "2026-08-29T22:49:23.381Z",
+      "relationship_type": "indicates",
+      "revoked": false,
+      "source_ref": "indicator--071f2881-d1a4-52d9-a1da-b84ed7f480f6",
+      "spec_version": "2.1",
+      "target_ref": "malware--f3a78284-9e96-5934-9fb7-60ca78b6ee77",
+      "type": "relationship"
+    },
+    {
+      "confidence": 100,
+      "created": "2026-08-29T00:00:00.000Z",
+      "extensions": {
+        "extension-definition--ea279b3e-5c71-4632-ac08-831c66a786ba": {
+          "created_at": "2026-08-29T22:49:22.539Z",
+          "creator_ids": [
+            "88ec0c6a-13ce-5e39-b486-354fe4a7084f"
+          ],
+          "extension_type": "property-extension",
+          "id": "e84327ec-b493-441a-ad55-92c3783c05d2",
+          "is_inferred": false,
+          "stix_ids": [
+            "identity--11111111-1111-4111-8111-111111111111"
+          ],
+          "type": "Organization",
+          "updated_at": "2026-08-29T22:49:22.564Z"
+        }
+      },
+      "external_references": [
+        {
+          "external_id": "EXP01-IDENTITY-01",
+          "source_name": "TIMEXP-EXP01"
+        }
+      ],
+      "id": "identity--de971485-1d1b-5823-939f-c6d11829c75a",
+      "identity_class": "organization",
+      "lang": "en",
+      "modified": "2026-08-29T22:49:22.564Z",
+      "name": "TIMEXP EXP-01 Laboratory",
+      "revoked": false,
+      "spec_version": "2.1",
+      "type": "identity"
+    },
+    {
+      "confidence": 100,
+      "created": "2026-08-29T00:00:00.000Z",
+      "created_by_ref": "identity--de971485-1d1b-5823-939f-c6d11829c75a",
+      "extensions": {
+        "extension-definition--322b8f77-262a-4cb8-a915-1e441e00329b": {
+          "extension_type": "property-extension"
+        },
+        "extension-definition--ea279b3e-5c71-4632-ac08-831c66a786ba": {
+          "created_at": "2026-08-29T22:49:23.135Z",
+          "created_by_ref_id": "e84327ec-b493-441a-ad55-92c3783c05d2",
+          "created_by_ref_type": "Organization",
+          "creator_ids": [
+            "88ec0c6a-13ce-5e39-b486-354fe4a7084f"
+          ],
+          "extension_type": "property-extension",
+          "id": "2158fa6b-8e2b-4384-912e-4cc9c2f2de8d",
+          "is_inferred": false,
+          "stix_ids": [
+            "attack-pattern--44444444-4444-4444-8444-444444444444"
+          ],
+          "type": "Attack-Pattern",
+          "updated_at": "2026-08-29T22:49:23.150Z"
+        }
+      },
+      "external_references": [
+        {
+          "external_id": "EXP01-ATTACK-PATTERN-01",
+          "source_name": "TIMEXP-EXP01"
+        }
+      ],
+      "id": "attack-pattern--af42edfc-669a-5c41-9613-02a3a3211082",
+      "lang": "en",
+      "modified": "2026-08-29T22:49:23.150Z",
+      "name": "TIMEXP EXP-01 Synthetic Technique",
+      "revoked": false,
+      "spec_version": "2.1",
+      "type": "attack-pattern"
+    },
+    {
+      "confidence": 100,
+      "created": "2026-08-29T00:00:00.000Z",
+      "created_by_ref": "identity--de971485-1d1b-5823-939f-c6d11829c75a",
+      "extensions": {
+        "extension-definition--322b8f77-262a-4cb8-a915-1e441e00329b": {
+          "extension_type": "property-extension"
+        },
+        "extension-definition--ea279b3e-5c71-4632-ac08-831c66a786ba": {
+          "created_at": "2026-08-29T22:49:22.879Z",
+          "created_by_ref_id": "e84327ec-b493-441a-ad55-92c3783c05d2",
+          "created_by_ref_type": "Organization",
+          "creator_ids": [
+            "88ec0c6a-13ce-5e39-b486-354fe4a7084f"
+          ],
+          "detection": false,
+          "extension_type": "property-extension",
+          "id": "fa46976a-954a-4cd3-8ad1-5641abe8d278",
+          "is_inferred": false,
+          "main_observable_type": "Unknown",
+          "observable_values": [
+            {
+              "type": "Domain-Name",
+              "value": "node.exp01.invalid"
+            }
+          ],
+          "score": 50,
+          "stix_ids": [
+            "indicator--22222222-2222-4222-8222-222222222222"
+          ],
+          "type": "Indicator",
+          "updated_at": "2026-08-29T22:49:22.897Z"
+        }
+      },
+      "external_references": [
+        {
+          "external_id": "EXP01-INDICATOR-02",
+          "source_name": "TIMEXP-EXP01"
+        }
+      ],
+      "id": "indicator--071f2881-d1a4-52d9-a1da-b84ed7f480f6",
+      "lang": "en",
+      "modified": "2026-08-29T22:49:22.897Z",
+      "name": "TIMEXP EXP-01 domain indicator",
+      "pattern": "[domain-name:value = 'node.exp01.invalid']",
+      "pattern_type": "stix",
+      "pattern_version": "2.1",
+      "revoked": false,
+      "spec_version": "2.1",
+      "type": "indicator",
+      "valid_from": "2026-08-29T00:00:00.000Z",
+      "valid_until": "2027-05-30T21:19:31.835Z"
+    },
+    {
+      "confidence": 100,
+      "created": "2026-08-29T00:00:00.000Z",
+      "created_by_ref": "identity--de971485-1d1b-5823-939f-c6d11829c75a",
+      "extensions": {
+        "extension-definition--322b8f77-262a-4cb8-a915-1e441e00329b": {
+          "extension_type": "property-extension"
+        },
+        "extension-definition--ea279b3e-5c71-4632-ac08-831c66a786ba": {
+          "created_at": "2026-08-29T22:49:22.726Z",
+          "created_by_ref_id": "e84327ec-b493-441a-ad55-92c3783c05d2",
+          "created_by_ref_type": "Organization",
+          "creator_ids": [
+            "88ec0c6a-13ce-5e39-b486-354fe4a7084f"
+          ],
+          "detection": false,
+          "extension_type": "property-extension",
+          "id": "abe0ea57-3980-4728-90cf-1e162a8ab022",
+          "is_inferred": false,
+          "main_observable_type": "Unknown",
+          "observable_values": [
+            {
+              "type": "IPv4-Addr",
+              "value": "192.0.2.10"
+            }
+          ],
+          "score": 50,
+          "stix_ids": [
+            "indicator--22222222-2222-4222-8222-222222222221"
+          ],
+          "type": "Indicator",
+          "updated_at": "2026-08-29T22:49:22.741Z"
+        }
+      },
+      "external_references": [
+        {
+          "external_id": "EXP01-INDICATOR-01",
+          "source_name": "TIMEXP-EXP01"
+        }
+      ],
+      "id": "indicator--be4dcaed-9f81-52bb-a48a-5e403589a739",
+      "lang": "en",
+      "modified": "2026-08-29T22:49:22.741Z",
+      "name": "TIMEXP EXP-01 IPv4 indicator",
+      "pattern": "[ipv4-addr:value = '192.0.2.10']",
+      "pattern_type": "stix",
+      "pattern_version": "2.1",
+      "revoked": false,
+      "spec_version": "2.1",
+      "type": "indicator",
+      "valid_from": "2026-08-29T00:00:00.000Z",
+      "valid_until": "2027-05-30T21:19:31.835Z"
+    },
+    {
+      "confidence": 100,
+      "created": "2026-08-29T00:00:00.000Z",
+      "created_by_ref": "identity--de971485-1d1b-5823-939f-c6d11829c75a",
+      "extensions": {
+        "extension-definition--ea279b3e-5c71-4632-ac08-831c66a786ba": {
+          "created_at": "2026-08-29T22:49:23.002Z",
+          "created_by_ref_id": "e84327ec-b493-441a-ad55-92c3783c05d2",
+          "created_by_ref_type": "Organization",
+          "creator_ids": [
+            "88ec0c6a-13ce-5e39-b486-354fe4a7084f"
+          ],
+          "extension_type": "property-extension",
+          "id": "b3d9d85e-5a4d-4091-8950-aab3854c4e7e",
+          "is_inferred": false,
+          "stix_ids": [
+            "malware--33333333-3333-4333-8333-333333333333"
+          ],
+          "type": "Malware",
+          "updated_at": "2026-08-29T22:49:23.018Z"
+        }
+      },
+      "external_references": [
+        {
+          "external_id": "EXP01-MALWARE-01",
+          "source_name": "TIMEXP-EXP01"
+        }
+      ],
+      "id": "malware--f3a78284-9e96-5934-9fb7-60ca78b6ee77",
+      "is_family": false,
+      "lang": "en",
+      "modified": "2026-08-29T22:49:23.018Z",
+      "name": "TIMEXP EXP-01 Synthetic Malware",
+      "revoked": false,
+      "spec_version": "2.1",
+      "type": "malware"
+    },
+    {
+      "confidence": 100,
+      "created": "2026-08-29T00:00:00.000Z",
+      "created_by_ref": "identity--de971485-1d1b-5823-939f-c6d11829c75a",
+      "extensions": {
+        "extension-definition--ea279b3e-5c71-4632-ac08-831c66a786ba": {
+          "created_at": "2026-08-29T22:49:23.607Z",
+          "created_by_ref_id": "e84327ec-b493-441a-ad55-92c3783c05d2",
+          "created_by_ref_type": "Organization",
+          "creator_ids": [
+            "88ec0c6a-13ce-5e39-b486-354fe4a7084f"
+          ],
+          "extension_type": "property-extension",
+          "id": "8ee60c81-11e9-408e-b0db-1aea2813a458",
+          "is_inferred": false,
+          "stix_ids": [
+            "report--66666666-6666-4666-8666-666666666666"
+          ],
+          "type": "Report",
+          "updated_at": "2026-08-29T22:49:23.624Z",
+          "workflow_id": "57e0ab7f-e874-44c9-a5d0-576df009c81f"
+        }
+      },
+      "external_references": [
+        {
+          "external_id": "EXP01-REPORT-01",
+          "source_name": "TIMEXP-EXP01",
+          "url": "https://example.invalid/timexp/exp01/report"
+        }
+      ],
+      "id": "report--794f09ad-375d-5b1e-98aa-514f2c37cc34",
+      "lang": "en",
+      "modified": "2026-08-29T22:49:23.624Z",
+      "name": "TIMEXP EXP-01 Deterministic Import Report",
+      "object_refs": [
+        "indicator--071f2881-d1a4-52d9-a1da-b84ed7f480f6",
+        "attack-pattern--af42edfc-669a-5c41-9613-02a3a3211082",
+        "indicator--be4dcaed-9f81-52bb-a48a-5e403589a739",
+        "relationship--8a406f1f-8010-5897-a996-cf7a0edd9e74",
+        "relationship--7c597fbb-ddbf-5367-bec5-29776398bcf9",
+        "malware--f3a78284-9e96-5934-9fb7-60ca78b6ee77",
+        "relationship--b599c749-1588-5a44-b65d-7af5814dffd6"
+      ],
+      "published": "2026-08-29T00:00:00.000Z",
+      "report_types": [
+        "threat-report"
+      ],
+      "revoked": false,
+      "spec_version": "2.1",
+      "type": "report"
+    }
+  ],
+  "query": {
+    "expected_external_ids": [
+      "EXP01-ATTACK-PATTERN-01",
+      "EXP01-IDENTITY-01",
+      "EXP01-INDICATOR-01",
+      "EXP01-INDICATOR-02",
+      "EXP01-MALWARE-01",
+      "EXP01-REL-01",
+      "EXP01-REL-02",
+      "EXP01-REL-03",
+      "EXP01-REPORT-01"
+    ],
+    "expected_original_standard_ids": [
+      "attack-pattern--44444444-4444-4444-8444-444444444444",
+      "identity--11111111-1111-4111-8111-111111111111",
+      "indicator--22222222-2222-4222-8222-222222222221",
+      "indicator--22222222-2222-4222-8222-222222222222",
+      "malware--33333333-3333-4333-8333-333333333333",
+      "relationship--55555555-5555-4555-8555-555555555551",
+      "relationship--55555555-5555-4555-8555-555555555552",
+      "relationship--55555555-5555-4555-8555-555555555553",
+      "report--66666666-6666-4666-8666-666666666666"
+    ]
+  },
+  "type": "bundle"
+}

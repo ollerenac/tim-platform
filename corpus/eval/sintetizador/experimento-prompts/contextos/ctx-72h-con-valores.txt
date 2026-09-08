@@ -1,0 +1,8 @@
+Period: last 72h (ending 2026-08-26T08:02Z).
+IOC activity in period: 1071 indicators total (807 newly created, 264 pre-existing ones re-updated). The 25 highest-confidence of them are sampled below: (3 Hostname, 12 IPv4-Addr, 1 Domain-Name, 9 StixFile), top confidence: 0.50.
+Highest-confidence indicator values, verbatim: www.racon.online (Hostname), errr.onllee.com (Hostname), 77.73.135.34 (IPv4-Addr), 137.220.219.244 (IPv4-Addr), 118.107.5.135 (IPv4-Addr), 82.158.90.134 (IPv4-Addr), 82.158.90.133 (IPv4-Addr), 82.158.90.131 (IPv4-Addr), 118.107.45.70 (IPv4-Addr), 118.107.45.29 (IPv4-Addr).
+Tracked threat actors (knowledge base, most recently updated first): DukeEugene, Vanilla Tempest, UAT-10147, Balonx Sistema, SilkParasite, mentalpositive, Storm-1516, LinX Coders, Clop, PurpleDelta.
+Tracked malware families (knowledge base): Xerxes, BlackRock, Cerberus, Hook, HookBot, ERMAC, CleanBoost, FunkSec, Vidar, HijackLoader.
+Campaigns tracked in knowledge base: Quad7 Activity, CostaRicto, FLORAHOX Activity, C0027, C0026 (+5 more).
+ATT&CK techniques tracked (knowledge base): T1682 (Query Public AI Services), T1021.002 (SMB/Windows Admin Shares), T1025 (Data from Removable Media).
+Affected sectors: none identified.

@@ -1,0 +1,30 @@
+INCIDENT REPORT IR-2026-0102
+Compromised Software Update Channel at a Regional MSP
+Classification: TLP:CLEAR (sanitized)
+
+1. SUMMARY
+A regional managed service provider's software update channel was compromised for eleven
+days in May 2026, resulting in the distribution of a backdoored maintenance agent to 214
+downstream customer endpoints. This report sanitizes and shares the technical findings.
+
+2. FINDINGS
+The actor obtained access to the MSP's build server through a reused administrator password
+exposed in an unrelated breach. A modified update package (MD5: 7f969b028baa123f4296a39d0378836b) was inserted
+into the update channel; the embedded backdoor (SHA-256: 1e6846efdd186fa786b2c8df624ca118d8a920756f24cf3796a565d5c7b4e5b4) established
+persistence and beaconed to two addresses:
+  198.51.100.111
+  198.51.100.112
+
+Beacon traffic used the domain agent-heartbeat.example for its TLS SNI value while
+connecting directly to the addresses above, a mismatch that ultimately enabled network
+detection. Secondary payloads were staged at update-manifest.example and retrieved from
+https://update-manifest.example/pkg/agent by hosts selected for follow-on activity.
+
+3. DOWNSTREAM IMPACT
+Of 214 endpoints that received the package, 31 exhibited follow-on interactive activity.
+Affected customers were notified within 72 hours of confirmation.
+
+4. RECOMMENDATIONS
+Build infrastructure deserves production-grade access controls: unique credentials,
+hardware-backed MFA, and egress restriction. Downstream customers should verify update
+signatures where the mechanism exists and alert on SNI-to-destination mismatches.
