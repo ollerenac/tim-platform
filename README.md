@@ -56,6 +56,14 @@ Clone the repository, enter its root, and generate a local environment file:
 Review `.env` and add any optional provider or feed API keys you intend to
 use. Real secrets belong only in `.env`; never commit that file.
 
+Generate local TLS certificates for the dashboard reverse proxy (one-time,
+requires [mkcert](https://github.com/FiloSottile/mkcert) — see `certs/README.md`):
+
+```bash
+mkcert -install
+mkcert -cert-file certs/localhost.pem -key-file certs/localhost-key.pem localhost 127.0.0.1
+```
+
 Start the local GPU target:
 
 ```bash

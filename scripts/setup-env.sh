@@ -50,6 +50,8 @@ _gen_password() {
 }
 RABBITMQ_PASS=$(_gen_password)
 MINIO_SECRET=$(_gen_password)
+# OpenCTI requires >=32 bytes of base64 data (enforced at platform init)
+OPENCTI_ENCRYPTION_KEY=$(openssl rand -base64 32)
 
 # Write generated values to .env: sed replaces existing lines; append if the
 # template predates the variable (keeps script correct as connectors are added)
@@ -69,6 +71,7 @@ _set_var CONNECTOR_CISA_KEV_ID "$CONNECTOR_CISA_KEV_UUID"
 _set_var CONNECTOR_MISP_FEED_ID "$CONNECTOR_MISP_FEED_UUID"
 _set_var RABBITMQ_PASSWORD "$RABBITMQ_PASS"
 _set_var MINIO_SECRET_KEY "$MINIO_SECRET"
+_set_var APP__ENCRYPTION_KEY "$OPENCTI_ENCRYPTION_KEY"
 
 # Dashboard + Kibana share one nginx basic-auth credential. Persist its plaintext only in
 # the protected .env so the automated browser verifier can authenticate; nginx gets a hash.
@@ -80,7 +83,8 @@ _set_var KIBANA_USER "$DASH_USER"
 _set_var KIBANA_PASSWORD "$DASH_PASS"
 mkdir -p "$(dirname "$HTPASSWD_FILE")"
 printf '%s:%s\n' "$DASH_USER" "$(openssl passwd -apr1 "$DASH_PASS")" > "$HTPASSWD_FILE"
-chmod 600 "$HTPASSWD_FILE"
+# 644: nginx worker (uid distinto) must read it; file holds only an apr1 hash
+chmod 644 "$HTPASSWD_FILE"
 
 # Print only the non-secret connector IDs. The admin token and RabbitMQ/MinIO secrets are
 # NOT echoed — that would leave live credentials in terminal scrollback / tmux / CI logs.
