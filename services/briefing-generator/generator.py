@@ -5,7 +5,7 @@ Provides:
   run_generate(briefing_id, period_hours)  — async entry point (via asyncio.to_thread)
   briefings                                 — module-level state dict (lost on restart, D-10)
 
-All blocking I/O (pycti reads, ollama chat) is inside _run_generate_sync(), called via
+All blocking I/O (pycti reads, Bedrock call) is inside _run_generate_sync(), called via
 asyncio.to_thread from the async run_generate() wrapper (BC-03: event loop not blocked).
 
 Entity list calls use _safe_list() defensive wrapper (assumption A2: not all entity types
@@ -15,26 +15,14 @@ import asyncio
 import json
 import logging
 import re
-import ollama
 from datetime import datetime, timezone, timedelta
 
-from config import (
-    AWS_REGION,
-    BEDROCK_MODEL,
-    CURATED_AUTHORS,
-    LLM_PROVIDER,
-    OLLAMA_MODEL,
-    OLLAMA_TIMEOUT,
-    OLLAMA_URL,
-)
+from config import AWS_REGION, BEDROCK_MODEL, CURATED_AUTHORS, LLM_PROVIDER
 from anchor import anchor_stats, find_unanchored
 from opencti_client import build_pycti_client
 import store
 
 logger = logging.getLogger(__name__)
-
-# Module-level singleton — timeout set for 30-45s LLM prose generation (Pitfall 3)
-_ollama_client = ollama.Client(host=OLLAMA_URL, timeout=OLLAMA_TIMEOUT)
 
 SYSTEM_PROMPT = """\
 You are a senior threat intelligence analyst. Write an executive summary for C-suite \
@@ -301,26 +289,13 @@ def _truncate_words(text: str, hard: int = 320, keep: int = 300) -> str:
     return text
 
 
-def _call_ollama(stats_block: str, feedback: str = "") -> str:
-    response = _ollama_client.chat(
-        model=OLLAMA_MODEL,
-        messages=[
-            {"role": "system", "content": SYSTEM_PROMPT},
-            {"role": "user",   "content": "DATA:\n" + stats_block + feedback},
-        ],
-        options={"temperature": 0.3},
-        # NOTE: NO format="json" — we want plain prose output (anti-pattern from extractor.py)
-    )
-    return _truncate_words(response.message.content.strip())
-
-
-_bedrock_client = None  # lazy singleton — SDK import must not break ollama-only envs
+_bedrock_client = None  # lazy singleton — importing this module must not need the SDK
 
 
 def _get_bedrock_client():
     global _bedrock_client
     if _bedrock_client is None:
-        import anthropic  # lazy: only the bedrock provider path needs the SDK
+        import anthropic  # lazy: the pure helpers stay importable without the SDK
         # Legacy bedrock-runtime client, NOT AnthropicBedrockMantle — Mantle rejects
         # this account (403, 2026-08-18). Credentials via boto chain = instance IAM
         # role on the tim EC2 host; no key material on disk. Same seam as intel-extractor.
@@ -328,7 +303,7 @@ def _get_bedrock_client():
     return _bedrock_client
 
 
-def _call_bedrock(stats_block: str, feedback: str = "") -> str:
+def _call_llm(stats_block: str, feedback: str = "") -> str:
     response = _get_bedrock_client().messages.create(
         model=BEDROCK_MODEL,
         max_tokens=2000,
@@ -337,12 +312,6 @@ def _call_bedrock(stats_block: str, feedback: str = "") -> str:
     )
     text = "".join(b.text for b in response.content if b.type == "text").strip()
     return _truncate_words(text)
-
-
-def _call_llm(stats_block: str, feedback: str = "") -> str:
-    if LLM_PROVIDER == "bedrock":
-        return _call_bedrock(stats_block, feedback)
-    return _call_ollama(stats_block, feedback)
 
 
 def _verify_draft(text: str, stats_block: str) -> tuple[str, dict]:

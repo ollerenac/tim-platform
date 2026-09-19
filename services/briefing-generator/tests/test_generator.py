@@ -2,7 +2,7 @@ import pytest
 
 # Import guard: skip all tests if production module not yet implemented
 try:
-    from generator import _build_stats_block, _make_updated_at_filter, _call_ollama, _clean
+    from generator import _build_stats_block, _make_updated_at_filter, _call_llm, _clean
     import generator as _generator_module
     _SKIP_REASON = None
 except ImportError as _e:
@@ -50,14 +50,19 @@ def test_build_stats_block(mock_pycti):
 
 
 @_skip
-def test_call_ollama_truncation(monkeypatch):
-    # Mock returning 400-word string; result must be <= 320 words
-    long_text = " ".join(["word"] * 400)
-    fake_client = pytest.importorskip("unittest.mock").MagicMock()
-    fake_client.chat.return_value.message.content = long_text
-    monkeypatch.setattr(_generator_module, "_ollama_client", fake_client)
-    result = _call_ollama("some stats block")
+def test_call_llm_truncation(monkeypatch):
+    # Bedrock returning a 400-word text block; result must be <= 320 words
+    from unittest.mock import MagicMock
+
+    block = MagicMock(type="text", text=" ".join(["word"] * 400))
+    fake_client = MagicMock()
+    fake_client.messages.create.return_value.content = [block]
+    monkeypatch.setattr(_generator_module, "_get_bedrock_client", lambda: fake_client)
+    result = _call_llm("some stats block")
     assert len(result.split()) <= 320
+    sent = fake_client.messages.create.call_args.kwargs
+    assert sent["model"] == _generator_module.BEDROCK_MODEL
+    assert sent["system"] == _generator_module.SYSTEM_PROMPT
 
 
 @_skip
@@ -361,16 +366,13 @@ def test_anchor_deduplicates_tid_and_url_after_type_specific_normalization():
     assert result == {"total_facts": 2, "unanchored": []}
 
 
-def test_call_llm_dispatches_by_provider(monkeypatch):
+def test_bedrock_is_the_only_provider():
+    """El anclaje persiste `provider` y los conductores de evaluación lo leen."""
+    import sys
     import generator
-    calls = []
-    monkeypatch.setattr(generator, "_call_bedrock", lambda s, f="": calls.append("bedrock") or "b")
-    monkeypatch.setattr(generator, "_call_ollama", lambda s, f="": calls.append("ollama") or "o")
-    monkeypatch.setattr(generator, "LLM_PROVIDER", "bedrock")
-    assert generator._call_llm("x") == "b"
-    monkeypatch.setattr(generator, "LLM_PROVIDER", "ollama")
-    assert generator._call_llm("x") == "o"
-    assert calls == ["bedrock", "ollama"]
+    assert generator.LLM_PROVIDER == "bedrock"
+    assert not hasattr(generator, "_call_ollama")
+    assert "ollama" not in sys.modules
 
 
 def test_bedrock_client_is_legacy_never_mantle(monkeypatch):

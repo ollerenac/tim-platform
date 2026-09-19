@@ -23,15 +23,3 @@ def mock_pycti():
     ]
     return client
 
-
-@pytest.fixture
-def mock_ollama():
-    # Attribute path response.message.content matches _call_ollama() in generator.py
-    client = MagicMock()
-    client.chat.return_value.message.content = (
-        "During the past 24 hours, threat activity remained elevated. "
-        "APT29 continued targeting financial sector organizations using phishing techniques. "
-        "QakBot malware was observed in multiple campaigns. "
-        "Security teams should prioritize email filtering and endpoint detection controls."
-    )
-    return client
