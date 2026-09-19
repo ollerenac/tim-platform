@@ -17,7 +17,7 @@ const VIEW_META = {
   Briefings: {
     eyebrow: 'Reporting',
     title: 'Briefings',
-    description: 'Generate and review executive intelligence summaries from local OpenCTI data.',
+    description: 'Generate and review executive intelligence summaries from OpenCTI data.',
   },
   Alerts: {
     eyebrow: 'Detection Queue',
@@ -71,9 +71,9 @@ export default function App() {
               <p>{meta.description}</p>
             </div>
             <div className="header-badges" aria-label="Current system scope">
-              <span>Local CTI</span>
               <span>OpenCTI</span>
-              <span>Air-gapped</span>
+              <span>AWS</span>
+              <span>Amazon Bedrock</span>
             </div>
           </div>
         </header>
