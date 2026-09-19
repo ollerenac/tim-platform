@@ -90,7 +90,6 @@ The host needs an IAM role allowed to invoke the Bedrock model named by
 | `docs/` | User, deployment, design, diagnostic, and use-case documentation. |
 | `experiments/` | Reproducible protocols, harnesses, code, tests, manifests, metrics, and project results. |
 | `corpus/` | Evaluation tools, provenance manifests, reference data, hashes, and system outputs. |
-| `tesis/tesis.pdf` | The research thesis describing and evaluating TIM. |
 
 ## Experimental material and provenance
 
@@ -108,11 +107,11 @@ Some recorded outputs contain harmless threat-intelligence indicators,
 including domains and URLs. Treat them as research data, not as links to open
 in a browser.
 
-## Thesis and licensing
+## Licensing
 
-The [thesis](tesis/tesis.pdf) is in Spanish and is provided for reading under
-All Rights Reserved. Source code and original repository documentation are
-licensed under the [MIT License](LICENSE).
+Source code and original repository documentation are licensed under the
+[MIT License](LICENSE). The research thesis that describes and evaluates TIM is
+not distributed with this repository.
 
 Third-party names, data, and structured references remain subject to their
 respective owners' terms. Inclusion of a URL or hash does not grant additional
