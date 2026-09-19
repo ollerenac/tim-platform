@@ -11,8 +11,8 @@ mezclaba plataforma base, servicios funcionales y la reserva GPU de Ollama.
 - **Módulo**: parte interna del código de un servicio.
 - **Capa**: agrupación arquitectónica (§3.x de la tesis).
 - **Perfil**: grupo de activación de servicios para un escenario operativo.
-  Un perfil **no** es un módulo independiente: `semantic` sin `core` e
-  `inference` no funciona, y Compose no activa perfiles por dependencia.
+  Un perfil **no** es un módulo independiente: `briefings` sin `core` no
+  funciona, y Compose no activa perfiles por dependencia.
 
 ## Perfiles
 
@@ -22,30 +22,21 @@ mezclaba plataforma base, servicios funcionales y la reserva GPU de Ollama.
 | `connectors` | los 25 `connector-*` | Ingesta de catálogos y fuentes; separables de la plataforma para diagnóstico y para `core-only` |
 | `feeds` | feed-orchestrator | Capacidad funcional: orquestación de feeds propios |
 | `extractor` | intel-extractor | Capacidad funcional: extracción documental (generativa; proveedor conmutable) |
-| `semantic` | chromadb, semantic-engine | Capacidad funcional: búsqueda semántica. ChromaDB solo sirve a este carril |
 | `briefings` | briefing-generator | Capacidad funcional: síntesis ejecutiva (generativa; proveedor conmutable) |
-| `dashboard` | soc-dashboard | Frontera de presentación; nginx exige resolver los upstreams de feeds/semantic/briefings/extractor/kibana |
-| `inference` | ollama | Backend de inferencia local compartido (embeddings siempre; generación solo en local-gpu). **La reserva GPU no está aquí**: es un atributo de hardware del objetivo, no del servicio, y vive en `docker-compose.local-gpu.yml` |
+| `dashboard` | soc-dashboard | Frontera de presentación; nginx resuelve los upstreams de feeds/briefings/extractor/kibana por petición (resolver de Docker), así que arranca aunque un backend esté caído |
+| `inference` | ollama | Backend de generación local; solo lo activa `local-gpu`. **La reserva GPU no está aquí**: es un atributo de hardware del objetivo, no del servicio, y vive en `docker-compose.local-gpu.yml` |
 
-Total: 7+25+1+1+2+1+1+1 = **39 servicios**, los mismos de antes; nombres de
-servicios y volúmenes intactos.
-
-### Por qué Ollama no tiene un perfil «gpu-local»
-
-El mismo servicio sirve a los dos objetivos: en AWS embebe en CPU
-(`nomic-embed-text`, ~0,3 GB) y en el piloto embebe y genera con GPU. Separar
-dos servicios habría duplicado el volumen `ollamadata` (los modelos
-descargados) y cambiado el nombre del contenedor que semantic-engine resuelve.
-La diferencia real es de hardware, y Compose tiene un mecanismo exacto para
-eso: un override que añade `deploy.resources.reservations` solo donde existe
-el dispositivo.
+Total: 7+25+1+1+1+1 = **36 servicios** en `aws`; `local-gpu` añade `ollama`
+(37). La búsqueda semántica (`semantic-engine`, `chromadb`, perfil `semantic`)
+se retiró el 2026-09-19; sus volúmenes en despliegues previos se eliminan a
+mano tras validar.
 
 ## Matriz de objetivos
 
 | Objetivo | Ficheros | Perfiles | Extractor | Sintetizador | Ollama | Modelos exigidos |
 |---|---|---|---|---|---|---|
-| `aws` | base + `docker-compose.aws.yml` | los 8 | Bedrock (fijado) | Bedrock (fijado) | CPU, solo embeddings | `nomic-embed-text` |
-| `local-gpu` | base + `docker-compose.local-gpu.yml` | los 8 | Ollama (fijado) | Ollama (fijado) | GPU, embeddings + generación | `nomic-embed-text`, `llama3.2:3b` |
+| `aws` | base + `docker-compose.aws.yml` | los 6 | Bedrock (fijado) | Bedrock (fijado) | no se despliega | — |
+| `local-gpu` | base + `docker-compose.local-gpu.yml` | los 6 + `inference` | Ollama (fijado) | Ollama (fijado) | GPU, generación | `llama3.2:3b` |
 | `core-only` | base | `core` | — | — | — | — |
 
 Los proveedores de `aws` están **fijados en el override**, no heredados de
@@ -69,8 +60,8 @@ $(./scripts/compose-target.sh local-gpu) up -d --wait
 # gate de readiness (inventario + contratos + UI)
 ./scripts/tim-check.sh aws
 
-# solo modelos
-./scripts/init-models.sh aws
+# solo modelos (únicamente local-gpu)
+./scripts/init-models.sh local-gpu
 ```
 
 El nombre `bootstrap-platform.sh` se conserva por compatibilidad como nombre
@@ -86,9 +77,9 @@ servicios con healthcheck satisfecho, servicios `running` sin healthcheck
 - `scripts/test-verify-service-contracts.py` — unitarias del verificador
   (objetivos, comando compose, veredicto de inventario, modelos por objetivo).
 - `scripts/test-compose-targets.py` — aceptación con `docker compose config`:
-  render válido por objetivo, sin NVIDIA en aws, NVIDIA solo en ollama en
-  local-gpu, inventario esperado, dependencias resueltas, proveedores por
-  objetivo, volúmenes preservados.
+  render válido por objetivo, sin NVIDIA ni ollama en aws, NVIDIA solo en
+  ollama en local-gpu, inventario esperado, dependencias resueltas,
+  proveedores por objetivo, volúmenes preservados.
 
 ```bash
 python3 -m pytest scripts/test-verify-service-contracts.py scripts/test-compose-targets.py -q

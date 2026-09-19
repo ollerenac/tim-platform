@@ -22,26 +22,25 @@ small services around it:
 | --- | --- |
 | `feed-orchestrator` | Fetches, normalizes, deduplicates, and exports structured feeds as STIX 2.1. |
 | `intel-extractor` | Converts PDFs and URLs into cited IOCs, entities, techniques, and relationships. |
-| `semantic-engine` | Indexes CTI in ChromaDB and provides vector search linked back to OpenCTI objects. |
 | `briefing-generator` | Creates persistent, exportable briefings and verifies identifiers against context. |
-| `dashboard` | Provides analyst views for overview, hunting, briefings, alerts, and ingestion. |
+| `dashboard` | Provides analyst views for overview, briefings, alerts, and ingestion. |
 | `connector-cve` | Adapts CVE ingestion for the platform deployment. |
 | `connector-greynoise-feed` | Adapts GreyNoise feed ingestion. |
 
 The Compose stack supplies OpenCTI, Elasticsearch, Redis, RabbitMQ, MinIO,
-connectors, Ollama, ChromaDB, Kibana, and the TIM services. Two overlays select
-the intended runtime:
+connectors, Kibana, and the TIM services. Two overlays select the intended
+runtime:
 
-- `local-gpu` for local inference with NVIDIA acceleration;
-- `aws` for the AWS-oriented deployment profile.
+- `local-gpu` for local inference through Ollama with NVIDIA acceleration;
+- `aws` for the AWS-oriented deployment profile, where generation runs on
+  Bedrock and Ollama is not deployed.
 
 The main data path is:
 
 ```text
 structured feeds ──> feed-orchestrator ──┐
-                                         ├──> OpenCTI ──> semantic search
-PDFs and URLs ────> intel-extractor ─────┘            └──> verified briefings
-                                                                  │
+                                         ├──> OpenCTI ──> verified briefings
+PDFs and URLs ────> intel-extractor ─────┘                      │
                                                     dashboard and Kibana
 ```
 
