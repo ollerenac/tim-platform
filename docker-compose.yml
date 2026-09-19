@@ -17,7 +17,6 @@ volumes:
   redisdata:
   rabbitmqdata:
   miniodata:
-  ollamadata:
   briefingsdata:
   extractordata:
   # P1.1: fs repository for ES snapshot API — scripts/backup.sh snapshots here,
@@ -1057,32 +1056,6 @@ services:
     restart: unless-stopped
 
 # ─────────────────────────────────────────────
-# CAPA AI — Ollama (solo objetivo local-gpu)
-# ─────────────────────────────────────────────
-
-  ollama:
-    # AUDIT: pin to a tested digest for reproducibility (see minio note above). Left as
-    # :latest to avoid changing the image under a running deployment.
-    image: ollama/ollama:latest
-    profiles: [inference]
-    volumes:
-      - ollamadata:/root/.ollama
-    # 2g OOM-killed the llama3.2:3b runner under load (model alone is 2.0 GB);
-    # 6g gives model + 8k ctx + prompt cache headroom for sustained backfills.
-    mem_limit: 6g
-    # La reserva NVIDIA vive en docker-compose.local-gpu.yml. El objetivo aws no
-    # activa el perfil inference: toda generación va a Bedrock.
-    healthcheck:
-      test: ["CMD", "ollama", "list"]
-      interval: 15s
-      timeout: 10s
-      retries: 5
-      start_period: 20s
-    networks:
-      - tim-network
-    restart: unless-stopped
-
-# ─────────────────────────────────────────────
 # CAPA DE INGESTA — Feed Orchestrator (custom)
 # ─────────────────────────────────────────────
 
@@ -1133,17 +1106,11 @@ services:
       - OPENCTI_URL=http://opencti:8080
       - OPENCTI_TOKEN=${OPENCTI_CONNECTORS_TOKEN:-${OPENCTI_ADMIN_TOKEN}}
       - PYTHONUNBUFFERED=1
-      - OLLAMA_URL=http://ollama:11434
-      - OLLAMA_MODEL=llama3.2:3b
       # decision-llm 2026-08-10 (rev. bedrock): claude via Amazon Bedrock, prompt
-      # v2.1. Auth = EC2 instance IAM role — no API key anywhere. The direct
-      # Anthropic API path stays available with LLM_PROVIDER=anthropic + key in
-      # the server-side .env (never in this file).
-      - LLM_PROVIDER=${LLM_PROVIDER:-bedrock}
+      # v2.1. Auth = EC2 instance IAM role — no API key anywhere. Bedrock is the
+      # only provider since 2026-09-19 (fixed in the service, not configurable).
       - AWS_REGION=${AWS_REGION:-us-east-1}
       - BEDROCK_MODEL=${BEDROCK_MODEL:-us.anthropic.claude-haiku-4-5-20251001-v1:0}
-      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
-      - ANTHROPIC_MODEL=${ANTHROPIC_MODEL:-claude-opus-5}
       # Incident 2026-08-10: collector auto-extraction burned API credit on a
       # fresh volume. Opt-in only — default is manual /extract API alone.
       - COLLECTOR_ENABLED=${COLLECTOR_ENABLED:-false}
@@ -1174,13 +1141,9 @@ services:
       - OPENCTI_URL=http://opencti:8080
       - OPENCTI_TOKEN=${OPENCTI_CONNECTORS_TOKEN:-${OPENCTI_ADMIN_TOKEN}}
       - PYTHONUNBUFFERED=1
-      # Sintetizador 2026-08-19: proveedor conmutable igual que intel-extractor.
-      # ollama = pilot local con GPU; bedrock = claude haiku por rol IAM (VPS sin GPU).
-      - LLM_PROVIDER=${BRIEFING_LLM_PROVIDER:-ollama}
+      # Claude haiku vía Amazon Bedrock con el rol IAM de la instancia (único proveedor).
       - AWS_REGION=${AWS_REGION:-us-east-1}
       - BEDROCK_MODEL=${BEDROCK_MODEL:-us.anthropic.claude-haiku-4-5-20251001-v1:0}
-      - OLLAMA_URL=http://ollama:11434
-      - OLLAMA_MODEL=llama3.2:3b
       - DB_PATH=/data/briefings.db
       - *curated-authors
     volumes:
@@ -1192,12 +1155,6 @@ services:
         # Sintetizador 2026-08-19: con `--profile briefings` solo, opencti (profile
         # core) queda indefinido — required:false deja arrancar; opencti ya corre
         # en el proyecto y el healthcheck del servicio cubre el arranque en frío.
-        required: false
-      ollama:
-        condition: service_healthy
-        # Sintetizador 2026-08-19: opcional — en el VPS (sin GPU) ollama no corre;
-        # arrancar con `--profile briefings` (sin el profile inference de ollama) y
-        # LLM_PROVIDER=bedrock. Con profile activo la condición sigue aplicando.
         required: false
     healthcheck:
       # ponytail: python stdlib probe — curl not available in python:3.12-slim
