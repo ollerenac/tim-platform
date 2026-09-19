@@ -9,7 +9,6 @@
 #
 # Deliberately excluded:
 #   - esdata (covered by the API snapshot; raw tar of a live ES dir is inconsistent)
-#   - ollamadata (multi-GB re-pullable models; scripts/init-models.sh restores them)
 #
 # Restore (ES): start stack, then
 #   docker exec <es> curl -s -X POST 'localhost:9200/_snapshot/backup_repo/<snap>/_restore'

@@ -2,7 +2,7 @@
 # Bootstrap ATT&CK in isolation, then start and verify the complete TIM stack
 # for one deployment target.
 #
-# Uso: ./scripts/bootstrap-platform.sh <aws|local-gpu>
+# Uso: ./scripts/bootstrap-platform.sh aws
 
 # configuracion: da errexit, undefined variables, pipefail
 set -euo pipefail # configuracion segura para depuracion/debugging
@@ -12,8 +12,8 @@ PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 cd "$PROJECT_ROOT"
 
 TARGET="${1:-}"
-if [ "$TARGET" != "aws" ] && [ "$TARGET" != "local-gpu" ]; then
-  echo "uso: bootstrap-platform.sh <aws|local-gpu>" >&2
+if [ "$TARGET" != "aws" ]; then
+  echo "uso: bootstrap-platform.sh aws" >&2
   exit 2
 fi
 COMPOSE=$("$SCRIPT_DIR/compose-target.sh" "$TARGET")
@@ -30,15 +30,6 @@ if ! $COMPOSE up -d --wait --wait-timeout "$STARTUP_TIMEOUT"; then
   echo "ERROR: the complete TIM stack did not become healthy within ${STARTUP_TIMEOUT}s." >&2
   $COMPOSE ps -a >&2 || true
   exit 1
-fi
-
-# Solo local-gpu despliega Ollama; aws genera con Bedrock.
-if [ "$TARGET" = "local-gpu" ]; then
-  MODELS="$($COMPOSE exec -T ollama ollama list 2>/dev/null || true)"
-  if ! grep -q "llama3.2:3b" <<<"$MODELS"; then
-    echo "[bootstrap-platform] Required Ollama model is missing; initializing it..."
-    "$SCRIPT_DIR/init-models.sh" "$TARGET"
-  fi
 fi
 
 echo "[bootstrap-platform] All services are healthy; running functional readiness checks..."

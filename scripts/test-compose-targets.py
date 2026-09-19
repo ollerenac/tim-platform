@@ -53,23 +53,16 @@ class ComposeTargetRenderTests(unittest.TestCase):
         if not (ROOT / ".env").is_file():
             raise unittest.SkipTest(".env ausente: estos tests renderizan la configuración real")
         cls.aws = _render("aws")
-        cls.local_gpu = _render("local-gpu")
         cls.core_only = _render("core-only")
 
-    # 1-2: cada objetivo renderiza una configuración válida
     def test_all_targets_render(self):
-        for cfg in (self.aws, self.local_gpu, self.core_only):
+        for cfg in (self.aws, self.core_only):
             self.assertIn("services", cfg)
 
-    # 3: AWS sin reserva NVIDIA
-    def test_aws_render_has_no_nvidia_reservation(self):
+    # El despliegue es un nodo sin GPU: ninguna reserva de dispositivo en ningún servicio.
+    def test_no_service_reserves_a_gpu(self):
         self.assertEqual(_gpu_reservations(self.aws), [])
 
-    # 4: local-gpu conserva la reserva NVIDIA en ollama
-    def test_local_gpu_render_reserves_nvidia_for_ollama(self):
-        self.assertEqual(_gpu_reservations(self.local_gpu), ["ollama"])
-
-    # 5: inventario esperado por objetivo
     def test_inventory_per_target(self):
         aws_services = set(self.aws["services"])
         self.assertEqual(len(aws_services), 36)
@@ -77,48 +70,38 @@ class ComposeTargetRenderTests(unittest.TestCase):
             self.assertIn(svc, aws_services)
         for svc in ("ollama", "semantic-engine", "chromadb"):
             self.assertNotIn(svc, aws_services)
-        self.assertEqual(set(self.local_gpu["services"]), aws_services | {"ollama"})
-        core = set(self.core_only["services"])
         self.assertEqual(
-            core,
+            set(self.core_only["services"]),
             {"elasticsearch", "kibana", "redis", "rabbitmq", "minio", "opencti", "worker"},
         )
 
-    # 10: dependencias completas de dashboard, feeds y briefings
-    def test_full_targets_resolve_all_dependencies(self):
-        for cfg in (self.aws, self.local_gpu):
-            services = cfg["services"]
-            for name, svc in services.items():
-                for dep, spec in (svc.get("depends_on") or {}).items():
-                    if isinstance(spec, dict) and spec.get("required") is False:
-                        continue
-                    self.assertIn(
-                        dep, services,
-                        f"{name} depende de {dep}, ausente en el objetivo renderizado",
-                    )
+    def test_full_target_resolves_all_dependencies(self):
+        services = self.aws["services"]
+        for name, svc in services.items():
+            for dep, spec in (svc.get("depends_on") or {}).items():
+                if isinstance(spec, dict) and spec.get("required") is False:
+                    continue
+                self.assertIn(
+                    dep, services,
+                    f"{name} depende de {dep}, ausente en el objetivo renderizado",
+                )
 
-    # proveedor generativo por objetivo (defaults del render, sin leer secretos)
-    def test_generative_providers_are_fixed_per_target(self):
+    # El proveedor está fijado en el código de cada servicio (Bedrock): Compose ya no
+    # lo conmuta ni le pasa configuración de un LLM local o de la API directa.
+    def test_generative_services_carry_no_provider_switch(self):
         for service in ("intel-extractor", "briefing-generator"):
-            aws_env = self.aws["services"][service]["environment"]
-            local_env = self.local_gpu["services"][service]["environment"]
-            self.assertEqual(aws_env.get("LLM_PROVIDER"), "bedrock")
-            self.assertEqual(local_env.get("LLM_PROVIDER"), "ollama")
-        self.assertIn(
-            "ollama",
-            self.local_gpu["services"]["intel-extractor"]["depends_on"],
-        )
+            env = self.aws["services"][service]["environment"]
+            self.assertIn("BEDROCK_MODEL", env)
+            for retired in ("LLM_PROVIDER", "OLLAMA_URL", "OLLAMA_MODEL", "ANTHROPIC_API_KEY"):
+                self.assertNotIn(retired, env, f"{service} aún recibe {retired}")
 
     def test_volume_names_are_preserved(self):
-        for cfg in (self.aws, self.local_gpu):
-            for vol in ("esdata", "redisdata", "rabbitmqdata", "miniodata",
-                        "briefingsdata", "extractordata"):
-                self.assertIn(vol, cfg.get("volumes", {}))
-            self.assertNotIn("chromadata", cfg.get("volumes", {}))
-        # `compose config` poda los volúmenes sin servicio activo: ollamadata
-        # solo se renderiza donde corre ollama (perfil inference).
-        self.assertIn("ollamadata", self.local_gpu["volumes"])
-        self.assertNotIn("ollamadata", self.aws["volumes"])
+        volumes = self.aws.get("volumes", {})
+        for vol in ("esdata", "redisdata", "rabbitmqdata", "miniodata",
+                    "briefingsdata", "extractordata"):
+            self.assertIn(vol, volumes)
+        for retired in ("chromadata", "ollamadata"):
+            self.assertNotIn(retired, volumes)
 
 
 if __name__ == "__main__":

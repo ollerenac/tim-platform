@@ -16,15 +16,6 @@ if [ -f "$PROJECT_ROOT/.env" ]; then
   exit 0
 fi
 
-# NVIDIA GPU check: warn but do not block
-# nvidia-container-toolkit may need manual install (see docs/SETUP.md)
-if command -v nvidia-smi > /dev/null 2>&1; then
-  if ! docker info 2>/dev/null | grep -q nvidia; then
-    echo "[setup-env] WARN: NVIDIA GPU detected but nvidia-container-toolkit is not configured."
-    echo "            Ollama will fail to start. See docs/SETUP.md for installation steps."
-  fi
-fi
-
 # Copy template (Plan 01 fixed .env.example permissions)
 cp "$PROJECT_ROOT/.env.example" "$PROJECT_ROOT/.env"
 # Lock down immediately — .env holds the OpenCTI admin token + RabbitMQ/MinIO secrets.
@@ -97,4 +88,4 @@ echo "  CONNECTOR_MISP_FEED_ID= ${CONNECTOR_MISP_FEED_UUID}"
 echo "  OPENCTI_ADMIN_TOKEN, RABBITMQ_PASSWORD, MINIO_SECRET_KEY written to .env (not shown)"
 echo "  Dashboard + Kibana credentials saved in protected .env (not shown)"
 echo ""
-echo "[setup-env] Next step: ./scripts/bootstrap-platform.sh"
+echo "[setup-env] Next step: ./scripts/bootstrap-platform.sh aws"

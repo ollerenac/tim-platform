@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 """Read-only functional checks for a TIM Compose deployment target.
 
-Uso: verify-service-contracts.py <aws|local-gpu|core-only>
+Uso: verify-service-contracts.py <aws|core-only>
 
-Cada objetivo declara sus perfiles, sus ficheros Compose y los modelos Ollama
-que exige. Compose NO activa perfiles por dependencia: el conjunto completo se
-habilita explícitamente aquí.
+Cada objetivo declara sus perfiles y sus ficheros Compose. Compose NO activa
+perfiles por dependencia: el conjunto completo se habilita explícitamente aquí.
 """
 
 from __future__ import annotations
@@ -25,9 +24,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 
 # Perfiles de un despliegue completo: capacidad funcional separada de la
-# plataforma base (core). El backend de inferencia local (inference) solo lo
-# activa local-gpu; la reserva GPU no es un perfil: vive en
-# docker-compose.local-gpu.yml.
+# plataforma base (core). No hay inferencia local: la generación va a Bedrock.
 FULL_PROFILES = (
     "core",
     "connectors",
@@ -40,21 +37,12 @@ FULL_PROFILES = (
 TARGETS = {
     "aws": {
         "profiles": FULL_PROFILES,
-        "compose_files": ("docker-compose.yml", "docker-compose.aws.yml"),
-        # En aws la generación va a Bedrock; no se despliega Ollama.
-        "ollama_models": (),
-        "functional": True,
-    },
-    "local-gpu": {
-        "profiles": (*FULL_PROFILES, "inference"),
-        "compose_files": ("docker-compose.yml", "docker-compose.local-gpu.yml"),
-        "ollama_models": ("llama3.2:3b",),
+        "compose_files": ("docker-compose.yml",),
         "functional": True,
     },
     "core-only": {
         "profiles": ("core",),
         "compose_files": ("docker-compose.yml",),
-        "ollama_models": (),
         # Sin feeds/briefings/dashboard no hay contratos funcionales
         # que ejercitar: solo inventario.
         "functional": False,
@@ -72,9 +60,8 @@ def resolve_target(name: str) -> dict:
 def parse_target(argv: list[str]) -> str:
     if len(argv) != 1:
         print(
-            "uso: verify-service-contracts.py <aws|local-gpu|core-only>\n"
-            "  aws       — nodo sin GPU: Bedrock genera, sin Ollama\n"
-            "  local-gpu — piloto con NVIDIA: ollama genera\n"
+            "uso: verify-service-contracts.py <aws|core-only>\n"
+            "  aws       — despliegue completo; la generación va a Amazon Bedrock\n"
             "  core-only — plataforma OpenCTI sin servicios funcionales",
             file=sys.stderr,
         )
@@ -329,7 +316,7 @@ def verify_compose() -> None:
     passed(verdict.summary())
 
 
-def verify_contracts(env: dict[str, str], ollama_models: tuple[str, ...]) -> None:
+def verify_contracts(env: dict[str, str]) -> None:
     required = ("KIBANA_USER", "KIBANA_PASSWORD")
     missing = [key for key in required if not env.get(key)]
     if missing:
@@ -402,18 +389,11 @@ def verify_contracts(env: dict[str, str], ollama_models: tuple[str, ...]) -> Non
     if level != "available":
         fail(f"Kibana reports overall level {level!r}")
 
-    # Exigencia por objetivo: aws no necesita llama3.2:3b (genera Bedrock).
-    if ollama_models:
-        models = run(*COMPOSE, "exec", "-T", "ollama", "ollama", "list")
-        for model in ollama_models:
-            if model not in models:
-                fail(f"required Ollama model is missing for this target: {model}")
-
     errors = sorted(item["name"] for item in feeds if item.get("status") == "error")
     passed("cross-service data contracts work")
     if errors:
         print(f"  WARN external feed errors do not invalidate service readiness: {', '.join(errors)}")
-    passed("Kibana API status is available and target-required Ollama models are installed")
+    passed("Kibana API status is available")
 
 
 def main(argv: list[str] | None = None) -> None:
@@ -428,7 +408,7 @@ def main(argv: list[str] | None = None) -> None:
         verify_compose()
         if spec["functional"]:
             print("[tim-check] Functional contracts")
-            verify_contracts(env, spec["ollama_models"])
+            verify_contracts(env)
         else:
             print(f"  SKIP functional contracts: el objetivo {target} no los declara")
     except (KeyError, OSError, ValueError, subprocess.CalledProcessError, urllib.error.URLError) as exc:

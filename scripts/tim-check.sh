@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Functional readiness gate for a TIM deployment target.
 #
-# Uso: ./scripts/tim-check.sh <aws|local-gpu|core-only>
+# Uso: ./scripts/tim-check.sh <aws|core-only>
 
 set -euo pipefail
 
@@ -11,9 +11,8 @@ cd "$PROJECT_ROOT"
 
 TARGET="${1:-}"
 if [ -z "$TARGET" ]; then
-  echo "uso: tim-check.sh <aws|local-gpu|core-only>" >&2
-  echo "  aws       — nodo sin GPU: Bedrock genera, sin Ollama" >&2
-  echo "  local-gpu — piloto con NVIDIA: ollama genera" >&2
+  echo "uso: tim-check.sh <aws|core-only>" >&2
+  echo "  aws       — despliegue completo; la generación va a Amazon Bedrock" >&2
   echo "  core-only — solo inventario de la plataforma base" >&2
   exit 2
 fi

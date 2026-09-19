@@ -103,28 +103,24 @@ class ServiceContractTests(unittest.TestCase):
 
 
 class TargetSelectionTests(unittest.TestCase):
-    """Objetivos de despliegue: aws (sin GPU, Bedrock), local-gpu (Ollama+NVIDIA), core-only."""
+    """Objetivos: aws (despliegue completo, Bedrock) y core-only. El piloto local-gpu
+    se retiró el 2026-09-19."""
 
-    def test_target_registry_declares_three_targets(self):
-        self.assertEqual(set(contracts.TARGETS), {"aws", "local-gpu", "core-only"})
+    def test_target_registry_declares_aws_and_core_only(self):
+        self.assertEqual(set(contracts.TARGETS), {"aws", "core-only"})
 
-    def test_aws_target_covers_full_stack_without_inference(self):
+    def test_aws_target_covers_full_stack_without_local_inference(self):
         aws = contracts.TARGETS["aws"]["profiles"]
-        for profile in ("core", "connectors", "feeds", "extractor", "briefings", "dashboard"):
-            self.assertIn(profile, aws)
-        self.assertNotIn("inference", aws)
-        self.assertNotIn("semantic", aws)
-        self.assertIn("inference", contracts.TARGETS["local-gpu"]["profiles"])
+        self.assertEqual(
+            set(aws), {"core", "connectors", "feeds", "extractor", "briefings", "dashboard"}
+        )
 
-    def test_aws_target_uses_aws_override_and_local_gpu_uses_gpu_override(self):
-        self.assertEqual(
-            contracts.TARGETS["aws"]["compose_files"],
-            ("docker-compose.yml", "docker-compose.aws.yml"),
-        )
-        self.assertEqual(
-            contracts.TARGETS["local-gpu"]["compose_files"],
-            ("docker-compose.yml", "docker-compose.local-gpu.yml"),
-        )
+    def test_every_target_renders_from_the_single_compose_file(self):
+        for spec in contracts.TARGETS.values():
+            self.assertEqual(spec["compose_files"], ("docker-compose.yml",))
+        root = Path(__file__).resolve().parents[1]
+        self.assertFalse((root / "docker-compose.local-gpu.yml").exists())
+        self.assertFalse((root / "docker-compose.aws.yml").exists())
 
     def test_core_only_target_is_base_platform_without_functional_contracts(self):
         core = contracts.TARGETS["core-only"]
@@ -132,18 +128,13 @@ class TargetSelectionTests(unittest.TestCase):
         self.assertEqual(core["compose_files"], ("docker-compose.yml",))
         self.assertFalse(core["functional"])
 
-    def test_ollama_models_differ_by_target(self):
-        self.assertEqual(contracts.TARGETS["aws"]["ollama_models"], ())
-        self.assertEqual(contracts.TARGETS["local-gpu"]["ollama_models"], ("llama3.2:3b",))
-        self.assertEqual(contracts.TARGETS["core-only"]["ollama_models"], ())
-
     def test_compose_command_names_every_profile_and_file(self):
         cmd = contracts.compose_command("aws")
         self.assertEqual(cmd[:2], ["docker", "compose"])
         for profile in contracts.TARGETS["aws"]["profiles"]:
             self.assertIn(profile, cmd)
-        self.assertIn("docker-compose.aws.yml", cmd)
-        self.assertNotIn("docker-compose.local-gpu.yml", cmd)
+        self.assertEqual(cmd[2:4], ["-f", "docker-compose.yml"])
+        self.assertEqual(cmd.count("-f"), 1)
 
     def test_unknown_target_is_rejected_with_options(self):
         with self.assertRaisesRegex(SystemExit, "1"):
