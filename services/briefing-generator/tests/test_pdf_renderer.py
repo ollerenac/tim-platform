@@ -33,3 +33,38 @@ def test_render_pdf_bytes(monkeypatch):
     })
     assert isinstance(result, bytes)
     assert result[:4] == b"%PDF"
+
+
+@_skip_impl
+def test_plain_lines_strips_bold_markers_and_keeps_ioc_values_intact():
+    """Bedrock writes Markdown. The PDF must not show `**`, and must never treat
+    `--` as markup: punycode domains are real indicators."""
+    from pdf_renderer import _plain_lines
+
+    text = (
+        "**EXECUTIVE SUMMARY: THREAT REPORT**\n"
+        "## Key findings\n"
+        "\n"
+        "Actors used **WailingCrab** against xn--80ak6aa92e.com and a--b.example.\n"
+        "Unpaired ** marker stays, as does 2 * 3 * 4."
+    )
+    assert _plain_lines(text) == [
+        (True, "EXECUTIVE SUMMARY: THREAT REPORT"),
+        (True, "Key findings"),
+        (False, ""),
+        (False, "Actors used WailingCrab against xn--80ak6aa92e.com and a--b.example."),
+        (False, "Unpaired ** marker stays, as does 2 * 3 * 4."),
+    ]
+
+
+@_skip_impl
+@_skip_font
+def test_render_pdf_handles_markdown_headings_and_blank_lines(monkeypatch):
+    if _REPO_FONT.exists() and not _DOCKER_FONT.exists():
+        monkeypatch.setattr(_pdf_renderer_module, "FONT_PATH", str(_REPO_FONT))
+    result = render_pdf({
+        "period_hours": 1,
+        "created_at": "2026-09-19T08:52:56+00:00",
+        "text": "**EXECUTIVE SUMMARY**\n\nFirst paragraph with **bold** text.\n\n" + "word " * 400,
+    })
+    assert result[:4] == b"%PDF"
