@@ -1,5 +1,21 @@
 #!/usr/bin/env bash
+# Verifica el grafo ATT&CK en OpenCTI.
+#
+# Uso: check_mitre_relationships.sh [--steady-state]
+#   (sin flag)      arranque inicial: exige además cola MITRE vacía y work
+#                   `complete`. Lo usa verify-platform.sh antes de levantar el resto.
+#   --steady-state  régimen: solo los umbrales del grafo son fatales. Cada ciclo del
+#                   conector reimporta los mismos objetos (upsert) y deja la cola
+#                   ocupada durante horas con el grafo ya completo; ahí se avisa.
 set -euo pipefail
+
+MODE="bootstrap"
+if [[ "${1:-}" == "--steady-state" ]]; then
+  MODE="steady-state"
+elif [[ -n "${1:-}" ]]; then
+  echo "uso: check_mitre_relationships.sh [--steady-state]" >&2
+  exit 2
+fi
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
@@ -86,9 +102,19 @@ failed=()
 (( attack_patterns >= 1000 )) || failed+=("attack_patterns=${attack_patterns}<1000")
 (( uses >= 10000 )) || failed+=("uses=${uses}<10000")
 (( malware_uses >= 1000 )) || failed+=("malware_uses=${malware_uses}<1000")
-[[ "$queue_ready" == "0" ]] || failed+=("queue_ready=${queue_ready}")
-[[ "$queue_unacked" == "0" ]] || failed+=("queue_unacked=${queue_unacked}")
-[[ "$work_status" == "complete" ]] || failed+=("work_status=${work_status}:${work_processed}/${work_expected}")
+
+# Cola y work acreditan el fin de la carga inicial, no la salud del grafo.
+pending=()
+[[ "$queue_ready" == "0" ]] || pending+=("queue_ready=${queue_ready}")
+[[ "$queue_unacked" == "0" ]] || pending+=("queue_unacked=${queue_unacked}")
+[[ "$work_status" == "complete" ]] || pending+=("work_status=${work_status}:${work_processed}/${work_expected}")
+if ((${#pending[@]})); then
+  if [[ "$MODE" == "steady-state" ]]; then
+    printf 'MITRE_IMPORT_IN_PROGRESS (no fatal en régimen): %s\n' "$(IFS=', '; echo "${pending[*]}")"
+  else
+    failed+=("${pending[@]}")
+  fi
+fi
 
 if ((${#failed[@]})); then
   printf 'MITRE_GRAPH_NOT_READY: %s\n' "$(IFS=', '; echo "${failed[*]}")" >&2

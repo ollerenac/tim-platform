@@ -67,6 +67,12 @@ $(./scripts/compose-target.sh local-gpu) up -d --wait
 El nombre `bootstrap-platform.sh` se conserva por compatibilidad como nombre
 propio de la herramienta; no designa un perfil Compose.
 
+`tim-check.sh` es un gate de **régimen**: exige los umbrales del grafo ATT&CK
+(relaciones `uses` incluidas) pero no una cola MITRE vacía, porque cada ciclo
+del conector reimporta los mismos objetos y la ocupa durante horas. La cola a
+cero y el work `complete` solo los exige el arranque inicial
+(`verify-platform.sh`, llamado por `bootstrap-platform.sh`).
+
 `tim-check.sh` y `verify-service-contracts.py` **fallan con uso explícito** si
 no se les da objetivo. El verificador ahora distingue en su veredicto:
 servicios con healthcheck satisfecho, servicios `running` sin healthcheck

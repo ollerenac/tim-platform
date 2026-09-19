@@ -88,6 +88,20 @@ class ServiceContractTests(unittest.TestCase):
             self.assertTrue(target.startswith("$"), f"proxy_pass {target} is resolved at startup")
 
 
+    def test_mitre_queue_is_fatal_only_at_bootstrap(self):
+        """The readiness gate runs against a platform that ingests continuously:
+        a MITRE re-import leaves its queue busy for hours. Only the bootstrap
+        poller may require an empty queue and a complete work."""
+        scripts = Path(__file__).resolve().parent
+        self.assertIn(
+            'check_mitre_relationships.sh" --steady-state',
+            (scripts / "tim-check.sh").read_text(),
+        )
+        self.assertNotIn("--steady-state", (scripts / "verify-platform.sh").read_text())
+        checker = (scripts / "check_mitre_relationships.sh").read_text()
+        self.assertIn('failed+=("${pending[@]}")', checker)
+
+
 class TargetSelectionTests(unittest.TestCase):
     """Objetivos de despliegue: aws (sin GPU, Bedrock), local-gpu (Ollama+NVIDIA), core-only."""
 

@@ -30,7 +30,8 @@ if [ "$TARGET" = "core-only" ]; then
   exit 0
 fi
 
-"$SCRIPT_DIR/check_mitre_relationships.sh"
+# Régimen, no arranque: un ciclo MITRE en curso no invalida la plataforma.
+"$SCRIPT_DIR/check_mitre_relationships.sh" --steady-state
 
 # La verificación de UI exige node. En un host sin node el fallo debe ser
 # explícito — un SKIP silencioso es exactamente la clase de sobreafirmación
