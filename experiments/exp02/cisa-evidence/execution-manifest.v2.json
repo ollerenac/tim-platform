@@ -1,1 +1,0 @@
-{"aws_region":"us-east-1","expected_records":72,"freeze_sha256":"b7403a7b0906a125a14a7becc09f795ffeccb3b8a436467584b3b1d54c1c847d","kind":"cisa_bedrock_execution","max_starts_per_minute":8,"max_tokens":32000,"model":"us.anthropic.claude-haiku-4-5-20251001-v1:0","opencti_writes":0,"provider":"bedrock","repetitions":[1,2,3],"schema_version":2,"source_type":"advisory"}

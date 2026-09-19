@@ -35,11 +35,13 @@ _codex/
 # Agent guidance kept local
 CLAUDE.md
 
-# Research material: what is already tracked stays; new files here are not added
-corpus/
+# Research and thesis material lives in a private repository, not here
 docs/
 experiments/
 tesis/
+mkdocs.yml
+# corpus/: what is already tracked stays; new files are not added
+corpus/
 
 # Editors and operating systems
 .DS_Store
