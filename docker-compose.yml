@@ -1,7 +1,7 @@
-# Provenance allowlist shared by the analyst-facing read surfaces
-# (semantic-engine index + briefing-generator selection). Only entities
-# authored by these identities rank; mass commodity publishers stay in the
-# platform for lookup/enrichment but never crowd the analyst surfaces.
+# Provenance allowlist for the analyst-facing read surface (briefing-generator
+# selection). Only entities authored by these identities rank; mass commodity
+# publishers stay in the platform for lookup/enrichment but never crowd the
+# analyst surface.
 # Exact createdBy display names, comma-separated.
 x-curated-authors: &curated-authors
   CURATED_AUTHORS=AlienVault,The MITRE Corporation,CIRCL,CERT-FR,CERT-FR_1510,ESET,Ransom-ISAC,Centro Nacional de Seguridad Digital (CNSD),Grupo de Respuesta a Emergencias Ciberneticas de Colombia (ColCERT)
@@ -18,7 +18,6 @@ volumes:
   rabbitmqdata:
   miniodata:
   ollamadata:
-  chromadata:
   briefingsdata:
   extractordata:
   # P1.1: fs repository for ES snapshot API — scripts/backup.sh snapshots here,
@@ -1058,7 +1057,7 @@ services:
     restart: unless-stopped
 
 # ─────────────────────────────────────────────
-# CAPA AI — Ollama + ChromaDB
+# CAPA AI — Ollama (solo objetivo local-gpu)
 # ─────────────────────────────────────────────
 
   ollama:
@@ -1071,38 +1070,14 @@ services:
     # 2g OOM-killed the llama3.2:3b runner under load (model alone is 2.0 GB);
     # 6g gives model + 8k ctx + prompt cache headroom for sustained backfills.
     mem_limit: 6g
-    # La reserva NVIDIA vive en docker-compose.local-gpu.yml: la base debe
-    # renderizar en hosts sin GPU (objetivo aws, donde ollama sirve solo
-    # embeddings en CPU). Mismo servicio y mismo volumen en ambos objetivos.
+    # La reserva NVIDIA vive en docker-compose.local-gpu.yml. El objetivo aws no
+    # activa el perfil inference: toda generación va a Bedrock.
     healthcheck:
       test: ["CMD", "ollama", "list"]
       interval: 15s
       timeout: 10s
       retries: 5
       start_period: 20s
-    networks:
-      - tim-network
-    restart: unless-stopped
-
-  chromadb:
-    # AUDIT: pin to a tested digest for reproducibility (see minio note above). The cosine
-    # `configuration=` API needs chromadb >= 0.5.x — verify before pinning. Left as :latest
-    # to avoid changing the image under a running deployment.
-    image: chromadb/chroma:latest
-    profiles: [semantic]
-    volumes:
-      # P1.1 audit find: current chroma images persist to /data — the old
-      # /chroma/chroma mount left the whole index in the container layer
-      # (lost on every recreate) and produced empty backups.
-      - chromadata:/data
-    # 1g crashed the server when deleting the 468k-vector legacy collection
-    # (HNSW load/compaction exceeds the cgroup); 3g covers index maintenance.
-    mem_limit: 3g
-    healthcheck:
-      test: ["CMD-SHELL", "bash -c 'echo > /dev/tcp/localhost/8000'"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
     networks:
       - tim-network
     restart: unless-stopped
@@ -1190,44 +1165,6 @@ services:
       retries: 3
       start_period: 30s
 
-  semantic-engine:
-    build: ./services/semantic-engine
-    profiles: [semantic]
-    ports:
-      - "127.0.0.1:8002:8002"
-    environment:
-      - OPENCTI_URL=http://opencti:8080
-      - OPENCTI_TOKEN=${OPENCTI_CONNECTORS_TOKEN:-${OPENCTI_ADMIN_TOKEN}}
-      - PYTHONUNBUFFERED=1
-      - OLLAMA_URL=http://ollama:11434
-      - OLLAMA_EMBED_MODEL=nomic-embed-text
-      - OLLAMA_KEEP_ALIVE=5m
-      - CHROMADB_URL=http://chromadb:8000
-      - OPENCTI_PAGE_SIZE=100
-      - EMBED_BATCH_SIZE=32
-      - POLL_INTERVAL_SECONDS=300
-      - SIMILARITY_THRESHOLD=0.3
-      - OPENCTI_BASE_URL=http://localhost:8080
-      - *curated-authors
-    mem_limit: 1g
-    healthcheck:
-      # ponytail: python stdlib probe — curl not available in python:3.12-slim
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8002/health')"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 60s
-    depends_on:
-      opencti:
-        condition: service_healthy
-      ollama:
-        condition: service_healthy
-      chromadb:
-        condition: service_healthy
-    networks:
-      - tim-network
-    restart: unless-stopped
-
   briefing-generator:
     build: ./services/briefing-generator
     profiles: [briefings]
@@ -1290,8 +1227,6 @@ services:
     mem_limit: 512m
     depends_on:
       feed-orchestrator:
-        condition: service_healthy
-      semantic-engine:
         condition: service_healthy
       briefing-generator:
         condition: service_healthy

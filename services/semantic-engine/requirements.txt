@@ -1,7 +1,0 @@
-fastapi==0.129.2
-uvicorn
-chromadb==1.5.9
-ollama==0.6.2
-pycti==7.260706.0
-pytest
-pytest-mock

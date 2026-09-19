@@ -1,13 +1,13 @@
 # Objetivo local-gpu: piloto de experimentación con GPU NVIDIA.
-# Ollama sirve embeddings (nomic-embed-text) Y generación local (llama3.2:3b).
+# Ollama sirve la generación local (llama3.2:3b); es el único objetivo que
+# activa el perfil inference.
 #
 # Uso (siempre junto a la base):
 #   ./scripts/tim-check.sh local-gpu
 #   $(./scripts/compose-target.sh local-gpu) up -d
 #
 # La reserva NVIDIA vive aquí y solo aquí: la base debe renderizar en hosts
-# sin GPU. Mismo servicio y mismo volumen (ollamadata) que el objetivo aws,
-# para que los modelos descargados sobrevivan al cambio de objetivo.
+# sin GPU.
 
 services:
   ollama:

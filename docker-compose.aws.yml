@@ -1,34 +1,19 @@
-# Objetivo AWS: nodo sin GPU. Ollama corre en CPU y sirve ÚNICAMENTE
-# embeddings (nomic-embed-text) para semantic-engine; toda generación va a
-# Amazon Bedrock por rol IAM de instancia — sin claves en disco.
+# Objetivo AWS: nodo sin GPU. Toda generación va a Amazon Bedrock por rol IAM
+# de instancia — sin claves en disco. Ollama no se despliega: el perfil
+# inference no forma parte de este objetivo (ver scripts/compose-target.sh).
 #
 # Uso (siempre junto a la base):
 #   ./scripts/tim-check.sh aws
 #   $(./scripts/compose-target.sh aws) up -d
 #
-# La base ya no declara reserva NVIDIA, así que este override solo fija la
-# semántica del objetivo: proveedores generativos y memoria de ollama acorde
-# a un backend de embeddings puro.
+# Los proveedores están fijados aquí, no heredados del entorno: el objetivo
+# define la semántica y cambiarla exige editar este fichero versionado.
 
 services:
   intel-extractor:
     environment:
-      # Fijado, no heredado del entorno: el objetivo aws ES bedrock. Cambiarlo
-      # exige editar este fichero, no una variable que nadie audita.
       - LLM_PROVIDER=bedrock
 
   briefing-generator:
     environment:
       - LLM_PROVIDER=bedrock
-
-  semantic-engine:
-    environment:
-      # Medido 2026-08-27 sobre el grafo AWS (611k core-relaciones): la pagina
-      # de 100 dispara DATABASE_ERROR «Find direct ids fail» en OpenCTI 7
-      # (~454 ids directos por lote); 50 itera estable (verificado 8 paginas).
-      - OPENCTI_PAGE_SIZE=50
-
-  ollama:
-    # nomic-embed-text ocupa ~0,3 GB; 4g cubre modelo + batches de 32 textos.
-    # ponytail: sin medición de pico real — subir si OOMKilled aparece en aws.
-    mem_limit: 4g
