@@ -16,7 +16,6 @@ import os
 import ssl
 import subprocess
 import sys
-import time
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -26,38 +25,37 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 
 # Perfiles de un despliegue completo: capacidad funcional separada de la
-# plataforma base (core) y del backend de inferencia (inference). La reserva
-# GPU no es un perfil: vive en docker-compose.local-gpu.yml.
+# plataforma base (core). El backend de inferencia local (inference) solo lo
+# activa local-gpu; la reserva GPU no es un perfil: vive en
+# docker-compose.local-gpu.yml.
 FULL_PROFILES = (
     "core",
     "connectors",
     "feeds",
     "extractor",
-    "semantic",
     "briefings",
     "dashboard",
-    "inference",
 )
 
 TARGETS = {
     "aws": {
         "profiles": FULL_PROFILES,
         "compose_files": ("docker-compose.yml", "docker-compose.aws.yml"),
-        # En aws la generación va a Bedrock; ollama sirve solo embeddings.
-        "ollama_models": ("nomic-embed-text",),
+        # En aws la generación va a Bedrock; no se despliega Ollama.
+        "ollama_models": (),
         "functional": True,
     },
     "local-gpu": {
-        "profiles": FULL_PROFILES,
+        "profiles": (*FULL_PROFILES, "inference"),
         "compose_files": ("docker-compose.yml", "docker-compose.local-gpu.yml"),
-        "ollama_models": ("nomic-embed-text", "llama3.2:3b"),
+        "ollama_models": ("llama3.2:3b",),
         "functional": True,
     },
     "core-only": {
         "profiles": ("core",),
         "compose_files": ("docker-compose.yml",),
         "ollama_models": (),
-        # Sin feeds/semantic/briefings/dashboard no hay contratos funcionales
+        # Sin feeds/briefings/dashboard no hay contratos funcionales
         # que ejercitar: solo inventario.
         "functional": False,
     },
@@ -75,8 +73,8 @@ def parse_target(argv: list[str]) -> str:
     if len(argv) != 1:
         print(
             "uso: verify-service-contracts.py <aws|local-gpu|core-only>\n"
-            "  aws       — nodo sin GPU: Bedrock genera, ollama-CPU embebe\n"
-            "  local-gpu — piloto con NVIDIA: ollama embebe y genera\n"
+            "  aws       — nodo sin GPU: Bedrock genera, sin Ollama\n"
+            "  local-gpu — piloto con NVIDIA: ollama genera\n"
             "  core-only — plataforma OpenCTI sin servicios funcionales",
             file=sys.stderr,
         )
@@ -98,10 +96,6 @@ def compose_command(target: str) -> list[str]:
 COMPOSE = compose_command("aws")
 SSL_CONTEXT = ssl._create_unverified_context()
 MAX_DIAGNOSTIC_BODY_BYTES = 2048
-SEMANTIC_RETRY_ATTEMPTS = 5
-SEMANTIC_RETRY_DELAY_SECONDS = 5
-SEMANTIC_INDEX_RETRY_ATTEMPTS = 24
-SEMANTIC_INDEX_RETRY_DELAY_SECONDS = 5
 
 
 def _bounded_body(body: bytes | str, redactions: tuple[str, ...] = ()) -> str:
@@ -243,88 +237,6 @@ def request_json(
         ) from exc
 
 
-def wait_for_semantic_ready(
-    url: str,
-    auth: str,
-    *,
-    attempts: int = SEMANTIC_RETRY_ATTEMPTS,
-    sleep=time.sleep,
-):
-    """Wait for explicit semantic readiness without retrying the real search."""
-    if not 1 <= attempts <= SEMANTIC_RETRY_ATTEMPTS:
-        raise ValueError(f"attempts must be between 1 and {SEMANTIC_RETRY_ATTEMPTS}")
-
-    for attempt in range(1, attempts + 1):
-        try:
-            return request_json(
-                url,
-                auth,
-                timeout=120,
-                service="semantic-engine",
-            )
-        except ServiceContractError as exc:
-            if exc.status != 503 or attempt == attempts:
-                raise
-            print(
-                f"  WAIT semantic model warmup attempt {attempt}/{attempts}: {exc}"
-            )
-            sleep(SEMANTIC_RETRY_DELAY_SECONDS)
-
-
-def wait_for_semantic_index(
-    health_url: str,
-    stats_url: str,
-    auth: str,
-    *,
-    attempts: int = SEMANTIC_INDEX_RETRY_ATTEMPTS,
-    sleep=time.sleep,
-):
-    """Require at least one real indexed IOC and fail fast on index errors."""
-    if not 1 <= attempts <= SEMANTIC_INDEX_RETRY_ATTEMPTS:
-        raise ValueError(
-            f"attempts must be between 1 and {SEMANTIC_INDEX_RETRY_ATTEMPTS}"
-        )
-
-    for attempt in range(1, attempts + 1):
-        health = request_json(
-            health_url, auth, timeout=30, service="semantic-engine"
-        )
-        status = health.get("status")
-        if status == "error":
-            raise ValueError(f"semantic index status error: {health!r}")
-        if status not in {"starting", "fetching", "indexing", "ready", "ok"}:
-            raise ValueError(f"semantic index health is malformed: {health!r}")
-
-        stats = request_json(
-            stats_url, auth, timeout=30, service="semantic-engine"
-        )
-        total = stats.get("total_indexed")
-        if not isinstance(total, int) or isinstance(total, bool) or total < 0:
-            raise ValueError(f"semantic stats contract is malformed: {stats!r}")
-        if total > 0:
-            return stats
-        if attempt == attempts:
-            raise ValueError(
-                f"semantic index made no positive progress after {attempts} attempts; "
-                f"health={health!r}; stats={stats!r}"
-            )
-        print(
-            f"  WAIT semantic index attempt {attempt}/{attempts}: "
-            f"status={status}, total_indexed={total}"
-        )
-        sleep(SEMANTIC_INDEX_RETRY_DELAY_SECONDS)
-
-
-def validate_semantic_search(search: dict) -> None:
-    """Reject a shape-correct but operationally empty semantic search."""
-    results = search.get("results")
-    count = search.get("count")
-    if not isinstance(results, list) or count != len(results):
-        raise ValueError("semantic search round-trip contract is malformed")
-    if count == 0:
-        raise ValueError("semantic search returned no results")
-
-
 def verify_unauthorized(url: str, service: str) -> None:
     try:
         urllib.request.urlopen(url, context=SSL_CONTEXT, timeout=10)
@@ -458,26 +370,6 @@ def verify_contracts(env: dict[str, str], ollama_models: tuple[str, ...]) -> Non
     if not isinstance(recent.get("iocs"), list):
         fail("recent IOC contract is malformed")
 
-    readiness = wait_for_semantic_ready(
-        "https://localhost/api/semantic/ready", auth
-    )
-    if readiness.get("status") != "ready":
-        fail(f"semantic readiness contract is malformed: {readiness!r}")
-
-    wait_for_semantic_index(
-        "https://localhost/api/semantic/health",
-        "https://localhost/api/semantic/stats",
-        auth,
-    )
-
-    search = request_json(
-        "https://localhost/api/semantic/search?q=malware&n_results=3",
-        auth,
-        timeout=120,
-        service="semantic-engine",
-    )
-    validate_semantic_search(search)
-
     briefing = request_json(
         "https://localhost/api/briefings/stats",
         auth,
@@ -518,7 +410,7 @@ def verify_contracts(env: dict[str, str], ollama_models: tuple[str, ...]) -> Non
                 fail(f"required Ollama model is missing for this target: {model}")
 
     errors = sorted(item["name"] for item in feeds if item.get("status") == "error")
-    passed("cross-service data contracts and read-only semantic search work")
+    passed("cross-service data contracts work")
     if errors:
         print(f"  WARN external feed errors do not invalidate service readiness: {', '.join(errors)}")
     passed("Kibana API status is available and target-required Ollama models are installed")

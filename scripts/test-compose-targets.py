@@ -72,17 +72,19 @@ class ComposeTargetRenderTests(unittest.TestCase):
     # 5: inventario esperado por objetivo
     def test_inventory_per_target(self):
         aws_services = set(self.aws["services"])
-        self.assertEqual(len(aws_services), 39)
-        for svc in ("ollama", "semantic-engine", "soc-dashboard", "chromadb", "opencti"):
+        self.assertEqual(len(aws_services), 36)
+        for svc in ("soc-dashboard", "opencti", "intel-extractor", "briefing-generator"):
             self.assertIn(svc, aws_services)
-        self.assertEqual(set(self.local_gpu["services"]), aws_services)
+        for svc in ("ollama", "semantic-engine", "chromadb"):
+            self.assertNotIn(svc, aws_services)
+        self.assertEqual(set(self.local_gpu["services"]), aws_services | {"ollama"})
         core = set(self.core_only["services"])
         self.assertEqual(
             core,
             {"elasticsearch", "kibana", "redis", "rabbitmq", "minio", "opencti", "worker"},
         )
 
-    # 10: dependencias completas de dashboard, semantic, feeds y briefings
+    # 10: dependencias completas de dashboard, feeds y briefings
     def test_full_targets_resolve_all_dependencies(self):
         for cfg in (self.aws, self.local_gpu):
             services = cfg["services"]
@@ -110,8 +112,13 @@ class ComposeTargetRenderTests(unittest.TestCase):
     def test_volume_names_are_preserved(self):
         for cfg in (self.aws, self.local_gpu):
             for vol in ("esdata", "redisdata", "rabbitmqdata", "miniodata",
-                        "ollamadata", "chromadata", "briefingsdata", "extractordata"):
+                        "briefingsdata", "extractordata"):
                 self.assertIn(vol, cfg.get("volumes", {}))
+            self.assertNotIn("chromadata", cfg.get("volumes", {}))
+        # `compose config` poda los volúmenes sin servicio activo: ollamadata
+        # solo se renderiza donde corre ollama (perfil inference).
+        self.assertIn("ollamadata", self.local_gpu["volumes"])
+        self.assertNotIn("ollamadata", self.aws["volumes"])
 
 
 if __name__ == "__main__":

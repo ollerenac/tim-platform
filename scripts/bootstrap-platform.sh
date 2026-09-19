@@ -32,16 +32,14 @@ if ! $COMPOSE up -d --wait --wait-timeout "$STARTUP_TIMEOUT"; then
   exit 1
 fi
 
-MODELS="$($COMPOSE exec -T ollama ollama list 2>/dev/null || true)"
-NEEDED=(nomic-embed-text)
-[ "$TARGET" = "local-gpu" ] && NEEDED+=("llama3.2:3b")
-for model in "${NEEDED[@]}"; do
-  if ! grep -q "$model" <<<"$MODELS"; then
-    echo "[bootstrap-platform] Required Ollama models are missing; initializing them..."
+# Solo local-gpu despliega Ollama; aws genera con Bedrock.
+if [ "$TARGET" = "local-gpu" ]; then
+  MODELS="$($COMPOSE exec -T ollama ollama list 2>/dev/null || true)"
+  if ! grep -q "llama3.2:3b" <<<"$MODELS"; then
+    echo "[bootstrap-platform] Required Ollama model is missing; initializing it..."
     "$SCRIPT_DIR/init-models.sh" "$TARGET"
-    break
   fi
-done
+fi
 
 echo "[bootstrap-platform] All services are healthy; running functional readiness checks..."
 if ! "$SCRIPT_DIR/tim-check.sh" "$TARGET"; then

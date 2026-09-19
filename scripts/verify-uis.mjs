@@ -313,17 +313,6 @@ async function main() {
       120000,
     );
 
-    await clickTab(cdp, 'Threat Hunt');
-    await evaluate(cdp, `(() => {
-      const input = document.querySelector('input[type="text"]');
-      const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
-      setter.call(input, 'malware');
-      input.dispatchEvent(new Event('input', { bubbles: true }));
-      [...document.querySelectorAll('button')].find(node => node.textContent.trim() === 'Search').click();
-    })()`);
-    await requireResponse(responses, '/api/semantic/search');
-    await waitForExpression(cdp, 'Threat Hunt result', "!document.body.innerText.includes('Searching') && !document.body.innerText.includes('Could not load')", 120000);
-
     await clickTab(cdp, 'Briefings');
     await requireResponse(responses, '/api/briefings/briefings');
     await waitForExpression(cdp, 'Briefings view', "!document.body.innerText.includes('Could not load')", 30000);
@@ -334,7 +323,6 @@ async function main() {
 
     await clickTab(cdp, 'Ingestion Monitor');
     for (const path of [
-      '/api/semantic/stats',
       '/api/extractor/stats',
       '/api/briefings/cve/stats',
       '/api/feeds/feeds/recent',
@@ -345,7 +333,7 @@ async function main() {
     await screenshotIsNonBlank(cdp, 'SOC Dashboard');
 
     if (failures.length) throw new Error(`SOC browser resources failed: ${[...new Set(failures)].slice(0, 5).join('; ')}`);
-    console.log('  PASS authenticated React UI, five views, semantic search, and proxied APIs rendered');
+    console.log('  PASS authenticated React UI, four views, and proxied APIs rendered');
 
     responses.clear();
     failures.length = 0;

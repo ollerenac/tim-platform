@@ -1,19 +1,19 @@
 #!/bin/bash
-# Descarga los modelos Ollama que exige el objetivo de despliegue.
+# Descarga el modelo Ollama que exige el objetivo local-gpu.
 # Ejecutar una sola vez después de levantar el stack.
 #
-# Uso: ./scripts/init-models.sh <aws|local-gpu>
-#   aws       — solo nomic-embed-text (embeddings CPU; Bedrock genera)
-#   local-gpu — nomic-embed-text + llama3.2:3b (generación local)
+# Uso: ./scripts/init-models.sh local-gpu
+#   local-gpu — llama3.2:3b (generación local)
+#   aws       — no aplica: no despliega Ollama, Bedrock genera
 
 set -euo pipefail
 
 TARGET="${1:-}"
 case "$TARGET" in
-  aws)       MODELS=(nomic-embed-text) ;;
-  local-gpu) MODELS=(nomic-embed-text "llama3.2:3b") ;;
+  local-gpu) MODELS=("llama3.2:3b") ;;
   *)
-    echo "uso: init-models.sh <aws|local-gpu>" >&2
+    echo "uso: init-models.sh local-gpu" >&2
+    echo "  el objetivo aws no despliega Ollama (Bedrock genera)" >&2
     exit 2
     ;;
 esac

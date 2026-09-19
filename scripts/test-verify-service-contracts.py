@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-"""Offline regressions for TIM HTTP contract diagnostics and semantic readiness."""
+"""Offline regressions for TIM HTTP contract diagnostics and deployment targets."""
 
 from __future__ import annotations
 
 import importlib.util
 import io
 import json
+import re
 import unittest
 import urllib.error
 from pathlib import Path
@@ -46,7 +47,7 @@ class FakeResponse:
 def http_error(
     status: int,
     body: bytes = b"Internal Server Error",
-    url: str = "https://localhost/api/semantic/search?q=malware&n_results=3",
+    url: str = "https://localhost/api/feeds/feeds/status",
 ) -> urllib.error.HTTPError:
     return urllib.error.HTTPError(
         url,
@@ -58,137 +59,33 @@ def http_error(
 
 
 class ServiceContractTests(unittest.TestCase):
-    url = "https://localhost/api/semantic/search?q=malware&n_results=3"
-    ready_url = "https://localhost/api/semantic/ready"
+    url = "https://localhost/api/feeds/feeds/status"
     auth = "Basic do-not-print-this-secret"
 
     def test_http_500_diagnostic_names_service_endpoint_status_and_body(self):
         with patch.object(contracts.urllib.request, "urlopen", side_effect=http_error(500)):
             with self.assertRaises(contracts.ServiceContractError) as caught:
-                contracts.request_json(self.url, self.auth, service="semantic-engine")
+                contracts.request_json(self.url, self.auth, service="feed-orchestrator")
 
         message = str(caught.exception)
-        self.assertIn("semantic-engine", message)
-        self.assertIn("/api/semantic/search", message)
+        self.assertIn("feed-orchestrator", message)
+        self.assertIn("/api/feeds/feeds/status", message)
         self.assertIn("500", message)
         self.assertIn("Internal Server Error", message)
         self.assertNotIn(self.auth, message)
         self.assertNotIn("do-not-print-this-secret", message)
 
-    def test_semantic_readiness_waits_through_503_then_returns_ready_json(self):
-        expected = {"status": "ready", "attempts": 1, "error": None}
-        waits = []
-        with patch.object(
-            contracts.urllib.request,
-            "urlopen",
-            side_effect=[
-                http_error(503, b'{"status":"warming"}', self.ready_url),
-                FakeResponse(expected),
-            ],
-        ) as opener:
-            result = contracts.wait_for_semantic_ready(
-                self.ready_url,
-                self.auth,
-                attempts=3,
-                sleep=lambda seconds: waits.append(seconds),
-            )
-
-        self.assertEqual(result, expected)
-        self.assertEqual(opener.call_count, 2)
-        self.assertEqual(waits, [contracts.SEMANTIC_RETRY_DELAY_SECONDS])
-
-    def test_semantic_readiness_exhaustion_raises_last_enriched_error(self):
-        errors = [
-            http_error(503, f"warming {number}".encode(), self.ready_url)
-            for number in range(1, 4)
-        ]
-        waits = []
-        with patch.object(contracts.urllib.request, "urlopen", side_effect=errors) as opener:
-            with self.assertRaises(contracts.ServiceContractError) as caught:
-                contracts.wait_for_semantic_ready(
-                    self.ready_url,
-                    self.auth,
-                    attempts=3,
-                    sleep=lambda seconds: waits.append(seconds),
-                )
-
-        self.assertEqual(opener.call_count, 3)
-        self.assertEqual(len(waits), 2)
-        self.assertEqual(caught.exception.status, 503)
-        self.assertIn("warming 3", str(caught.exception))
-
-    def test_semantic_readiness_does_not_retry_401(self):
-        waits = []
-        with patch.object(
-            contracts.urllib.request, "urlopen", side_effect=http_error(401, b"Unauthorized")
-        ) as opener:
-            with self.assertRaises(contracts.ServiceContractError) as caught:
-                contracts.wait_for_semantic_ready(
-                    self.ready_url,
-                    self.auth,
-                    attempts=3,
-                    sleep=lambda seconds: waits.append(seconds),
-                )
-
-        self.assertEqual(opener.call_count, 1)
-        self.assertEqual(waits, [])
-        self.assertEqual(caught.exception.status, 401)
-
-    def test_semantic_proxy_timeout_exceeds_functional_client_budget(self):
+    def test_nginx_resolves_every_upstream_at_request_time(self):
+        """A literal host in proxy_pass is resolved once at startup: nginx then
+        refuses to start with a backend down and keeps a stale IP after it
+        restarts (VPS 2026-09-19). Every proxy must go through a variable."""
         nginx = (Path(__file__).resolve().parents[1] / "services/dashboard/nginx.conf").read_text()
-        semantic_location = nginx.split("location /api/semantic/ {", 1)[1].split("}", 1)[0]
-
-        self.assertIn("proxy_read_timeout 130s;", semantic_location)
-
-    def test_semantic_index_waits_for_positive_progress(self):
-        waits = []
-        with patch.object(
-            contracts,
-            "request_json",
-            side_effect=[
-                {"status": "fetching", "indexed": 0, "total": 0},
-                {"total_indexed": 0},
-                {"status": "indexing", "indexed": 32, "total": 315440},
-                {"total_indexed": 32},
-            ],
-        ) as request:
-            stats = contracts.wait_for_semantic_index(
-                "https://localhost/api/semantic/health",
-                "https://localhost/api/semantic/stats",
-                self.auth,
-                attempts=3,
-                sleep=lambda seconds: waits.append(seconds),
-            )
-
-        self.assertEqual(stats["total_indexed"], 32)
-        self.assertEqual(request.call_count, 4)
-        self.assertEqual(waits, [contracts.SEMANTIC_INDEX_RETRY_DELAY_SECONDS])
-
-    def test_semantic_index_error_is_immediately_fatal(self):
-        with patch.object(
-            contracts,
-            "request_json",
-            return_value={"status": "error", "indexed": 0, "total": 0},
-        ) as request:
-            with self.assertRaisesRegex(ValueError, "status error"):
-                contracts.wait_for_semantic_index(
-                    "https://localhost/api/semantic/health",
-                    "https://localhost/api/semantic/stats",
-                    self.auth,
-                    attempts=3,
-                    sleep=lambda seconds: None,
-                )
-
-        self.assertEqual(request.call_count, 1)
-
-    def test_semantic_search_must_be_nonempty(self):
-        with self.assertRaisesRegex(ValueError, "no results"):
-            contracts.validate_semantic_search({"results": [], "count": 0})
-
-        contracts.validate_semantic_search(
-            {"results": [{"value": "example.test", "score": 0.9}], "count": 1}
-        )
-
+        self.assertIn("resolver 127.0.0.11", nginx)
+        self.assertNotIn("/api/semantic/", nginx)
+        targets = re.findall(r"^\s*proxy_pass\s+(\S+);", nginx, re.M)
+        self.assertEqual(len(targets), 4)
+        for target in targets:
+            self.assertTrue(target.startswith("$"), f"proxy_pass {target} is resolved at startup")
 
 
 class TargetSelectionTests(unittest.TestCase):
@@ -197,10 +94,13 @@ class TargetSelectionTests(unittest.TestCase):
     def test_target_registry_declares_three_targets(self):
         self.assertEqual(set(contracts.TARGETS), {"aws", "local-gpu", "core-only"})
 
-    def test_aws_target_profiles_cover_full_stack_with_inference(self):
-        aws = contracts.TARGETS["aws"]
-        for profile in ("core", "connectors", "feeds", "extractor", "semantic", "briefings", "dashboard", "inference"):
-            self.assertIn(profile, aws["profiles"])
+    def test_aws_target_covers_full_stack_without_inference(self):
+        aws = contracts.TARGETS["aws"]["profiles"]
+        for profile in ("core", "connectors", "feeds", "extractor", "briefings", "dashboard"):
+            self.assertIn(profile, aws)
+        self.assertNotIn("inference", aws)
+        self.assertNotIn("semantic", aws)
+        self.assertIn("inference", contracts.TARGETS["local-gpu"]["profiles"])
 
     def test_aws_target_uses_aws_override_and_local_gpu_uses_gpu_override(self):
         self.assertEqual(
@@ -219,11 +119,8 @@ class TargetSelectionTests(unittest.TestCase):
         self.assertFalse(core["functional"])
 
     def test_ollama_models_differ_by_target(self):
-        self.assertEqual(contracts.TARGETS["aws"]["ollama_models"], ("nomic-embed-text",))
-        self.assertEqual(
-            contracts.TARGETS["local-gpu"]["ollama_models"],
-            ("nomic-embed-text", "llama3.2:3b"),
-        )
+        self.assertEqual(contracts.TARGETS["aws"]["ollama_models"], ())
+        self.assertEqual(contracts.TARGETS["local-gpu"]["ollama_models"], ("llama3.2:3b",))
         self.assertEqual(contracts.TARGETS["core-only"]["ollama_models"], ())
 
     def test_compose_command_names_every_profile_and_file(self):

@@ -10,7 +10,7 @@
 set -euo pipefail
 
 TARGET="${1:-}"
-FULL_PROFILES=(core connectors feeds extractor semantic briefings dashboard inference)
+FULL_PROFILES=(core connectors feeds extractor briefings dashboard)
 
 case "$TARGET" in
   aws)
@@ -19,7 +19,8 @@ case "$TARGET" in
     ;;
   local-gpu)
     FILES=(-f docker-compose.yml -f docker-compose.local-gpu.yml)
-    PROFILES=("${FULL_PROFILES[@]}")
+    # inference (ollama) solo existe en el piloto local.
+    PROFILES=("${FULL_PROFILES[@]}" inference)
     ;;
   core-only)
     FILES=(-f docker-compose.yml)
@@ -27,8 +28,8 @@ case "$TARGET" in
     ;;
   *)
     echo "uso: compose-target.sh <aws|local-gpu|core-only>" >&2
-    echo "  aws       — nodo sin GPU: Bedrock genera, ollama-CPU embebe" >&2
-    echo "  local-gpu — piloto con NVIDIA: ollama embebe y genera" >&2
+    echo "  aws       — nodo sin GPU: Bedrock genera, sin Ollama" >&2
+    echo "  local-gpu — piloto con NVIDIA: ollama genera" >&2
     echo "  core-only — plataforma OpenCTI sin servicios funcionales" >&2
     exit 2
     ;;

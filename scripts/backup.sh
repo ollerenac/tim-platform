@@ -20,7 +20,7 @@ set -euo pipefail
 PROJECT="${PROJECT:-opencti-7-pilot}"
 ES_CONTAINER="${ES_CONTAINER:-${PROJECT}-elasticsearch-1}"
 BACKUP_DIR="${BACKUP_DIR:-./backups/$(date +%Y%m%d-%H%M%S)}"
-VOLUMES=(redisdata rabbitmqdata miniodata chromadata briefingsdata extractordata)
+VOLUMES=(redisdata rabbitmqdata miniodata briefingsdata extractordata)
 
 mkdir -p "$BACKUP_DIR"
 echo "==> Backup to $BACKUP_DIR (project: $PROJECT)"
