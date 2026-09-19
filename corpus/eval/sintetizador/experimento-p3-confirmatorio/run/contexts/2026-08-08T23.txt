@@ -1,8 +1,0 @@
-Period: last 1h (ending 2026-08-09T00:00Z).
-IOC activity in period: 7 indicators total (0 newly created, 7 pre-existing ones re-updated). The 7 highest-confidence of them are sampled below: (7 Domain-Name), top confidence: 0.20.
-Highest-confidence indicator values, verbatim: 2zrek3mkl72d5b6evpkx2rz2glzrltiorgblpfb2ttg6lacwlsdk4iqd.onion (Domain-Name), kvk46su7d2qi6g4n43syp4zbsf2rihnc6ztj77qtc2ojvewjqvqilnqd.onion (Domain-Name), nytiplwknkinobjaeb5tajjiglip3vtaccju6ta7d47u5u64ktrwhrqd.onion (Domain-Name), 3xl6xhboulyuez6fuydyhj7pdvkshzn4ogsmgwbb3ukrkvgi6bcwvfyd.onion (Domain-Name), imnlyhj4mtmtesqrvf7c4ma6dkxeyxw3ae53w6fuz42spndg7zpat6qd.onion (Domain-Name), e3mnde5uyuxjoztup6t3m7nykbicexbzra76ucligwgsaez65w63y2ad.onion (Domain-Name), johnnytogdstudio.xyz (Domain-Name).
-Tracked threat actors (knowledge base, most recently updated first): Exilware, BREEZE COMET, Mini Shai-Hulud, Sandworm Team, Aurora, Dark Caracal, Tortoiseshell, DukeEugene, Vanilla Tempest, UAT-10147.
-Tracked malware families (knowledge base): PollCat, NodeRabbit, Concipit1248, Cerberus, AgenteV2, CNABHunter, BraZetsu, Trinitite, BOATBEAM, KICKPLATE.
-Campaigns tracked in knowledge base: Quad7 Activity, CostaRicto, FLORAHOX Activity, C0027, C0026 (+5 more).
-ATT&CK techniques tracked (knowledge base): T1682 (Query Public AI Services), T1021.002 (SMB/Windows Admin Shares), T1025 (Data from Removable Media).
-Affected sectors: none identified.

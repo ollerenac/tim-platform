@@ -36,12 +36,11 @@ _codex/
 CLAUDE.md
 
 # Research and thesis material lives in a private repository, not here
+corpus/
 docs/
 experiments/
 tesis/
 mkdocs.yml
-# corpus/: what is already tracked stays; new files are not added
-corpus/
 
 # Editors and operating systems
 .DS_Store

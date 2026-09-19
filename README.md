@@ -87,23 +87,6 @@ The host needs an IAM role allowed to invoke the Bedrock model named by
 | --- | --- |
 | `services/` | TIM services, connector adaptations, dashboards, and service tests. |
 | `scripts/` | Environment setup, bootstrap, operations, backup, and verification tools. |
-| `corpus/` | Evaluation tools, provenance manifests, reference data, hashes, and system outputs. |
-
-## Experimental material and provenance
-
-`corpus/` preserves the evaluation tools, structured references, generated
-outputs, and scoring artifacts of earlier evaluations. It does not bundle
-complete third-party articles or advisory documents. Experiment protocols and
-project documentation are maintained outside this repository.
-
-Third-party source documents are referenced by their original URLs and
-SHA-256 hashes. This keeps the provenance auditable without republishing
-material whose redistribution terms may differ from the code license. See
-[`corpus/SOURCES.md`](corpus/SOURCES.md).
-
-Some recorded outputs contain harmless threat-intelligence indicators,
-including domains and URLs. Treat them as research data, not as links to open
-in a browser.
 
 ## Licensing
 

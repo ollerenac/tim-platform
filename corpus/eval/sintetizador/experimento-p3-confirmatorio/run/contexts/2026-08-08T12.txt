@@ -1,8 +1,0 @@
-Period: last 1h (ending 2026-08-08T13:00Z).
-IOC activity in period: 12 indicators total (0 newly created, 12 pre-existing ones re-updated). The 12 highest-confidence of them are sampled below: (1 Domain-Name, 5 StixFile, 1 Email-Addr, 5 Text), top confidence: 0.80.
-Highest-confidence indicator values, verbatim: updates.microsoft.com (Domain-Name), driverpackUpdate.exe (StixFile), MicrosoftUpdate845255.exe (StixFile), It11.exe (StixFile), nod32update.exe (StixFile), b0b8effdda97a3589daaae373bf321810bc29b22623eb12ad7b46fb931e40d9b (StixFile), fhtgbbwi@mail.ru (Email-Addr), Win32/Nightclub.B (Text), Win64/Nightclub.B (Text), /driverpack/officetelemetry.exe (Text).
-Tracked threat actors (knowledge base, most recently updated first): Exilware, BREEZE COMET, Mini Shai-Hulud, Sandworm Team, Aurora, Dark Caracal, Tortoiseshell, DukeEugene, Vanilla Tempest, UAT-10147.
-Tracked malware families (knowledge base): PollCat, NodeRabbit, Concipit1248, Cerberus, AgenteV2, CNABHunter, BraZetsu, Trinitite, BOATBEAM, KICKPLATE.
-Campaigns tracked in knowledge base: Quad7 Activity, CostaRicto, FLORAHOX Activity, C0027, C0026 (+5 more).
-ATT&CK techniques tracked (knowledge base): T1682 (Query Public AI Services), T1021.002 (SMB/Windows Admin Shares), T1025 (Data from Removable Media).
-Affected sectors: none identified.

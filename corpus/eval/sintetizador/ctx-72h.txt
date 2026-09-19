@@ -1,7 +1,0 @@
-Period: last 72h (ending 2026-08-19T04:55Z).
-IOC activity in period: 187 indicators total (0 newly created, 187 pre-existing ones re-updated). The 25 highest-confidence of them are sampled below: (5 Domain-Name, 14 Url, 6 IPv4-Addr), top confidence: 0.50.
-Tracked threat actors (knowledge base, most recently updated first): Sable Squirrel, Darkhotel, REF7707, Cl0p, APT29, Head Mare, DeadLock, Nomadic Octopus, APT19, PittyTiger.
-Tracked malware families (knowledge base): Remcos RAT, Evooo1Bot, HiddenTear, NanoCore - S0336, DCRat, SuperShell, HackBrowserData, GateSentinel, HACKERAI C2 Agent, SHEETCORD.
-Campaigns tracked in knowledge base: Quad7 Activity, CostaRicto, FLORAHOX Activity, C0027, C0026 (+5 more).
-ATT&CK techniques tracked (knowledge base): T1682 (Query Public AI Services), T1021.002 (SMB/Windows Admin Shares), T1025 (Data from Removable Media).
-Affected sectors: none identified.

@@ -1,8 +1,0 @@
-Period: last 1h (ending 2026-08-28T01:00Z).
-IOC activity in period: 42 indicators total (42 newly created, 0 pre-existing ones re-updated). The 25 highest-confidence of them are sampled below: (24 Domain-Name, 1 Hostname), top confidence: 0.50.
-Highest-confidence indicator values, verbatim: trace-apple-in.com (Domain-Name), rastreo-devices.com (Domain-Name), prookit.com (Domain-Name), kanoondekho.com (Domain-Name), irealm-server.co (Domain-Name), inc-locations.support (Domain-Name), icloud-inc-in.info (Domain-Name), i-cloudsd.com (Domain-Name), fmi-dispositivos.com (Domain-Name), fmi-dispositivo.com (Domain-Name).
-Tracked threat actors (knowledge base, most recently updated first): Exilware, BREEZE COMET, Mini Shai-Hulud, Sandworm Team, Aurora, Dark Caracal, Tortoiseshell, DukeEugene, Vanilla Tempest, UAT-10147.
-Tracked malware families (knowledge base): PollCat, NodeRabbit, Concipit1248, Cerberus, AgenteV2, CNABHunter, BraZetsu, Trinitite, BOATBEAM, KICKPLATE.
-Campaigns tracked in knowledge base: Quad7 Activity, CostaRicto, FLORAHOX Activity, C0027, C0026 (+5 more).
-ATT&CK techniques tracked (knowledge base): T1682 (Query Public AI Services), T1021.002 (SMB/Windows Admin Shares), T1025 (Data from Removable Media).
-Affected sectors: none identified.

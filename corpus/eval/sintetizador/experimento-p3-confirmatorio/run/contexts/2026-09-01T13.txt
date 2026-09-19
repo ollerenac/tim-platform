@@ -1,8 +1,0 @@
-Period: last 1h (ending 2026-09-01T14:00Z).
-IOC activity in period: 10 indicators total (0 newly created, 10 pre-existing ones re-updated). The 10 highest-confidence of them are sampled below: (10 Domain-Name), top confidence: 0.20.
-Highest-confidence indicator values, verbatim: indus.exchange (Domain-Name), indusx.tech (Domain-Name), 1vpns.org (Domain-Name), 1vpns.net (Domain-Name), bpfi.digital (Domain-Name), tralalarkefe.com (Domain-Name), dzbank.capital (Domain-Name), induspayments.com (Domain-Name), vebrf.digital (Domain-Name), 1vpns.com (Domain-Name).
-Tracked threat actors (knowledge base, most recently updated first): Exilware, BREEZE COMET, Mini Shai-Hulud, Sandworm Team, Aurora, Dark Caracal, Tortoiseshell, DukeEugene, Vanilla Tempest, UAT-10147.
-Tracked malware families (knowledge base): PollCat, NodeRabbit, Concipit1248, Cerberus, AgenteV2, CNABHunter, BraZetsu, Trinitite, BOATBEAM, KICKPLATE.
-Campaigns tracked in knowledge base: Quad7 Activity, CostaRicto, FLORAHOX Activity, C0027, C0026 (+5 more).
-ATT&CK techniques tracked (knowledge base): T1682 (Query Public AI Services), T1021.002 (SMB/Windows Admin Shares), T1025 (Data from Removable Media).
-Affected sectors: none identified.

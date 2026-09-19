@@ -1,8 +1,0 @@
-Period: last 1h (ending 2026-08-26T13:00Z).
-IOC activity in period: 38 indicators total (34 newly created, 4 pre-existing ones re-updated). The 25 highest-confidence of them are sampled below: (12 Domain-Name, 2 Url, 8 Hostname, 3 StixFile), top confidence: 0.50.
-Highest-confidence indicator values, verbatim: keyval.org (Domain-Name), https://api.keyval.org (Url), api.keyval.org (Hostname), login.microsofte.live (Hostname), www.cyberarmor.tech (Hostname), togotoresolve.com (Domain-Name), net2me.me (Domain-Name), letsgo2.me (Domain-Name), docshared.org (Domain-Name), https://www.cyberarmor.tech/blog/threat-insight-cybercriminals-abusing-vercel-to-deliver-remote-access-malware (Url).
-Tracked threat actors (knowledge base, most recently updated first): Exilware, BREEZE COMET, Mini Shai-Hulud, Sandworm Team, Aurora, Dark Caracal, Tortoiseshell, DukeEugene, Vanilla Tempest, UAT-10147.
-Tracked malware families (knowledge base): PollCat, NodeRabbit, Concipit1248, Cerberus, AgenteV2, CNABHunter, BraZetsu, Trinitite, BOATBEAM, KICKPLATE.
-Campaigns tracked in knowledge base: Quad7 Activity, CostaRicto, FLORAHOX Activity, C0027, C0026 (+5 more).
-ATT&CK techniques tracked (knowledge base): T1682 (Query Public AI Services), T1021.002 (SMB/Windows Admin Shares), T1025 (Data from Removable Media).
-Affected sectors: none identified.

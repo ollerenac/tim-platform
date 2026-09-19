@@ -1,8 +1,0 @@
-Period: last 1h (ending 2026-08-15T01:00Z).
-IOC activity in period: 27 indicators total (28 newly created, 0 pre-existing ones re-updated). The 25 highest-confidence of them are sampled below: (16 Hostname, 3 Domain-Name, 6 StixFile), top confidence: 0.50.
-Highest-confidence indicator values, verbatim: rpc.polygonsupernet.public.arianee.net (Hostname), rpc.poolz.finance (Hostname), rpc.polygon-zkevm.gateway.fm (Hostname), polygontestapi.terminet.io (Hostname), polygon.rpc.hypersync.xyz (Hostname), polygon-zkevm-mainnet.public.blastapi.io (Hostname), polygon-mumbai-bor-rpc.publicnode.com (Hostname), polygon-amoy.therpc.io (Hostname), polygon-amoy.gateway.tenderly.co (Hostname), api.noderpc.xyz (Hostname).
-Tracked threat actors (knowledge base, most recently updated first): Exilware, BREEZE COMET, Mini Shai-Hulud, Sandworm Team, Aurora, Dark Caracal, Tortoiseshell, DukeEugene, Vanilla Tempest, UAT-10147.
-Tracked malware families (knowledge base): PollCat, NodeRabbit, Concipit1248, Cerberus, AgenteV2, CNABHunter, BraZetsu, Trinitite, BOATBEAM, KICKPLATE.
-Campaigns tracked in knowledge base: Quad7 Activity, CostaRicto, FLORAHOX Activity, C0027, C0026 (+5 more).
-ATT&CK techniques tracked (knowledge base): T1682 (Query Public AI Services), T1021.002 (SMB/Windows Admin Shares), T1025 (Data from Removable Media).
-Affected sectors: none identified.

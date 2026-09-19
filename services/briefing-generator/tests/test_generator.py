@@ -333,6 +333,8 @@ def test_anchor_reanalysis_of_the_two_stored_poc_reports():
 
     root = Path(__file__).resolve().parents[3]
     artifacts = root / "corpus/eval/sintetizador"
+    if not artifacts.is_dir():
+        pytest.skip("corpus congelado no disponible (vive en el repositorio privado)")
     context = (artifacts / "contexto-72h.json").read_text()
 
     first = anchor_stats(
