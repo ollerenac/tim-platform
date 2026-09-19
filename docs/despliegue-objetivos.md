@@ -1,8 +1,9 @@
-# Despliegue por objetivos — perfiles Compose y matriz AWS/local
+# Despliegue por objetivos — perfiles Compose
 
-Vigente desde 2026-08-27. Sustituye la organización anterior de perfiles
-(`platform`/`feeds`/`semantic`/`briefings`/`dashboard`), en la que `platform`
-mezclaba plataforma base, servicios funcionales y la reserva GPU de Ollama.
+TIM se despliega en un único entorno: un nodo de AWS sin GPU, con Amazon Bedrock
+como único proveedor generativo. La búsqueda semántica y el piloto local con GPU
+(`local-gpu`, Ollama) se retiraron el 2026-09-19; la última revisión que los
+contiene es la etiqueta git `pre-fase3-evidencia`.
 
 ## Vocabulario
 
@@ -18,33 +19,26 @@ mezclaba plataforma base, servicios funcionales y la reserva GPU de Ollama.
 
 | Perfil | Servicios | Razón de la frontera |
 |---|---|---|
-| `core` | elasticsearch, kibana, redis, rabbitmq, minio, opencti, worker (7) | Plataforma base: sin esto no hay OpenCTI. Kibana queda aquí porque la observabilidad del índice es parte de operar la plataforma y el verificador la exige en todos los objetivos completos |
+| `core` | elasticsearch, kibana, redis, rabbitmq, minio, opencti, worker (7) | Plataforma base: sin esto no hay OpenCTI. Kibana queda aquí porque la observabilidad del índice es parte de operar la plataforma y el verificador la exige |
 | `connectors` | los 25 `connector-*` | Ingesta de catálogos y fuentes; separables de la plataforma para diagnóstico y para `core-only` |
 | `feeds` | feed-orchestrator | Capacidad funcional: orquestación de feeds propios |
-| `extractor` | intel-extractor | Capacidad funcional: extracción documental (generativa; proveedor conmutable) |
-| `briefings` | briefing-generator | Capacidad funcional: síntesis ejecutiva (generativa; proveedor conmutable) |
+| `extractor` | intel-extractor | Capacidad funcional: extracción documental (generativa, Bedrock) |
+| `briefings` | briefing-generator | Capacidad funcional: síntesis ejecutiva (generativa, Bedrock) |
 | `dashboard` | soc-dashboard | Frontera de presentación; nginx resuelve los upstreams de feeds/briefings/extractor/kibana por petición (resolver de Docker), así que arranca aunque un backend esté caído |
-| `inference` | ollama | Backend de generación local; solo lo activa `local-gpu`. **La reserva GPU no está aquí**: es un atributo de hardware del objetivo, no del servicio, y vive en `docker-compose.local-gpu.yml` |
 
-Total: 7+25+1+1+1+1 = **36 servicios** en `aws`; `local-gpu` añade `ollama`
-(37). La búsqueda semántica (`semantic-engine`, `chromadb`, perfil `semantic`)
-se retiró el 2026-09-19; sus volúmenes en despliegues previos se eliminan a
-mano tras validar.
+Total: 7+25+1+1+1+1 = **36 servicios**.
 
-## Matriz de objetivos
+## Objetivos
 
-| Objetivo | Ficheros | Perfiles | Extractor | Sintetizador | Ollama | Modelos exigidos |
-|---|---|---|---|---|---|---|
-| `aws` | base + `docker-compose.aws.yml` | los 6 | Bedrock (fijado) | Bedrock (fijado) | no se despliega | — |
-| `local-gpu` | base + `docker-compose.local-gpu.yml` | los 6 + `inference` | Ollama (fijado) | Ollama (fijado) | GPU, generación | `llama3.2:3b` |
-| `core-only` | base | `core` | — | — | — | — |
+| Objetivo | Fichero | Perfiles | Uso |
+|---|---|---|---|
+| `aws` | `docker-compose.yml` | los 6 | Despliegue completo |
+| `core-only` | `docker-compose.yml` | `core` | Plataforma OpenCTI sin servicios funcionales (diagnóstico) |
 
-Los proveedores de `aws` están **fijados en el override**, no heredados de
-variables: el objetivo define la semántica y cambiarla exige editar un fichero
-versionado.
-
-En `local-gpu`, tanto el extractor como el sintetizador usan
-`llama3.2:3b` para generación.
+No hay overlays. El proveedor generativo no es configuración: `intel-extractor` y
+`briefing-generator` llevan Bedrock fijado en el código (`LLM_PROVIDER = "bedrock"`)
+y se autentican con el rol IAM de la instancia, sin claves en disco. Solo
+`AWS_REGION` y `BEDROCK_MODEL` son ajustables por entorno.
 
 ## Comandos
 
@@ -52,17 +46,18 @@ En `local-gpu`, tanto el extractor como el sintetizador usan
 # renderizar/operar un objetivo (compose-target.sh imprime el comando completo)
 $(./scripts/compose-target.sh aws) config --quiet
 $(./scripts/compose-target.sh aws) up -d --wait
-$(./scripts/compose-target.sh local-gpu) up -d --wait
 
 # arranque ordenado (ATT&CK primero) y verificación funcional
-./scripts/bootstrap-platform.sh local-gpu
+./scripts/bootstrap-platform.sh aws
 
 # gate de readiness (inventario + contratos + UI)
 ./scripts/tim-check.sh aws
-
-# solo modelos (únicamente local-gpu)
-./scripts/init-models.sh local-gpu
 ```
+
+El despliegue llega al nodo por `git pull` en `~/tim`; después,
+`$(./scripts/compose-target.sh aws) up -d --build --remove-orphans` reconstruye
+solo las imágenes cuyo código cambió. `--remove-orphans` no retira un servicio que
+siga definido bajo un perfil inactivo: hay que pararlo de forma explícita.
 
 El nombre `bootstrap-platform.sh` se conserva por compatibilidad como nombre
 propio de la herramienta; no designa un perfil Compose.
@@ -74,24 +69,27 @@ cero y el work `complete` solo los exige el arranque inicial
 (`verify-platform.sh`, llamado por `bootstrap-platform.sh`).
 
 `tim-check.sh` y `verify-service-contracts.py` **fallan con uso explícito** si
-no se les da objetivo. El verificador ahora distingue en su veredicto:
-servicios con healthcheck satisfecho, servicios `running` sin healthcheck
-(nombrados), y rechaza detenidos, `unhealthy`, `restarting` y OOMKilled.
+no se les da objetivo. El verificador distingue en su veredicto: servicios con
+healthcheck satisfecho, servicios `running` sin healthcheck (nombrados), y
+rechaza detenidos, `unhealthy`, `restarting` y OOMKilled.
 
 ## Pruebas
 
 - `scripts/test-verify-service-contracts.py` — unitarias del verificador
-  (objetivos, comando compose, veredicto de inventario, modelos por objetivo).
+  (objetivos, comando compose, veredicto de inventario, resolver de nginx, gate
+  MITRE de régimen).
 - `scripts/test-compose-targets.py` — aceptación con `docker compose config`:
-  render válido por objetivo, sin NVIDIA ni ollama en aws, NVIDIA solo en
-  ollama en local-gpu, inventario esperado, dependencias resueltas,
-  proveedores por objetivo, volúmenes preservados.
+  render válido por objetivo, ninguna reserva de GPU, inventario esperado,
+  dependencias resueltas, servicios generativos sin conmutador de proveedor,
+  volúmenes preservados.
 
 ```bash
 python3 -m pytest scripts/test-verify-service-contracts.py scripts/test-compose-targets.py -q
 ```
 
-## Migración del VPS AWS (2026-08-27) y reversión
+## Histórico: migración del VPS AWS (2026-08-27) y reversión
+
+Sección histórica: describe la organización por overlays `aws`/`local-gpu`, ya retirada.
 
 Estado previo registrado (commit desplegado `b8ddbc4`, proyecto Compose `tim`
 en `~/tim`): 37 contenedores Up, `tim-ollama-1` y `tim-semantic-engine-1` en

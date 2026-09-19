@@ -4,9 +4,9 @@ Esta guia presenta la arquitectura y el recorrido recomendado para trabajar en T
 
 ## Descripcion general
 
-TIM es una plataforma de threat intelligence basada en OpenCTI 7. Ingiere feeds estructurados y documentos, normaliza IOCs, genera relaciones STIX y produce briefings ejecutivos. La generacion corre con Ollama en el piloto local o con Amazon Bedrock en el objetivo aws.
+TIM es una plataforma de threat intelligence basada en OpenCTI 7. Ingiere feeds estructurados y documentos, normaliza IOCs, genera relaciones STIX y produce briefings ejecutivos. La generacion corre en Amazon Bedrock.
 
-Las tecnologias principales son Python, FastAPI, JavaScript, React, Shell, Docker Compose, OpenCTI, Redis, Elasticsearch, RabbitMQ y Ollama.
+Las tecnologias principales son Python, FastAPI, JavaScript, React, Shell, Docker Compose, OpenCTI, Redis, Elasticsearch, RabbitMQ y Amazon Bedrock.
 
 ## Modelo mental
 
@@ -52,7 +52,7 @@ flowchart TB
     ORCHESTRATOR -->|IOCs de alta confianza| ELASTIC
 
     OPENCTI -->|Inteligencia reciente| BRIEFING[briefing-generator]
-    BRIEFING <--> LLM[Ollama llama3.2:3b<br/>o Bedrock Claude Haiku]
+    BRIEFING <--> LLM[Amazon Bedrock<br/>Claude Haiku]
     BRIEFING --> OUTPUT[Briefings y PDF]
 
     ORCHESTRATOR --> DASHBOARD[SOC Dashboard]
@@ -96,13 +96,13 @@ Los documentos siguen el flujo descubrimiento, descarga controlada, extraccion d
 
 Las ingestas sensibles, como CNSD, usan provenance, IDs deterministas, preview sin escritura, trust gates y readback posterior. El objetivo es impedir que candidatos no verificados se conviertan automaticamente en falsos IOCs.
 
-### Proveedor de generacion por objetivo
+### Proveedor de generacion
 
-En el piloto `local-gpu`, Ollama sirve `llama3.2:3b` para extraccion y briefings; la GPU disponible tiene 4 GB, por lo que el modelo se carga segun demanda y el readiness debe considerar el cold start. En el objetivo `aws` no hay Ollama: ambos servicios generan con Claude Haiku via Amazon Bedrock, autenticados por el rol IAM de la instancia.
+`intel-extractor` y `briefing-generator` generan con Claude Haiku via Amazon Bedrock, autenticados por el rol IAM de la instancia; no hay claves en disco ni modelo local. El extractor envia el documento completo en una sola llamada. El piloto local con Ollama se retiro el 2026-09-19.
 
 ### Readiness funcional
 
-Un contenedor `healthy` no garantiza que la plataforma funcione. Los verificadores prueban contratos JSON, autenticacion, modelos Ollama (solo local-gpu), datos OpenCTI y flujos reales del SOC Dashboard y Kibana.
+Un contenedor `healthy` no garantiza que la plataforma funcione. Los verificadores prueban contratos JSON, autenticacion, datos OpenCTI y flujos reales del SOC Dashboard y Kibana.
 
 ## Recorrido guiado
 
@@ -161,8 +161,8 @@ Es un gate transversal. Sus fallos deben reportar el contrato y servicio exactos
 Arrancar y verificar la plataforma:
 
 ```bash
-./scripts/bootstrap-platform.sh
-./scripts/tim-check.sh
+./scripts/bootstrap-platform.sh aws
+./scripts/tim-check.sh aws
 ```
 
 Detener completamente los perfiles y recursos del despliegue:

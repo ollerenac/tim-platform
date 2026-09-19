@@ -10,8 +10,9 @@ Its two distinguishing capabilities are:
 - producing executive briefings whose identifiers are checked against the
   source context before publication.
 
-Inference can run locally through Ollama or use AWS Bedrock when the selected
-deployment target and data-handling policy permit it.
+Generation runs on Amazon Bedrock (Claude), authenticated by the instance IAM
+role. Documents sent for extraction therefore leave the host: review your
+data-handling policy before ingesting restricted material.
 
 ## Architecture
 
@@ -28,12 +29,10 @@ small services around it:
 | `connector-greynoise-feed` | Adapts GreyNoise feed ingestion. |
 
 The Compose stack supplies OpenCTI, Elasticsearch, Redis, RabbitMQ, MinIO,
-connectors, Kibana, and the TIM services. Two overlays select the intended
-runtime:
-
-- `local-gpu` for local inference through Ollama with NVIDIA acceleration;
-- `aws` for the AWS-oriented deployment profile, where generation runs on
-  Bedrock and Ollama is not deployed.
+connectors, Kibana, and the TIM services. It targets a single environment: an
+AWS node without a GPU (`aws`). The local GPU pilot that ran generation through
+Ollama was retired; the `pre-fase3-evidencia` git tag is the last revision
+that contains it.
 
 The main data path is:
 
@@ -63,10 +62,10 @@ mkcert -install
 mkcert -cert-file certs/localhost.pem -key-file certs/localhost-key.pem localhost 127.0.0.1
 ```
 
-Start the local GPU target:
+Start the platform:
 
 ```bash
-./scripts/bootstrap-platform.sh local-gpu
+./scripts/bootstrap-platform.sh aws
 ```
 
 The bootstrap starts the core dependencies first, waits for the OpenCTI graph
@@ -76,15 +75,11 @@ checks.
 Run the readiness gate again at any time:
 
 ```bash
-./scripts/tim-check.sh local-gpu
-```
-
-For the AWS target, use the same sequence with `aws`:
-
-```bash
-./scripts/bootstrap-platform.sh aws
 ./scripts/tim-check.sh aws
 ```
+
+The host needs an IAM role allowed to invoke the Bedrock model named by
+`BEDROCK_MODEL` in `AWS_REGION`; no API key is stored anywhere.
 
 ## Repository layout
 
