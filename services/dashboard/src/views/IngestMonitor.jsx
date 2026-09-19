@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import {
   getFeedsStatus,
-  getSemanticStats,
   getExtractorStats,
   getCVEStats,
   getFeedsRecent,
@@ -22,7 +21,6 @@ function confClass(conf) {
 
 export default function IngestMonitor() {
   const [feedsData,    setFeedsData]    = useState(null);
-  const [semanticData, setSemanticData] = useState(null);
   const [extractorData,setExtractorData]= useState(null);
   const [cveData,      setCveData]      = useState(null);
   const [iocs,         setIocs]         = useState([]);
@@ -36,7 +34,6 @@ export default function IngestMonitor() {
     const load = () =>
       Promise.all([
         safe(getFeedsStatus()).then(d    => d && setFeedsData(d)),
-        safe(getSemanticStats()).then(d  => d && setSemanticData(d)),
         safe(getExtractorStats()).then(d => d && setExtractorData(d)),
         safe(getCVEStats()).then(d       => d && setCveData(d)),
         safe(getFeedsRecent(200)).then(d => d && setIocs(d.iocs || [])),
@@ -81,7 +78,6 @@ export default function IngestMonitor() {
   const pills = [
     { label: 'Feeds',          cls: feedsStatus },
     { label: 'OpenCTI',        cls: openctiStatus }, // derived from feed success (OpenCTI /health returns 401)
-    { label: 'Semantic Index', cls: pillStatus(semanticData,  'status') },
     { label: 'Extractor',      cls: pillStatus(extractorData, 'status') },
     { label: 'CVE',            cls: pillStatus(cveData,       'status') },
     { label: collectorData ? `Collector (${totalNew} new)` : 'Collector (–)', cls: collectorPillCls(collectorData) },

@@ -1,6 +1,5 @@
 // ponytail: relative paths — nginx proxies /api/* to backends over Docker internal network
 const FEED_URL     = '/api/feeds';
-const SEARCH_URL   = '/api/semantic';
 const BRIEFING_URL = '/api/briefings';
 const EXTRACTOR_URL = '/api/extractor';
 
@@ -18,11 +17,6 @@ export const getAlerts = () =>
 
 export const getStats = () =>
   fetchT(`${BRIEFING_URL}/stats`).then(j);
-
-// GET with query params — semantic-engine/main.py line 41 confirms @app.get("/search"), NOT POST
-export const searchIOCs = (query, n = 10) =>
-  fetchT(`${SEARCH_URL}/search?q=${encodeURIComponent(query)}&n_results=${n}`)
-    .then(j);
 
 export const postGenerate = (periodHours) =>
   fetchT(`${BRIEFING_URL}/generate`, {
@@ -48,9 +42,6 @@ export const getRecentDocs = () =>
 
 export const getExtractorStats = () =>
   fetchT(`${EXTRACTOR_URL}/stats`).then(j);
-
-export const getSemanticStats = () =>
-  fetchT(`${SEARCH_URL}/stats`).then(j);
 
 export const getCVEStats = () =>
   fetchT(`${BRIEFING_URL}/cve/stats`).then(j);

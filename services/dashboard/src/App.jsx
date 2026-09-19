@@ -1,24 +1,18 @@
 import { useState } from 'react';
 import './App.css';
 import Overview from './views/Overview';
-import ThreatHunt from './views/ThreatHunt';
 import Briefings from './views/Briefings';
 import Alerts from './views/Alerts';
 import IngestMonitor from './views/IngestMonitor';
 
-const TABS = ['Overview', 'Threat Hunt', 'Briefings', 'Alerts', 'Ingestion Monitor'];
-const VIEWS = { Overview, 'Threat Hunt': ThreatHunt, Briefings, Alerts, 'Ingestion Monitor': IngestMonitor };
+const TABS = ['Overview', 'Briefings', 'Alerts', 'Ingestion Monitor'];
+const VIEWS = { Overview, Briefings, Alerts, 'Ingestion Monitor': IngestMonitor };
 
 const VIEW_META = {
   Overview: {
     eyebrow: 'SOC Dashboard',
     title: 'Threat Intelligence Management',
     description: 'Operational view of feed health, IOC volume, and ATT&CK context.',
-  },
-  'Threat Hunt': {
-    eyebrow: 'Investigation',
-    title: 'Threat Hunt',
-    description: 'Search indicators by behavior, infrastructure, malware, or observed context.',
   },
   Briefings: {
     eyebrow: 'Reporting',
@@ -33,7 +27,7 @@ const VIEW_META = {
   'Ingestion Monitor': {
     eyebrow: 'Pipeline',
     title: 'Ingestion Monitor',
-    description: 'Track feed ingestion, document extraction, semantic indexing, and source collectors.',
+    description: 'Track feed ingestion, document extraction, and source collectors.',
   },
 };
 

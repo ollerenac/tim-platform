@@ -181,16 +181,6 @@ main {
   padding: 24px 28px 32px;
 }
 
-/* Score badge */
-.score-badge {
-  background: var(--color-accent);
-  color: white;
-  font-size: 12px;
-  font-weight: 600;
-  padding: 2px 6px;
-  border-radius: 4px;
-}
-
 /* Status dot */
 .status-dot {
   width: 8px;
