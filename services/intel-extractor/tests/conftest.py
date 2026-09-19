@@ -23,14 +23,3 @@ def mock_pycti():
     ]
     return client
 
-
-@pytest.fixture
-def mock_ollama():
-    # ponytail: response.message.content attribute path validates Assumption A2 (ollama SDK 0.4.x+)
-    client = MagicMock()
-    client.chat.return_value.message.content = (
-        '{"iocs":[{"type":"ip","value":"1.2.3.4"},{"type":"domain","value":"evil.example.com"}],'
-        '"techniques":[{"name":"phishing","description":"email-based lure"}],'
-        '"malware_families":["Emotet"],"threat_actors":[]}'
-    )
-    return client

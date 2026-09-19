@@ -1,7 +1,7 @@
 """
 test_eval_extraction.py — live-LLM eval harness for IOC extraction quality (EXT-01).
 
-Runs the real extract_from_text() path (chunk -> LLM -> refang -> dedup) over the
+Runs the real extract_from_text() path (LLM -> refang -> ground -> dedup) over the
 labeled corpus in tests/eval_corpus/ and scores precision/recall/F1 per IOC type
 and per doc format via tests/eval_scoring.py.
 
@@ -11,8 +11,9 @@ offline-green and this module is deselected by default):
   offline default (harness deselected):
       cd services/intel-extractor && python3 -m pytest -q
 
-  live eval (needs Ollama — run inside the compose network):
-      docker compose --profile extractor exec intel-extractor python -m pytest -m llm_eval tests/ -q
+  live eval — 24 PAID Amazon Bedrock calls, one per corpus document. Run it where
+  the instance IAM role resolves (the aws deployment), never by accident:
+      $(./scripts/compose-target.sh aws) exec intel-extractor python -m pytest -m llm_eval tests/ -q
 
 Passing `-m llm_eval` on the command line overrides the addopts exclusion.
 
@@ -22,8 +23,9 @@ and the aggregates.
 
 Regression gate: test_eval_gate reads tests/eval_corpus/baseline.json, whose
 shape is exactly eval_scoring.aggregate() output
-({"per_type": {...}, "per_format": {...}}). The baseline is committed by plan
-11-03 after the post-refang capture; until then the gate skips.
+({"per_type": {...}, "per_format": {...}}). The committed baseline was captured on
+2026-07-07 with the retired local model (llama3.2:3b, flat prompt): it is a floor
+for the Bedrock path, not a measurement of it.
 """
 import json
 import pathlib
@@ -32,10 +34,8 @@ import re
 import pytest
 
 try:
-    import requests
     import extractor as _extractor
     from extractor import build_stix_pattern, extract_from_text
-    from config import OLLAMA_URL
     from ioc_fanger import fang
     from tests.eval_scoring import aggregate, score
     _IMPORT_OK = True
@@ -54,13 +54,6 @@ BASELINE = CORPUS / "baseline.json"
 _ATTACK_ID_RE = re.compile(r"(?i)\bT\d{4}(?:\.\d{3})?\b")
 
 
-def _ollama_up() -> bool:
-    try:
-        return requests.get(f"{OLLAMA_URL}/api/tags", timeout=2).ok
-    except Exception:
-        return False
-
-
 def _print_table(agg: dict) -> None:
     print("\n== IOC extraction eval ==")
     for section in ("per_format", "per_type"):
@@ -76,17 +69,11 @@ def _print_table(agg: dict) -> None:
 @pytest.fixture(scope="module")
 def eval_run():
     """Run the whole corpus through extract_from_text ONCE; both tests share the result."""
-    if not _ollama_up():
-        pytest.skip(
-            "Ollama unreachable — run inside compose: "
-            "docker compose --profile extractor exec intel-extractor python -m pytest -m llm_eval tests/ -q"
-        )
-
     docs: list[dict] = []
     # Record raw technique dicts (name + description) per doc for the EXT-05 gate:
-    # the extract_from_text seam only exposes lowercased names, so wrap call_llm —
+    # the extract_from_text seam only exposes lowercased names, so wrap the LLM seam —
     # delegating to the real one — to capture the full LLM output without extra calls.
-    real_call_llm = _extractor.call_llm
+    real_call_llm = _extractor.call_llm_anthropic
     current_techniques: list[dict] = []
 
     def recording_call_llm(*args, **kwargs):
@@ -94,7 +81,7 @@ def eval_run():
         current_techniques.extend(result.get("techniques", []))
         return result
 
-    _extractor.call_llm = recording_call_llm
+    _extractor.call_llm_anthropic = recording_call_llm
     try:
         for txt_path in sorted(CORPUS.glob("*.txt")):
             gold_doc = json.loads((CORPUS / f"{txt_path.stem}.expected.json").read_text())
@@ -117,7 +104,7 @@ def eval_run():
                 "techniques": list(current_techniques),
             })
     finally:
-        _extractor.call_llm = real_call_llm
+        _extractor.call_llm_anthropic = real_call_llm
 
     aggregates = aggregate(docs)
     _print_table(aggregates)

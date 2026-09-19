@@ -1631,7 +1631,7 @@ def run_collection_canary(collection_url: str, limit: int) -> dict:
         _canary_active = False
     state_after = _snapshot_path(STATE_PATH)
     db_after = _snapshot_path(DB_PATH)
-    operational_modules = {"extractor", "opencti_client", "ollama", "stats_store"}
+    operational_modules = {"extractor", "opencti_client", "anthropic", "stats_store"}
     operational_imports_loaded = any(
         name in sys.modules and name not in modules_before for name in operational_modules
     )
@@ -1652,7 +1652,6 @@ def run_collection_canary(collection_url: str, limit: int) -> dict:
         "landing_fetches": discovery.landing_fetches,
         "document_fetches": discovery.document_fetches,
         "opencti_url": os.environ.get("OPENCTI_URL", ""),
-        "ollama_url": os.environ.get("OLLAMA_URL", ""),
         "state_path": str(STATE_PATH),
         "db_path": str(DB_PATH),
         "credentials_present": bool(os.environ.get("OPENCTI_TOKEN")),

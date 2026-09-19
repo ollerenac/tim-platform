@@ -1391,7 +1391,6 @@ def test_html_collection_canary_is_measured_read_only_and_lazy(monkeypatch, tmp_
     )
     monkeypatch.setenv("OPENCTI_TOKEN", "")
     monkeypatch.setenv("OPENCTI_URL", "http://127.0.0.1:9")
-    monkeypatch.setenv("OLLAMA_URL", "http://127.0.0.1:9")
     _single_html_document_fetch(monkeypatch, landing, document)
     before_state = collector._snapshot_path(state_file)
     before_db = collector._snapshot_path(db_file)
@@ -1413,7 +1412,7 @@ def test_html_collection_canary_is_measured_read_only_and_lazy(monkeypatch, tmp_
     assert result["state_mutated"] is measured is False
     assert not any(
         name in sys.modules and name not in modules_before
-        for name in ("extractor", "opencti_client", "ollama", "stats_store")
+        for name in ("extractor", "opencti_client", "anthropic", "stats_store")
     )
 
 

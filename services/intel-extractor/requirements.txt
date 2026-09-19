@@ -1,7 +1,6 @@
 fastapi==0.129.2
 uvicorn
 pycti==7.260706.0
-ollama
 anthropic[bedrock]>=0.116.0
 PyPDF2==3.0.1
 trafilatura

@@ -1,17 +1,11 @@
 import json
 
 import pytest
-import ollama
 from unittest.mock import MagicMock
 
 
-def _ollama_response(content):
-    response = MagicMock()
-    response.message.content = content
-    return response
-
 try:
-    from extractor import build_stix_pattern, call_llm, chunk_text
+    from extractor import build_stix_pattern
     _IMPORT_OK = True
 except ImportError:
     _IMPORT_OK = False
@@ -51,23 +45,8 @@ def test_build_stix_pattern_escapes_backslash_before_quote():
 
 
 @_skip
-def test_call_llm_happy_path(mock_ollama):
-    result = call_llm(mock_ollama, "llama3.2:3b", "The actor used 1.2.3.4")
-    assert result["iocs"][0]["type"] == "ip"
-
-
-@_skip
-def test_chunk_text_overlap():
-    text = "A" * 12000
-    result = chunk_text(text, max_chars=6000, overlap_chars=600)
-    assert len(result) >= 2
-    # overlap window: last 600 chars of chunk[0] == first 600 chars of chunk[1]
-    assert result[0][-600:] == result[1][:600]
-
-
-@_skip
 def test_extract_from_text_seam(monkeypatch):
-    """extract_from_text is the pure chunk→LLM→dedup seam: five keys, deduped, no OpenCTI."""
+    """extract_from_text is the pure LLM→ground→dedup seam: deduped, no OpenCTI."""
     import extractor
 
     fixed = {
@@ -83,7 +62,7 @@ def test_extract_from_text_seam(monkeypatch):
         "victim_technologies": ["Unitronics PLC"],
         "campaign_summary": "Actors targeted water utilities.",
     }
-    monkeypatch.setattr(extractor, "call_llm", lambda *a, **k: fixed)
+    monkeypatch.setattr(extractor, "call_llm_anthropic", lambda *a, **k: fixed)
 
     # input text carries the IOC values so the grounding filter keeps them
     result = extractor.extract_from_text(
@@ -129,7 +108,7 @@ def test_extract_from_text_drops_ungrounded_targeting_claims(monkeypatch):
         "victim_technologies": [],
         "campaign_summary": "",
     }
-    monkeypatch.setattr(extractor, "call_llm", lambda *args, **kwargs: fixed)
+    monkeypatch.setattr(extractor, "call_llm_anthropic", lambda *args, **kwargs: fixed)
 
     result = extractor.extract_from_text(
         "This source contains no named actor or victim sector.",
@@ -156,7 +135,7 @@ def test_extract_from_text_grounds_malware_and_countries_verbatim(monkeypatch):
         "victim_technologies": [],
         "campaign_summary": "",
     }
-    monkeypatch.setattr(extractor, "call_llm", lambda *a, **k: fixed)
+    monkeypatch.setattr(extractor, "call_llm_anthropic", lambda *a, **k: fixed)
 
     result = extractor.extract_from_text(
         "GhostLoader was deployed against organizations in Ukraine.",
@@ -191,7 +170,7 @@ def test_truncated_names_do_not_ground_inside_full_names(monkeypatch):
     fixed = _targeting_fixture(
         threat_actors=["Land Justice", "Homeland Justice", "Gentlemen"],
     )
-    monkeypatch.setattr(extractor, "call_llm", lambda *a, **k: fixed)
+    monkeypatch.setattr(extractor, "call_llm_anthropic", lambda *a, **k: fixed)
 
     result = extractor.extract_from_text(
         "Homeland Justice claimed the attack. The Gentlemen leaked the data.",
@@ -223,7 +202,7 @@ def test_defective_entity_names_rejected_before_graph(monkeypatch):
         ],
         malware_families=["Remexi"],
     )
-    monkeypatch.setattr(extractor, "call_llm", lambda *a, **k: fixed)
+    monkeypatch.setattr(extractor, "call_llm_anthropic", lambda *a, **k: fixed)
 
     result = extractor.extract_from_text(
         "CobaltSt… BACKOR... AB attack by an unknown Chinese-speaking APT group. "
@@ -233,16 +212,6 @@ def test_defective_entity_names_rejected_before_graph(monkeypatch):
 
     assert result["threat_actors"] == {"Handala Hack Team"}
     assert result["malware_families"] == {"Remexi"}
-
-
-@_skip
-def test_prompt_no_longer_requests_shortest_names():
-    """P0.3 regression: 'shortest' in the system prompt caused truncated actor names;
-    the prompt must ask for the complete verbatim name."""
-    import extractor
-
-    assert "shortest" not in extractor.SYSTEM_PROMPT
-    assert "complete explicit actor" in extractor.SYSTEM_PROMPT
 
 
 @_skip
@@ -257,25 +226,6 @@ def test_extract_from_text_harvests_cves_deterministically(monkeypatch):
 
     result = extractor.extract_from_text("No vulnerabilities named here.")
     assert result["exploited_cves"] == []
-
-
-@_skip
-def test_system_prompt_schema_and_few_shots_include_targeted_countries():
-    """Prompt contract: schema names targeted_countries and every few-shot Output
-    block is valid JSON carrying the key (Example 1 teaches the literal-only case)."""
-    import json
-    import re
-
-    from extractor import SYSTEM_PROMPT
-
-    assert "targeted_countries" in SYSTEM_PROMPT
-
-    outputs = re.findall(r"Output:\n(\{.*?\n\})", SYSTEM_PROMPT, re.DOTALL)
-    assert len(outputs) == 3
-    parsed = [json.loads(block) for block in outputs]
-    assert parsed[0]["targeted_countries"] == ["US"]
-    assert parsed[1]["targeted_countries"] == []
-    assert parsed[2]["targeted_countries"] == []
 
 
 @_skip
@@ -473,208 +423,8 @@ def test_run_extraction_identity_failure_does_not_fail_the_job(monkeypatch):
     assert create_report.call_args.kwargs.get("created_by_id") is None
 
 
-@_skip
-def test_default_json_failure_preserves_second_fallback_request_and_six_key_shape(
-    monkeypatch,
-):
-    """Operational extraction keeps its established second chat fallback."""
-    import extractor
-
-    client = MagicMock()
-    client.chat.side_effect = [
-        _ollama_response("not json"),
-        _ollama_response("IP:203.0.113.7"),
-    ]
-    monkeypatch.setattr(extractor, "_ollama_client", client)
-
-    result = extractor.extract_from_text("Observed 203.0.113.7", "bulletin")
-
-    assert client.chat.call_count == 2
-    assert set(result) == {
-        "unique_iocs",
-        "technique_keywords",
-        "targeted_sectors",
-        "threat_actors",
-        "malware_families",
-        "targeted_countries",
-        "exploited_cves",
-        "victim_technologies",
-        "campaign_summary",
-        "v2_entities",
-        "v2_relationships",
-    }
-    assert result["unique_iocs"] == [{"type": "ip", "value": "203.0.113.7"}]
-
-
-@_skip
-def test_diagnostic_fallback_uses_primary_response_once_and_retains_rejections(
-    monkeypatch,
-):
-    import extractor
-
-    client = MagicMock()
-    client.chat.return_value = _ollama_response(
-        "IP:203.0.113.7\nBOGUS:value\nunsupported prose"
-    )
-    monkeypatch.setattr(extractor, "_ollama_client", client)
-
-    result = extractor.extract_from_text(
-        "Observed malicious IP 203.0.113.7", "bulletin", include_diagnostics=True
-    )
-
-    assert client.chat.call_count == 1
-    assert result["accepted_iocs"] == [{"type": "ip", "value": "203.0.113.7"}]
-    assert {item["reason"] for item in result["rejected_ioc_candidates"]} >= {
-        "malformed_response",
-        "unsupported_fallback_line",
-    }
-    assert all(
-        set(item) == {"type", "value", "reason", "stage"}
-        for item in result["rejected_ioc_candidates"]
-    )
-
-
-@_skip
-def test_diagnostic_json_retains_parser_grounding_dedup_policy_and_shape_rejections(
-    monkeypatch,
-):
-    import extractor
-
-    vendor_url = "https://vendor.example/security/update"
-    content = {
-        "iocs": [
-            None,
-            {"type": "ip"},
-            {"type": "ip", "value": "198.51.100.99"},
-            {"type": "ip", "value": "203.0.113.7"},
-            {"type": "ip", "value": "203.0.113.7"},
-            {"type": "cve", "value": "CVE-2026-1234"},
-            {"type": "url", "value": vendor_url},
-        ],
-        "techniques": [],
-        "targeted_sectors": [],
-        "victim_technologies": [],
-        "campaign_summary": "",
-    }
-    client = MagicMock()
-    import json
-
-    client.chat.return_value = _ollama_response(json.dumps(content))
-    monkeypatch.setattr(extractor, "_ollama_client", client)
-    text = (
-        "No hay evidencia de explotacion activa. Referencia y parche del fabricante: "
-        f"{vendor_url}\n\nIndicador malicioso 203.0.113.7 and CVE-2026-1234"
-    )
-
-    result = extractor.extract_from_text(text, "bulletin", include_diagnostics=True)
-
-    assert client.chat.call_count == 1
-    assert result["accepted_iocs"] == [{"type": "ip", "value": "203.0.113.7"}]
-    rejected = result["rejected_ioc_candidates"]
-    assert {item["reason"] for item in rejected} >= {
-        "candidate_not_object",
-        "invalid_candidate_field",
-        "ungrounded",
-        "duplicate",
-        "bulletin_no_active_exploitation",
-        "unsupported_type_or_invalid_shape",
-    }
-    assert {item["stage"] for item in rejected} >= {
-        "response_parser",
-        "grounding",
-        "dedup",
-        "bulletin_policy",
-        "shape_validation",
-    }
-
-
-@_skip
-def test_diagnostic_chunk_retries_one_local_server_failure_then_reports_success(
-    monkeypatch,
-):
-    import extractor
-
-    client = MagicMock()
-    client.chat.side_effect = [
-        ollama.ResponseError("runner stopped", 500),
-        _ollama_response(
-            '{"iocs":[{"type":"ip","value":"203.0.113.7"}],'
-            '"techniques":[],"targeted_sectors":[],"victim_technologies":[]}'
-        ),
-    ]
-    monkeypatch.setattr(extractor, "_ollama_client", client)
-
-    result = extractor.extract_from_text(
-        "Malicious IOC 203.0.113.7", "bulletin", include_diagnostics=True
-    )
-
-    assert client.chat.call_count == 2
-    assert result["accepted_iocs"] == [{"type": "ip", "value": "203.0.113.7"}]
-    assert result["chunk_diagnostics"] == [
-        {
-            "chunk_index": 0,
-            "status": "complete",
-            "attempts": 2,
-            "retry_count": 1,
-            "error": None,
-        }
-    ]
-
-
-@_skip
-def test_diagnostic_chunk_exhausts_retry_and_reports_terminal_error(monkeypatch):
-    import extractor
-
-    client = MagicMock()
-    client.chat.side_effect = [
-        ollama.ResponseError("runner stopped", 500),
-        ollama.ResponseError("runner stopped again", 500),
-    ]
-    monkeypatch.setattr(extractor, "_ollama_client", client)
-
-    result = extractor.extract_from_text(
-        "Observed 203.0.113.7", "bulletin", include_diagnostics=True
-    )
-
-    assert client.chat.call_count == 2
-    assert result["accepted_iocs"] == []
-    assert result["chunk_diagnostics"] == [
-        {
-            "chunk_index": 0,
-            "status": "error",
-            "attempts": 2,
-            "retry_count": 1,
-            "error": "model_call_failed",
-        }
-    ]
-
-
-@_skip
-def test_diagnostic_malformed_primary_is_error_without_fallback_request(monkeypatch):
-    import extractor
-
-    client = MagicMock()
-    client.chat.return_value = _ollama_response("IP:203.0.113.7")
-    monkeypatch.setattr(extractor, "_ollama_client", client)
-
-    result = extractor.extract_from_text(
-        "Observed 203.0.113.7", "bulletin", include_diagnostics=True
-    )
-
-    assert client.chat.call_count == 1
-    assert result["chunk_diagnostics"] == [
-        {
-            "chunk_index": 0,
-            "status": "error",
-            "attempts": 1,
-            "retry_count": 0,
-            "error": "malformed_response",
-        }
-    ]
-
-
 def _patch_llm_iocs(monkeypatch, iocs):
-    """Monkeypatch extractor.call_llm to emit a fixed IOC list."""
+    """Monkeypatch the extractor's LLM seam to emit a fixed IOC list."""
     import extractor
 
     fixed = {
@@ -686,13 +436,13 @@ def _patch_llm_iocs(monkeypatch, iocs):
         "victim_technologies": [],
         "campaign_summary": "",
     }
-    monkeypatch.setattr(extractor, "call_llm", lambda *a, **k: fixed)
+    monkeypatch.setattr(extractor, "call_llm_anthropic", lambda *a, **k: fixed)
     return extractor
 
 
 @_skip
 def test_regex_hash_harvest_adds_hashes_when_llm_misses(monkeypatch):
-    """Hash recall does not depend only on llama3.2:3b noticing IOC appendices."""
+    """Hash recall does not depend only on the model noticing IOC appendices."""
     extractor = _patch_llm_iocs(monkeypatch, [])
     md5 = "d41d8cd98f00b204e9800998ecf8427e"
     sha1 = "da39a3ee5e6b4b0d3255bfef95601890afd80709"
@@ -724,42 +474,6 @@ def test_regex_hash_harvest_does_not_split_longer_hashes(monkeypatch):
     result = extractor.extract_from_text(f"File hashes:\n{sha256}\n{too_long}\n")
 
     assert result["unique_iocs"] == [{"type": "hash_sha256", "value": sha256}]
-
-
-@_skip
-def test_system_prompt_reminds_ioc_sections_without_source_inference():
-    from extractor import SYSTEM_PROMPT
-
-    assert "IOC appendix" in SYSTEM_PROMPT
-    assert "Payload retrieval URLs" in SYSTEM_PROMPT
-    assert "source URL" in SYSTEM_PROMPT
-    assert "publisher" in SYSTEM_PROMPT
-
-
-@_skip
-def test_advisory_prompt_distinguishes_reference_links_from_iocs():
-    from extractor import SYSTEM_PROMPT
-
-    prompt = SYSTEM_PROMPT.lower()
-    for expected in [
-        "vendor security pages",
-        "patch/update links",
-        "advisory references",
-        "affected product/version strings",
-        "cve/product references",
-        "malicious infrastructure or attack artifacts",
-    ]:
-        assert expected in prompt
-
-    for extractable in [
-        "Payload retrieval URLs",
-        "C2",
-        "Domains",
-        "IPs",
-        "Emails",
-        "Hashes",
-    ]:
-        assert extractable in SYSTEM_PROMPT
 
 
 @_skip
@@ -844,28 +558,6 @@ def test_refang_injection_shape_still_rejected():
 
 
 @_skip
-def test_call_llm_delimiters(mock_ollama):
-    """EXT-03/04: user turn = SOURCE_TYPE hint + chunk in triple-quote delimiters;
-    SYSTEM_PROMPT stays unmodified (hint lives in the user turn only); options
-    carry the deterministic knobs (temperature 0, seed 42, num_ctx 8192)."""
-    import extractor
-
-    call_llm(mock_ollama, "llama3.2:3b", "chunk body text", source_type="blog")
-
-    _, kwargs = mock_ollama.chat.call_args
-    messages = kwargs["messages"]
-    assert messages[0]["role"] == "system"
-    assert messages[0]["content"] == extractor.SYSTEM_PROMPT
-    user_msg = messages[1]["content"]
-    assert "SOURCE_TYPE: blog" in user_msg
-    assert '"""\nchunk body text\n"""' in user_msg
-    options = kwargs["options"]
-    assert options["temperature"] == 0
-    assert options["seed"] == 42
-    assert options["num_ctx"] == 8192
-
-
-@_skip
 def test_guess_source_type():
     """EXT-04: pdf -> report; vendor-blog host -> blog; everything else -> unknown."""
     from extractor import _VENDOR_BLOG_HOSTS, _guess_source_type
@@ -875,35 +567,6 @@ def test_guess_source_type():
     assert _guess_source_type("url", f"https://{vendor_host}/post") == "blog"
     assert _guess_source_type("url", "https://cisa.example/adv") == "unknown"
     assert _guess_source_type("url", None) == "unknown"
-
-
-@_skip
-def test_source_type_hint_injected(mock_ollama, monkeypatch):
-    """EXT-04: extract_from_text threads source_type into call_llm's user message."""
-    import extractor
-
-    monkeypatch.setattr(extractor, "_ollama_client", mock_ollama)
-    extractor.extract_from_text("report body", "report")
-
-    _, kwargs = mock_ollama.chat.call_args
-    assert "SOURCE_TYPE: report" in kwargs["messages"][1]["content"]
-
-
-@_skip
-def test_ioc_dedup_across_chunks(mock_ollama):
-    # The same ip 1.2.3.4 appears in both chunks (simulates overlap region duplication)
-    duplicate_iocs = [
-        {"type": "ip", "value": "1.2.3.4"},
-        {"type": "ip", "value": "1.2.3.4"},
-    ]
-    seen: set = set()
-    unique = []
-    for ioc in duplicate_iocs:
-        key = (ioc["type"], ioc["value"])
-        if key not in seen:
-            seen.add(key)
-            unique.append(ioc)
-    assert len(unique) == 1
 
 
 @_skip
@@ -943,7 +606,7 @@ def test_cyber_centre_n8n_advisory_completes_with_zero_iocs(monkeypatch):
     extractor.jobs.clear()
     extractor.recent_docs.clear()
     monkeypatch.setattr(extractor, "extract_url_text", lambda url: advisory_text)
-    monkeypatch.setattr(extractor, "call_llm", lambda *a, **k: llm_result)
+    monkeypatch.setattr(extractor, "call_llm_anthropic", lambda *a, **k: llm_result)
     monkeypatch.setattr(extractor, "build_pycti_client", lambda: object())
     monkeypatch.setattr(extractor, "create_indicator", create_indicator)
     monkeypatch.setattr(extractor, "lookup_attack_pattern", lambda *a, **k: None)
@@ -1143,7 +806,7 @@ def test_bulletin_suppression_completes_report_with_zero_indicators(monkeypatch)
     extractor.jobs.clear()
     extractor.recent_docs.clear()
     monkeypatch.setattr(extractor, "extract_url_text", lambda url: bulletin_text)
-    monkeypatch.setattr(extractor, "call_llm", lambda *args, **kwargs: llm_result)
+    monkeypatch.setattr(extractor, "call_llm_anthropic", lambda *args, **kwargs: llm_result)
     monkeypatch.setattr(extractor, "build_pycti_client", lambda: object())
     monkeypatch.setattr(extractor, "create_indicator", create_indicator)
     monkeypatch.setattr(extractor, "lookup_attack_pattern", lambda *args, **kwargs: None)
@@ -1162,42 +825,6 @@ def test_bulletin_suppression_completes_report_with_zero_indicators(monkeypatch)
     assert extractor.recent_docs[0]["ioc_count"] == 0
 
 
-def test_prompt_schema_fields_all_flow_to_extract_output(monkeypatch):
-    """Contract parity: every field the LLM prompt promises must survive aggregation.
-
-    threat_actors (fixed 2026-07-15) and malware_families (fixed 2026-07-17) were
-    both extracted by the LLM and silently dropped by extract_from_text's explicit
-    allowlist. This test derives the field list FROM SYSTEM_PROMPT itself, so any
-    future schema field added without wiring turns the suite red instead of
-    silently discarding data at the aggregation seam.
-    """
-    import re
-
-    import extractor
-
-    schema_block = re.search(
-        r"Required JSON format:\s*\{(.*?)\n\}", extractor.SYSTEM_PROMPT, re.DOTALL
-    )
-    assert schema_block, "SYSTEM_PROMPT no longer contains the Required JSON format block"
-    prompt_fields = set(re.findall(r'^\s*"(\w+)":', schema_block.group(1), re.MULTILINE))
-    assert prompt_fields, "no fields parsed from the prompt schema"
-
-    # Historic renames at the seam — new fields must NOT be added here without wiring
-    renamed = {"iocs": "unique_iocs", "techniques": "technique_keywords"}
-
-    fixed = {field: [] if field != "campaign_summary" else "" for field in prompt_fields}
-    monkeypatch.setattr(extractor, "call_llm", lambda *a, **k: fixed)
-    result = extractor.extract_from_text("benign text with no indicators")
-
-    missing = {
-        field for field in prompt_fields if renamed.get(field, field) not in result
-    }
-    assert not missing, (
-        f"prompt schema field(s) {sorted(missing)} are extracted by the LLM "
-        "but dropped by extract_from_text — wire them through the aggregation"
-    )
-
-
 def test_extract_from_text_tolerates_llm_nulls(monkeypatch):
     """LLM JSON mode can emit null inside any field (seen live on ATT&CK G0003/G0084:
     'NoneType' object has no attribute 'strip' killed the whole extraction). Null or
@@ -1214,7 +841,7 @@ def test_extract_from_text_tolerates_llm_nulls(monkeypatch):
         "victim_technologies": [None],
         "campaign_summary": None,
     }
-    monkeypatch.setattr(extractor, "call_llm", lambda *a, **k: fixed)
+    monkeypatch.setattr(extractor, "call_llm_anthropic", lambda *a, **k: fixed)
 
     result = extractor.extract_from_text("RealFam malware hit the Energy sector. 1.2.3.4")
 
@@ -1398,19 +1025,16 @@ def test_bedrock_provider_builds_legacy_client_with_region(monkeypatch):
 
 def test_claude_model_selects_bedrock_id(monkeypatch):
     """Bedrock legacy path takes cross-region inference profile IDs
-    (us.anthropic.<model>-<date>-v1:0); direct API uses the bare model ID."""
+    (us.anthropic.<model>-<date>-v1:0)."""
     import extractor
-    monkeypatch.setattr(extractor, "LLM_PROVIDER", "bedrock")
     assert extractor._claude_model() == extractor.BEDROCK_MODEL
     assert extractor.BEDROCK_MODEL.startswith("us.anthropic.")
     assert extractor.BEDROCK_MODEL.endswith("-v1:0")
-    monkeypatch.setattr(extractor, "LLM_PROVIDER", "anthropic")
-    assert extractor._claude_model() == extractor.ANTHROPIC_MODEL
 
 
 def test_extract_from_text_bedrock_uses_whole_document_claude_path(monkeypatch):
-    """bedrock rides the same v2.1 seam as anthropic: one whole-document call to
-    call_llm_anthropic, v2 objects preserved, never the ollama chunked path."""
+    """One whole-document call to call_llm_anthropic, however long the text is,
+    with the v2 objects preserved."""
     import extractor
 
     calls = []
@@ -1429,9 +1053,6 @@ def test_extract_from_text_bedrock_uses_whole_document_claude_path(monkeypatch):
 
     monkeypatch.setattr(extractor, "LLM_PROVIDER", "bedrock")
     monkeypatch.setattr(extractor, "call_llm_anthropic", fake_claude)
-    monkeypatch.setattr(extractor, "call_llm",
-                        lambda *a, **k: pytest.fail("ollama path must not run under bedrock"))
-
     text = "Indicator observed at 1.2.3.4 during the campaign. " * 50
     result = extractor.extract_from_text(text)
 
@@ -1451,3 +1072,116 @@ def test_strip_json_fences_tolerates_haiku_markdown_wrapper():
     assert extractor._strip_json_fences(fenced) == bare
     assert extractor._strip_json_fences(fenced_plain) == bare
     assert extractor._strip_json_fences("  " + fenced + "  ") == bare
+
+
+# ── Bedrock-only contracts (local Ollama path retired 2026-09-19) ────────────
+
+def test_bedrock_is_the_only_provider_and_no_local_llm_client_is_imported():
+    """The evaluation harnesses assert LLM_PROVIDER == "bedrock"; the chunked
+    Ollama path and the direct Anthropic API client must stay gone."""
+    import sys
+    import extractor
+
+    assert extractor.LLM_PROVIDER == "bedrock"
+    for retired in ("call_llm", "chunk_text", "SYSTEM_PROMPT", "_ollama_client", "ANTHROPIC_API_KEY"):
+        assert not hasattr(extractor, retired), retired
+    assert "ollama" not in sys.modules
+
+
+def test_call_llm_anthropic_sends_frozen_prompt_and_document_type_hint(monkeypatch):
+    """EXT-04: the hint lives in the user turn only; the system prompt is v2.1 verbatim."""
+    import extractor
+
+    sent = {}
+
+    class Stream:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *_args):
+            return False
+
+        def get_final_message(self):
+            return type("Response", (), {
+                "content": [type("Text", (), {"type": "text", "text": '{"entities": [], "relationships": []}'})()],
+                "stop_reason": "end_turn",
+                "usage": type("Usage", (), {"input_tokens": 1, "output_tokens": 1})(),
+            })()
+
+    class Client:
+        class messages:
+            @staticmethod
+            def stream(**kwargs):
+                sent.update(kwargs)
+                return Stream()
+
+    monkeypatch.setattr(extractor, "_get_anthropic_client", lambda: Client())
+
+    extractor.extract_from_text("report body", "report")
+
+    assert sent["system"] == extractor.SYSTEM_PROMPT_V21
+    assert sent["model"] == extractor.BEDROCK_MODEL
+    user_msg = sent["messages"][0]["content"]
+    assert "Document type hint: report" in user_msg
+    assert '"""\nreport body\n"""' in user_msg
+
+
+def test_flat_projection_fields_all_flow_to_extract_output(monkeypatch):
+    """Contract parity: every field the flat projection carries must survive
+    aggregation. threat_actors (2026-07-15) and malware_families (2026-07-17) were
+    both extracted and then silently dropped by extract_from_text's allowlist."""
+    import extractor
+
+    fixed = extractor._v2_to_flat([], "")
+    # Historic renames at the seam — new fields must NOT be added here without wiring
+    renamed = {"iocs": "unique_iocs", "techniques": "technique_keywords"}
+    monkeypatch.setattr(extractor, "call_llm_anthropic", lambda *a, **k: fixed)
+
+    result = extractor.extract_from_text("benign text with no indicators")
+
+    missing = {field for field in fixed if renamed.get(field, field) not in result}
+    assert not missing, f"flat field(s) {sorted(missing)} are dropped by extract_from_text"
+
+
+def test_diagnostics_retain_grounding_dedup_policy_and_shape_rejections(monkeypatch):
+    """Diagnostic mode explains every dropped candidate and reports one complete
+    entry for the single whole-document call."""
+    import extractor
+
+    vendor_url = "https://vendor.example/security/update"
+    fixed = {
+        **extractor._v2_to_flat([], ""),
+        "iocs": [
+            None,
+            {"type": "ip"},
+            {"type": "ip", "value": "198.51.100.99"},
+            {"type": "ip", "value": "203.0.113.7"},
+            {"type": "ip", "value": "203.0.113.7"},
+            {"type": "cve", "value": "CVE-2026-1234"},
+            {"type": "url", "value": vendor_url},
+        ],
+    }
+    monkeypatch.setattr(extractor, "call_llm_anthropic", lambda *a, **k: fixed)
+    text = (
+        "No hay evidencia de explotacion activa. Referencia y parche del fabricante: "
+        f"{vendor_url}\n\nIndicador malicioso 203.0.113.7 and CVE-2026-1234"
+    )
+
+    result = extractor.extract_from_text(text, "bulletin", include_diagnostics=True)
+
+    assert result["accepted_iocs"] == [{"type": "ip", "value": "203.0.113.7"}]
+    rejected = result["rejected_ioc_candidates"]
+    assert all(set(item) == {"type", "value", "reason", "stage"} for item in rejected)
+    assert {item["reason"] for item in rejected} >= {
+        "empty_candidate",
+        "ungrounded",
+        "duplicate",
+        "bulletin_no_active_exploitation",
+        "unsupported_type_or_invalid_shape",
+    }
+    assert {item["stage"] for item in rejected} >= {
+        "response_parser", "grounding", "dedup", "bulletin_policy", "shape_validation",
+    }
+    assert result["chunk_diagnostics"] == [
+        {"chunk_index": 0, "status": "complete", "attempts": 1, "retry_count": 0, "error": None}
+    ]

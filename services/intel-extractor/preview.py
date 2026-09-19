@@ -189,8 +189,8 @@ def _document_preview(document, extractor) -> dict:
             raise ValueError("failed chunk lacks an error")
 
     cves = normalize_cve_candidates(text)
-    chunks = extractor.chunk_text(text)
-    if len(chunk_diagnostics) != len(chunks):
+    # Bedrock receives the whole document in one call: exactly one diagnostic.
+    if len(chunk_diagnostics) != 1:
         raise ValueError("chunk diagnostic count does not match extraction chunks")
     extraction_complete = all(
         diagnostic["status"] == "complete" for diagnostic in chunk_diagnostics
@@ -216,10 +216,10 @@ def _document_preview(document, extractor) -> dict:
             "status": "complete" if extraction_complete else "error",
             "pdf_bytes": len(document.content),
             "text_chars": len(text),
-            "chunk_count": len(chunks),
+            "chunk_count": len(chunk_diagnostics),
             "chunk_diagnostics": chunk_diagnostics,
             "retry_count": retry_count,
-            "model": extractor.OLLAMA_MODEL,
+            "model": extractor.BEDROCK_MODEL,
             "source_type": "bulletin",
             "elapsed_ms": elapsed_ms,
         },

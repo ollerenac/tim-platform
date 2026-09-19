@@ -140,12 +140,6 @@ def test_corpus_lint_pairing_and_counts():
     assert per_format == {f: 6 for f in FORMATS}
 
 
-def test_corpus_lint_docs_fit_one_chunk():
-    """Every doc <= 5500 chars → single chunk (chunk_text threshold 6000), so per-doc failures are attributable."""
-    for stem, text, _ in _load_corpus():
-        assert len(text) <= 5500, f"{stem}: {len(text)} chars exceeds single-chunk budget"
-
-
 @_skip
 def test_corpus_lint_gold_values_canonical():
     """Every gold value is stored canonical: type is supported and value passes _IOC_VALUE_RE."""

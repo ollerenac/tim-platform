@@ -162,11 +162,10 @@ def _fake_modules(monkeypatch, *, extraction_error=None):
         create_relationship=lambda *args, **kwargs: None,
         create_targeting_relationships=lambda *args, **kwargs: None,
         build_stix_pattern=lambda ioc_type, value: ("pattern", "Type"),
-        chunk_text=lambda text: [text],
         extract_from_text=MagicMock(
             side_effect=extraction_error or (lambda *args, **kwargs: extraction)
         ),
-        OLLAMA_MODEL="llama3.2:3b",
+        BEDROCK_MODEL="us.anthropic.claude-haiku-4-5-20251001-v1:0",
     )
     stats = SimpleNamespace(
         init_db=lambda: None,
@@ -486,7 +485,7 @@ def test_preview_fresh_process_preserves_absent_and_sentinel_storage(
             create_relationship=lambda *a, **k: None,
             create_targeting_relationships=lambda *a, **k: None,
             build_stix_pattern=lambda *a, **k: ('pattern', 'Type'),
-            chunk_text=lambda text: [text], OLLAMA_MODEL='llama3.2:3b',
+            BEDROCK_MODEL='us.anthropic.claude-haiku-4-5-20251001-v1:0',
         )
         original_run = extractor.run_extraction
         def extract(*args, **kwargs):
