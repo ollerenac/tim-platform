@@ -26,8 +26,18 @@ site/
 # Local runtime data
 *.log
 backups/
+backup/
 .planning/
 _codex/
+
+# Agent guidance kept local
+CLAUDE.md
+
+# Research material: what is already tracked stays; new files here are not added
+corpus/
+docs/
+experiments/
+tesis/
 
 # Editors and operating systems
 .DS_Store
