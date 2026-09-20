@@ -92,11 +92,19 @@ services:
     volumes:
       - redisdata:/data
     mem_limit: ${REDIS_MEM_LIMIT:-2g}
-    # Disable auto RDB snapshots: bgsave fork OOMs near the current 1 GB dataset under the old 1 GB cap.
+    # Persistencia por AOF, sin instantáneas RDB. Las instantáneas se quitaron cuando el fork de
+    # bgsave agotaba la memoria con ~1 GB de datos bajo el tope antiguo de 1 GB. Sin persistencia,
+    # cada reinicio del host borraba tim:ioc_seen (deduplicación de 24 h) y los 12 feeds reenviaban
+    # todo: el 2026-09-20 se midieron 28 000 mensajes en cola a los 25 min de arrancar. Hoy el stream
+    # está acotado por REDIS__TRIMMING (200k eventos) y el tope es de 2-3 GB, así que el fork de la
+    # reescritura del AOF cabe. appendfsync queda en everysec: se pierde como mucho 1 s, y el upsert
+    # de OpenCTI cubre ese resto.
     command:
       - redis-server
       - --save
       - ""
+      - --appendonly
+      - "yes"
       - --maxmemory
       - ${REDIS_MAXMEMORY:-1536mb}
       - --maxmemory-policy
