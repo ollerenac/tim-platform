@@ -14,6 +14,7 @@ from pycti import (
 )
 
 from .config_loader import ConfigLoader
+from .schedule_guard import run_is_due
 
 INTEGRATION_NAME = "opencti-feed-v4.0"
 
@@ -294,6 +295,15 @@ class GreyNoiseFeedConnector:
             ):
                 self.helper.log_error(
                     "API Key Error - Connector will not run - Update API Key and Clear State to Run Again"
+                )
+                return
+            # TIM patch: the scheduler calls process() on every container start; see schedule_guard.py.
+            period = self.config.connector.duration_period.total_seconds()
+            if not run_is_due(current_state, now, period):
+                self.helper.log_info(
+                    "GreyNoise feed - last run is recent ("
+                    + current_state["last_run_timestamp"]
+                    + "); skipping this start"
                 )
                 return
             if current_state is not None and "last_run_timestamp" in current_state:
