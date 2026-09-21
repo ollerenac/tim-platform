@@ -15,6 +15,7 @@ T-03-04-04: IOC counts and types logged; individual IOC values NOT logged at INF
 """
 import collections
 import hashlib
+import functools
 import json
 import logging
 import re
@@ -138,6 +139,42 @@ def _mirror_document_pipeline(
             stats_store.record_failed(**fields, error=error)
     except (OSError, sqlite3.Error) as exc:
         logger.warning("[extractor] durable document mirror failed: %s", exc)
+
+
+def _fail_job(job_id: str, source_name: str, source_type: str | None, exc) -> None:
+    """Move a job to its terminal failed state and record why, everywhere it is read."""
+    jobs[job_id]["status"] = "failed"
+    jobs[job_id]["error"] = str(exc)
+    recent_docs.appendleft({
+        "filename": source_name,
+        "ingested_at": datetime.now(timezone.utc).isoformat(),
+        "ioc_count": 0,
+        "status": "error: " + str(exc),
+    })
+    _mirror_document_pipeline(
+        source_name=source_name, source_type=source_type, status="failed", error=exc,
+    )
+
+
+def _job_must_end(fn):
+    """Guarantee every exit path leaves the job terminal, never "processing".
+
+    run_extraction is a background task: nothing awaits it, so an exception it does
+    not catch dies in the thread pool and the job stays "processing" for ever, with
+    the caller polling a state that will never change. Measured 2026-09-21: cisa.gov
+    answered 403, the fetch raised HTTPError, the parse step caught only ValueError,
+    and job 2d940f64 was still "processing" hours later. Guarding the one path that
+    failed would leave every other step — the model call, the graph writes — able to
+    hang a job the same way, so the guard wraps the whole task.
+    """
+    @functools.wraps(fn)
+    def guarded(job_id, mode, content, url, *args, **kwargs):
+        try:
+            return fn(job_id, mode, content, url, *args, **kwargs)
+        except Exception as exc:
+            logger.exception("[extractor] job %s crashed: %s", job_id, exc)
+            _fail_job(job_id, url or f"pdf-upload-{job_id[:8]}", kwargs.get("source_type"), exc)
+    return guarded
 
 # ── Prompts ──────────────────────────────────────────────────────────────────
 
@@ -1040,6 +1077,7 @@ def extract_from_text(
     return output
 
 
+@_job_must_end
 def run_extraction(
     job_id: str,
     mode: str,
@@ -1079,21 +1117,10 @@ def run_extraction(
             full_text = extract_url_text(url)
         else:
             raise ValueError(f"Unknown mode: {mode!r}")
-    except ValueError as exc:
-        jobs[job_id]["status"] = "failed"
-        jobs[job_id]["error"] = str(exc)
-        recent_docs.appendleft({
-            "filename": source_name,
-            "ingested_at": datetime.now(timezone.utc).isoformat(),
-            "ioc_count": 0,
-            "status": "error: " + str(exc),
-        })
-        _mirror_document_pipeline(
-            source_name=source_name,
-            source_type=source_type,
-            status="failed",
-            error=exc,
-        )
+    except Exception as exc:
+        # Any failure to read the document is a normal outcome, not a crash: a 403, a
+        # timeout and an image-only PDF all end the job the same way.
+        _fail_job(job_id, source_name, source_type, exc)
         return
 
     # EXT-04: callers may pass an explicit source_type; otherwise guess from mode/url

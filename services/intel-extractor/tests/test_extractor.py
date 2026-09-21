@@ -1185,3 +1185,45 @@ def test_diagnostics_retain_grounding_dedup_policy_and_shape_rejections(monkeypa
     assert result["chunk_diagnostics"] == [
         {"chunk_index": 0, "status": "complete", "attempts": 1, "retry_count": 0, "error": None}
     ]
+
+
+# --- a background task must always leave its job terminal (2026-09-21) ---------
+# Measured: cisa.gov answered 403, the fetch raised HTTPError, the parse step caught
+# only ValueError, and the job stayed "processing" for ever because nothing awaits a
+# background task. These two tests pin both halves: the fetch, and everything after it.
+
+def test_a_fetch_failure_that_is_not_a_valueerror_fails_the_job(monkeypatch):
+    import extractor
+    from requests.exceptions import HTTPError
+
+    extractor.jobs.clear()
+    extractor.recent_docs.clear()
+    monkeypatch.setattr(extractor, "extract_url_text",
+                        lambda url: (_ for _ in ()).throw(HTTPError("403 Client Error: Forbidden")))
+    monkeypatch.setattr(extractor, "_mirror_document_pipeline", lambda **kw: None)
+
+    job_id = "job-403"
+    extractor.register_job(job_id)
+    extractor.run_extraction(job_id, "url", None, "https://www.cisa.gov/advisory")
+
+    assert extractor.jobs[job_id]["status"] == "failed"
+    assert "403" in extractor.jobs[job_id]["error"]
+    assert extractor.recent_docs[0]["filename"] == "https://www.cisa.gov/advisory"
+
+
+def test_a_crash_after_the_fetch_also_fails_the_job(monkeypatch):
+    import extractor
+
+    extractor.jobs.clear()
+    extractor.recent_docs.clear()
+    monkeypatch.setattr(extractor, "extract_url_text", lambda url: "some advisory text")
+    monkeypatch.setattr(extractor, "extract_from_text",
+                        lambda *a, **kw: (_ for _ in ()).throw(RuntimeError("bedrock unreachable")))
+    monkeypatch.setattr(extractor, "_mirror_document_pipeline", lambda **kw: None)
+
+    job_id = "job-crash"
+    extractor.register_job(job_id)
+    extractor.run_extraction(job_id, "url", None, "https://source.example/doc", source_type="report")
+
+    assert extractor.jobs[job_id]["status"] == "failed"
+    assert "bedrock unreachable" in extractor.jobs[job_id]["error"]
