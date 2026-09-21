@@ -133,11 +133,23 @@ def extract_pdf_text(pdf_bytes: bytes) -> str:
 def extract_url_text(url: str) -> str:
     """Fetch and extract plain text from a URL.
 
-    SSRF guards: http/https only, no embedded credentials, no private/internal IPs,
-    no redirects in the requests fallback path.
-    Primary: trafilatura; fallback: requests + BeautifulSoup.
+    Fetches through transport.fetch — the same tier-escalating fetcher the collector
+    uses — so a host that answers 403 to a plain client is retried with a browser TLS
+    fingerprint. Before 2026-09-21 this path used the plain fetcher while the collector
+    used the escalating one, so POST /extract could not read advisories the collector
+    read fine (measured: cisa.gov returned 403 here and 200 there, same container).
+    The same guards apply either way: transport mirrors parser.fetch's http(s)-only,
+    no-credentials, SSRF, no-redirect and streamed-size checks.
+
+    Routes on what actually arrived, not on the URL suffix: an advisory served as a PDF
+    is parsed as a PDF instead of being decoded as HTML into noise.
     """
-    raw = fetch_bytes(url, timeout=15)  # SSRF + redirect + size guards live here
+    # Local import: transport imports from parser, so a module-level import would cycle.
+    import transport
+
+    raw, content_type = transport.fetch(url, timeout=15)
+    if looks_like_pdf(content_type, raw, url):
+        return extract_pdf_text(raw)
     html = raw.decode("utf-8", errors="replace")
     result = trafilatura.extract(html)
     if result:

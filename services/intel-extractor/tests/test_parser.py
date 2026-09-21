@@ -53,3 +53,35 @@ def test_extract_url_text_trafilatura_fallback(monkeypatch):
     monkeypatch.setattr(trafilatura, "extract", lambda *a, **kw: None)
     result = extract_url_text("https://example.com")
     assert isinstance(result, str) and len(result) > 0
+
+
+# --- extract_url_text fetches through transport (2026-09-21) -------------------
+# Before this, POST /extract used the plain fetcher while the collector used the
+# tier-escalating one, so cisa.gov answered 403 here and 200 there.
+
+@_skip
+def test_extract_url_text_fetches_through_transport(monkeypatch):
+    import parser as parser_mod
+    import transport
+    llamadas = []
+
+    def falso_fetch(url, **kw):
+        llamadas.append(url)
+        return b"<html><body><p>" + b"Interlock ransomware advisory. " * 20 + b"</p></body></html>", "text/html"
+
+    monkeypatch.setattr(transport, "fetch", falso_fetch)
+    monkeypatch.setattr(parser_mod, "fetch_bytes", lambda *a, **k: pytest.fail("no debe usar el fetcher plano"))
+
+    result = extract_url_text("https://www.cisa.gov/news-events/cybersecurity-advisories/aa25-203a")
+    assert llamadas == ["https://www.cisa.gov/news-events/cybersecurity-advisories/aa25-203a"]
+    assert "Interlock" in result
+
+
+@_skip
+def test_extract_url_text_parses_a_pdf_url_as_a_pdf(monkeypatch):
+    # A URL that serves a PDF must reach the PDF parser, not be decoded as HTML.
+    import transport
+    monkeypatch.setattr(transport, "fetch", lambda url, **kw: (_MINIMAL_PDF, "application/pdf"))
+
+    result = extract_url_text("https://www.cisa.gov/sites/default/files/2026-08/aa25-203a.pdf")
+    assert "Hello World" in result
