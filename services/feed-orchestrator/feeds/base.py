@@ -152,6 +152,9 @@ class BaseFeed(ABC):
                 "status": "running",
                 "last_run": datetime.now(timezone.utc).isoformat(),
                 "ioc_count": "0",
+                # Reset here so a failed run never shows the previous run's funnel.
+                "fetched_count": "0",
+                "normalized_count": "0",
                 "error_msg": "",
             },
         )
@@ -165,10 +168,15 @@ class BaseFeed(ABC):
                     "status": "ok",
                     "last_run": datetime.now(timezone.utc).isoformat(),
                     "ioc_count": str(count),
+                    "fetched_count": str(len(raw)),
+                    "normalized_count": str(len(indicators)),
                     "error_msg": "",
                 },
             )
-            logger.info("[%s] run complete: %d indicators inserted", self.name, count)
+            logger.info(
+                "[%s] run complete: %d indicators inserted (%d fetched, %d normalized)",
+                self.name, count, len(raw), len(indicators),
+            )
         except Exception as exc:
             logger.error("[%s] run failed: %s", self.name, exc)
             redis_client.hset(
